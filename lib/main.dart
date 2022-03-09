@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/testHomePage.dart';
+import 'package:movie_app/views/search.dart';
 
 import 'data/database.dart';
 import 'data/model/basic.dart';
@@ -21,7 +22,7 @@ class MovieApp extends StatelessWidget {
       theme: CupertinoThemeData(
         primaryColor: CupertinoColors.systemPink
       ),
-      home: MyHomePage(title: "Asdf"),
+      home: Search(),
     );
   }
 }
@@ -47,7 +48,7 @@ class _MovieInfoTestState extends State<MovieInfoTest> {
 
     // final db = DatabaseManager();
     final tmdb = TMDB();
-    _cachedFuture = Movie.fromId(movieId, tmdb);
+    _cachedFuture = tmdb.movieFromId(movieId);
   }
 
   @override

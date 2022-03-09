@@ -6,30 +6,29 @@ import '../tmdb.dart';
 class Movie {
   int id;
   late String title;
-  late int year;
+  late int? year;
   late String? poster;
 
-  Movie(this.id, this.title, this.year);
+  Movie(this.id, this.title, this.year, this.poster);
 
-  Movie.onlyId(this.id);
+  Movie._onlyId(this.id);
 
-  Future<void> _populate(TMDB db) async {
-    var response = await db.fetchDetailsById(id);
-    if (response.statusCode != 200) return;
-    var result = jsonDecode((await db.fetchDetailsById(id)).body);
-    title = result["title"];
-    year = int.parse(result["release_date"].split("-")[0]);
-    poster = result["poster_path"];
+  Movie.fromJSON(this.id, Map<String, dynamic> object) {
+    _loadFromJSON(object);
   }
 
-  static Future<Movie> fromId(int id, TMDB db) async {
-    var r = Movie.onlyId(id);
-    await r._populate(db);
-    return r;
+  void _loadFromJSON(Map<String, dynamic> object) {
+    title = object["title"];
+    if (object["release_date"] != "") {
+      year = int.parse(object["release_date"].split("-")[0]);
+    } else {
+      year = null;
+    }
+    poster = object["poster_path"];
   }
 
   String get fullTitle {
-    return "$title (${year.toString()})";
+    return "$title (${year?.toString() ?? "-"})";
   }
 }
 

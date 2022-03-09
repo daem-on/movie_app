@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
+import 'package:movie_app/data/tmdb.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/utils/utils.dart';
@@ -9,6 +10,7 @@ import 'model/basic.dart';
 
 class DatabaseManager extends ChangeNotifier {
   late Database _database;
+  final TMDB tmdb = TMDB();
 
   final _recentTableCreateQuery =
       "CREATE TABLE recent(tmdbid INTEGER, day INTEGER)";
@@ -44,11 +46,11 @@ class DatabaseManager extends ChangeNotifier {
     return result;
   }
 
-  static List<Movie> _mapsToMovies(List<Map<String, dynamic>> maps) {
-    final List<Movie> returned = [];
+  List<Future<Movie>> _mapsToMovies(List<Map<String, dynamic>> maps) {
+    final List<Future<Movie>> returned = [];
     for (var map in maps) {
       try {
-        returned.add(Movie.onlyId(map["id"]));
+        returned.add(tmdb.movieFromId(map["id"]));
       } catch (e) {
         log("Error! " + e.toString());
       }
@@ -56,7 +58,7 @@ class DatabaseManager extends ChangeNotifier {
     return returned;
   }
 
-  Future<List<Movie>> listEntries() async {
+  Future<List<Future<Movie>>> listEntries() async {
     return _mapsToMovies(await _database.query('entries'));
   }
 
