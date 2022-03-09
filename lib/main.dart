@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/testHomePage.dart';
+
+import 'data/database.dart';
+import 'data/model/basic.dart';
+import 'data/tmdb.dart';
+import 'package:marquee/marquee.dart';
 
 void main() {
   runApp(const MovieApp());
@@ -15,100 +21,75 @@ class MovieApp extends StatelessWidget {
       theme: CupertinoThemeData(
         primaryColor: CupertinoColors.systemPink
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: "Asdf"),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MovieInfoTest extends StatefulWidget {
+  final int movieId;
 
-  final String title;
+  const MovieInfoTest({Key? key, required this.movieId}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MovieInfoTest> createState() => _MovieInfoTestState(movieId);
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MovieInfoTestState extends State<MovieInfoTest> {
+  _MovieInfoTestState(this.movieId);
 
-  Future<void> _incrementCounter() async {
-    int? response = await showCupertinoModalPopup<int>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        title: const Text('Select amount'),
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            child: const Text('By 1'),
-            onPressed: () {
-              Navigator.pop(context, 1);
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: const Text('By 10'),
-            onPressed: () {
-              Navigator.pop(context, 10);
-            },
-          )
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-    );
+  late Future<Movie> _cachedFuture;
+  int movieId;
 
-    if (response == null) return;
-    setState(() {
-      _counter += response;
-    });
+  @override
+  void initState() {
+    super.initState();
+
+    // final db = DatabaseManager();
+    final tmdb = TMDB();
+    _cachedFuture = Movie.fromId(movieId, tmdb);
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(widget.title),
-      ),
-      child: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-              ],
+    return FutureBuilder(
+      future: _cachedFuture,
+      builder: (context, AsyncSnapshot<Movie> snapshot) =>
+        (!snapshot.hasData) ? const CupertinoActivityIndicator() :
+        Column(
+          children: [
+            if (snapshot.data?.poster != null) Image.network(
+                TMDB.buildImageURL(snapshot.data!.poster!)
             ),
-          ),
-          Positioned(
-            width: MediaQuery.of(context).size.width,
-            bottom: 32,
-            child: Center(
-              child: CupertinoButton.filled(
-                onPressed: _incrementCounter,
-                borderRadius: BorderRadius.circular(1000),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: IntrinsicWidth(
-                  child: Row(
-                    children: const [
-                      Icon(CupertinoIcons.add),
-                      Text("Increment"),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+            Text(snapshot.data?.fullTitle ?? "None yet"),
+          ],
+        ),
+    );
+  }
+}
+
+class MovieTitleMarquee extends StatelessWidget {
+  final String title;
+
+  const MovieTitleMarquee({
+    Key? key,
+    required this.title
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      height: 50,
+      child: Marquee(
+        pauseAfterRound: const Duration(seconds: 1),
+        blankSpace: 10,
+        fadingEdgeStartFraction: 0,
+        startPadding: 10,
+        fadingEdgeEndFraction: 0.3,
+        text: title
       )
     );
   }
 }
+
