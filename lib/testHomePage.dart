@@ -74,8 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  MovieInfoTest(movieId: 634649),
-                  MovieInfoTest(movieId: 414906),
+                  
                 ],
               ),
             ),
