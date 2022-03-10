@@ -24,6 +24,7 @@ class _ToplistViewState extends State<ToplistView> {
           child: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Add movie"),
                   CupertinoButton(
@@ -38,9 +39,32 @@ class _ToplistViewState extends State<ToplistView> {
                   )
                 ],
               ),
-              const Divider(),
-              for (var movie in _list)
-                Row(children: [Text(movie.fullTitle)],)
+              const Divider(thickness: 3),
+              Expanded(
+                child: ReorderableListView(
+                  children: [
+                    for (var movie in _list)
+                      Dismissible(
+                        confirmDismiss: (direction) async => false,
+                        background: Container(color: CupertinoColors.destructiveRed,),
+                        key: Key(movie.id.toString()),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                          child: Row(children: [Text(movie.fullTitle)],)
+                        ),
+                      )
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final Movie item = _list.removeAt(oldIndex);
+                      _list.insert(newIndex, item);
+                    });
+                  }
+                ),
+              )
             ],
           ),
         )

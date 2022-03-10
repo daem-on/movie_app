@@ -20,6 +20,11 @@ class MovieApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Flutter Demo',
+      localizationsDelegates: const [
+        DefaultMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
       theme: const CupertinoThemeData(
         primaryColor: CupertinoColors.systemPink
       ),
