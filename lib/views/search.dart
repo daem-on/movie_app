@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/data/model/basic.dart';
+import 'package:movie_app/views/common.dart';
 
 import '../data/tmdb.dart';
 
@@ -24,31 +25,38 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+        backgroundColor: CupertinoColors.secondarySystemBackground,
         navigationBar: const CupertinoNavigationBar(
           middle: Text("Search View"),
         ),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
+          padding: const EdgeInsets.only(top: 80),
           child: Column(
             children: [
-              CupertinoSearchTextField(
-                onSubmitted: (value) => setState(() {
-                  _cachedFuture = tmdb.searchMovies(value);
-                }),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: CupertinoSearchTextField(
+                  onSubmitted: (value) => setState(() {
+                    _cachedFuture = tmdb.searchMovies(value);
+                  }),
+                ),
               ),
               Expanded(
-                child: (_cachedFuture != null) ? FutureBuilder(
-                  future: _cachedFuture,
-                  builder: (context, AsyncSnapshot<List<Movie>> snapshot) => GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: 9 / 16,
-                        crossAxisSpacing: 5,
-                      ),
-                    itemCount: snapshot.hasData ? snapshot.data!.length : 0,
-                    itemBuilder: _buildChildren(snapshot),
-                  ),
-                ) : Container(),
+                child: CupertinoContainer(
+                  child: (_cachedFuture != null) ? FutureBuilder(
+                    future: _cachedFuture,
+                    builder: (context, AsyncSnapshot<List<Movie>> snapshot) => GridView.builder(
+                      padding: EdgeInsets.zero,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 9 / 16,
+                          crossAxisSpacing: 5,
+                        ),
+                      itemCount: snapshot.hasData ? snapshot.data!.length : 0,
+                      itemBuilder: _buildChildren(snapshot),
+                    ),
+                  ) : Container(),
+                ),
               ),
             ],
           ),
@@ -79,15 +87,20 @@ class MoviePosterTitle extends StatelessWidget {
           Navigator.of(context).pop(movie)
         },
         child: (movie.poster != null)
-          ? Image.network(
-            TMDB.buildImageURL(movie.poster!, 154),
-            width: 154,
+          ? Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                TMDB.buildImageURL(movie.poster!, 154),
+                width: 154,
+              ),
+            ),
           )
           : Center(
             child: AspectRatio(
               aspectRatio: 2 / 3,
               child: Container(
-                color: CupertinoColors.secondarySystemFill,
+                color: CupertinoColors.tertiarySystemGroupedBackground,
                 child: const Center(child: Text("No image")),
               ),
             ),

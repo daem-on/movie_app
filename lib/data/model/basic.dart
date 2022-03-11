@@ -19,7 +19,7 @@ class Movie {
 
   void _loadFromJSON(Map<String, dynamic> object) {
     title = object["title"];
-    if (object["release_date"] != "") {
+    if (object["release_date"] != null && object["release_date"] != "") {
       year = int.parse(object["release_date"].split("-")[0]);
     } else {
       year = null;
