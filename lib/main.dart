@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/testHomePage.dart';
+import 'package:movie_app/views/discover.dart';
 import 'package:movie_app/views/search.dart';
 import 'package:movie_app/views/toplist.dart';
 
@@ -29,7 +30,8 @@ class MovieApp extends StatelessWidget {
         primaryColor: CupertinoColors.systemPink
       ),
       routes: <String, WidgetBuilder> {
-        '/search': (context) => const Search(),
+        "/search": (context) => const Search(),
+        "/discover": (context) => const Discover(),
       },
       home: const ToplistView(),
     );

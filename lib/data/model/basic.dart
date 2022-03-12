@@ -11,13 +11,7 @@ class Movie {
 
   Movie(this.id, this.title, this.year, this.poster);
 
-  Movie._onlyId(this.id);
-
   Movie.fromJSON(this.id, Map<String, dynamic> object) {
-    _loadFromJSON(object);
-  }
-
-  void _loadFromJSON(Map<String, dynamic> object) {
     title = object["title"];
     if (object["release_date"] != null && object["release_date"] != "") {
       year = int.parse(object["release_date"].split("-")[0]);
@@ -34,10 +28,38 @@ class Movie {
 
 class Person {
   int id;
-  String name;
+  late String name;
+  late String? profile;
+
+  Person.fromJSON(this.id, Map<String, dynamic> object) {
+    name = object["name"];
+    profile = object["poster_path"];
+  }
 
   Person(this.id, this.name);
 }
+
+Map<String, int> genres = {
+  "Action": 28,
+  "Adventure": 12,
+  "Animation": 16,
+  "Comedy": 35,
+  "Crime": 80,
+  "Documentary": 99,
+  "Drama": 18,
+  "Family": 10751,
+  "Fantasy": 14,
+  "History": 36,
+  "Horror": 27,
+  "Music": 10402,
+  "Mystery": 9648,
+  "Romance": 10749,
+  "Science Fiction": 878,
+  "TV Movie": 10770,
+  "Thriller": 53,
+  "War": 10752,
+  "Western": 37,
+};
 
 class Award {
   String name;

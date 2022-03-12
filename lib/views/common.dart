@@ -50,9 +50,12 @@ class PickerModal extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CupertinoButton.filled(child: const Text("Select"), onPressed: () {
-                Navigator.of(context).pop(_controller.selectedItem);
-              }),
+              child: FractionallySizedBox(
+                widthFactor: 0.8,
+                child: CupertinoButton.filled(child: const Text("Select"), onPressed: () {
+                  Navigator.of(context).pop(_controller.selectedItem);
+                }),
+              ),
             )
           ],
         ),
@@ -96,6 +99,31 @@ class SettingRow extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class MovieAppScaffold extends StatelessWidget {
+  final Widget child;
+  final String title;
+
+  const MovieAppScaffold({
+    Key? key,
+    required this.child,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+        backgroundColor: CupertinoColors.secondarySystemBackground,
+        navigationBar: CupertinoNavigationBar(
+          middle: Text(title),
+        ),
+        child: Container(
+            padding: const EdgeInsets.only(top: 80),
+            child: child
+        )
     );
   }
 }

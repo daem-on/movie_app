@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/views/discover.dart';
 
 import '../data/model/basic.dart';
 import 'common.dart';
@@ -13,30 +14,35 @@ class ToplistView extends StatefulWidget {
   State<ToplistView> createState() => _ToplistViewState();
 }
 
-class ToplistSettings {
-  String? genre;
-
-  ToplistSettings({this.genre});
-}
-
 class ToplistTemplate {
-  ToplistSettings settings;
+  DiscoverArguments settings;
   String title;
   ToplistTemplate(this.title, this.settings);
 }
 
 class _ToplistViewState extends State<ToplistView> {
   final List<Movie> _list = List.empty(growable: true);
-  ToplistSettings _settings = ToplistSettings();
+  DiscoverArguments _settings = DiscoverArguments();
   final List<ToplistTemplate> _templates = [
-    ToplistTemplate("90's comedies", ToplistSettings(genre: "comedy")),
-    ToplistTemplate("Superhero movies", ToplistSettings(genre: "superhero")),
-    ToplistTemplate("Horror movies", ToplistSettings(genre: "horror")),
-    ToplistTemplate("Japanese movies", ToplistSettings(genre: "japanese")),
+    ToplistTemplate("90's comedies", DiscoverArguments(genres: [35], laterThan: "1990-01-01", earlierThan: "1999-12-31")),
+    ToplistTemplate("Superhero movies", DiscoverArguments(keywords: [9715])),
+    ToplistTemplate("Horror movies", DiscoverArguments(genres: [27])),
+    ToplistTemplate("Japanese language movies", DiscoverArguments(originalLang: "ja")),
   ];
 
   void _gotoSearchAddMovie() async {
     Movie? movie = await Navigator.of(context).pushNamed<dynamic>("/search");
+    if (movie == null) return;
+    setState(() {
+      _list.add(movie);
+    });
+  }
+
+  void _gotoDiscoverAddMovie() async {
+    Movie? movie = await Navigator.of(context).pushNamed<dynamic>(
+        "/discover",
+        arguments: _settings
+    );
     if (movie == null) return;
     setState(() {
       _list.add(movie);
@@ -61,82 +67,86 @@ class _ToplistViewState extends State<ToplistView> {
     loadTemplate(_templates[index]);
   }
 
+  String? _getSelectedGenre() {
+    Map<int, String> backwards = genres.map((key, value) => MapEntry(value, key));
+    if (_settings.genres != null) {
+      return backwards[_settings.genres![0]];
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.secondarySystemBackground,
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text("Toplist"),
-        ),
-        child: Container(
-          padding: const EdgeInsets.only(top: 80),
-          child: Column(
-            children: [
-              CupertinoContainer(
-                child: Column(
-                  children: [
-                    SettingRow(
-                      text: "Start with a template",
-                      onPressed: _chooseTemplate,
-                    ),
-                    SettingRow(
-                      text: "Add specific movie",
-                      onPressed: _gotoSearchAddMovie,
-                      icon: const Icon(CupertinoIcons.search),
-                    ),
-                    SettingRow(
-                      text: "Discover movies",
-                      secondText: "Based on restrictions",
-                      onPressed: _gotoSearchAddMovie,
-                      icon: const Icon(CupertinoIcons.compass),
-                    ),
-                    SettingRow(
-                      text: "Restrict to genre",
-                      secondText: (_settings.genre != null) ? "Selected: ${_settings.genre}" : null,
-                      onPressed: () {},
-                    ),
-                  ],
+    return MovieAppScaffold(
+      title: "Toplist",
+      child: Column(
+        children: [
+          CupertinoContainer(
+            child: Column(
+              children: [
+                SettingRow(
+                  text: "Start with a template",
+                  onPressed: _chooseTemplate,
                 ),
-              ),
-              Expanded(
-                child: CupertinoContainer(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: ReorderableListView(
-                    children: [
-                      for (var movie in _list)
-                        Dismissible(
-                          onDismissed: (direction) => setState(() {_list.remove(movie);}),
-                          background: Container(
-                              color: CupertinoColors.destructiveRed,
-                              child: const Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Icon(CupertinoIcons.delete, color: Colors.white,),
-                              ),
-                              alignment: Alignment.centerRight),
-                          key: Key(movie.id.toString()),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                            child: Row(children: [Flexible(child: Text(movie.fullTitle, overflow: TextOverflow.ellipsis))],)
-                          ),
-                        )
-                    ],
-                    onReorder: (int oldIndex, int newIndex) {
-                      setState(() {
-                        if (oldIndex < newIndex) {
-                          newIndex -= 1;
-                        }
-                        final Movie item = _list.removeAt(oldIndex);
-                        _list.insert(newIndex, item);
-                      });
-                    }
-                  ),
+                SettingRow(
+                  text: "Add specific movie",
+                  onPressed: _gotoSearchAddMovie,
+                  icon: const Icon(CupertinoIcons.search),
                 ),
-              )
-            ],
+                SettingRow(
+                  text: "Discover movies",
+                  secondText: "Based on restrictions",
+                  onPressed: _gotoDiscoverAddMovie,
+                  icon: const Icon(CupertinoIcons.compass),
+                ),
+                SettingRow(
+                  text: "Restrict to genre",
+                  secondText: (_settings.genres != null) ? "Selected: ${_getSelectedGenre()}" : null,
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
-        )
+          Expanded(
+            child: CupertinoContainer(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ReorderableListView(
+                children: [
+                  for (var movie in _list)
+                    Dismissible(
+                      onDismissed: (direction) => setState(() {_list.remove(movie);}),
+                      background: Container(
+                          color: CupertinoColors.destructiveRed,
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Icon(CupertinoIcons.delete, color: Colors.white,),
+                          ),
+                          alignment: Alignment.centerRight),
+                      key: Key(movie.id.toString()),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        child: Row(children: [Flexible(child: Text(movie.fullTitle, overflow: TextOverflow.ellipsis))],)
+                      ),
+                    )
+                ],
+                onReorder: (int oldIndex, int newIndex) {
+                  setState(() {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final Movie item = _list.removeAt(oldIndex);
+                    _list.insert(newIndex, item);
+                  });
+                }
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
+
+
 
 
