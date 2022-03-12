@@ -43,9 +43,10 @@ class TMDB {
 
   Future<List<Movie>> discoverMovies(Map<String, dynamic> query) async {
     var response = await _discoverMovies(query);
-    // log(response.request!.url.toString());
+    log(response.request!.url.toString());
     if (response.statusCode != 200) throw "Discover failed";
     List<dynamic> list = jsonDecode(response.body)["results"];
+    log("results page ${jsonDecode(response.body)["page"]}");
     return list.map((e) => Movie.fromJSON(e["id"], e)).toList();
   }
 

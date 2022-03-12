@@ -49,50 +49,71 @@ class Discover extends StatefulWidget {
 
 class _DiscoverState extends State<Discover> {
   var tmdb = TMDB();
-  late Future<List<Movie>> _cachedFuture;
+  final List<Movie> _snapshot = List.empty(growable: true);
+  late final DiscoverArguments _args;
+  static const _pageSize = 20;
+  final Map<int, bool> _pageLoading = {};
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final args = ModalRoute.of(context)!.settings.arguments as DiscoverArguments;
-    _cachedFuture = tmdb.discoverMovies(args.toMap());
+    _args = ModalRoute.of(context)!.settings.arguments as DiscoverArguments;
+  }
+  
+  void _addResultsToSnapshot(List<Movie> results, int start) {
+    if (_snapshot.length > start) log("Overwriting something, $start");
+    _snapshot.insertAll(start, results);
+  }
+  
+  Movie? _getAtPlace(int place) {
+    if (_snapshot.length <= place) {
+      final page = (place / _pageSize).truncate()+1;
+      // we are already loading this page
+      if (_pageLoading[page] ?? false) return null;
+
+      final paginated = _args.toMap();
+      paginated.addAll({"page": "$page"});
+      final future = tmdb.discoverMovies(paginated);
+      _pageLoading[page] = true;
+
+      future.then(
+        (value) => setState(() {
+          _addResultsToSnapshot(value, (page-1)*_pageSize);
+        })
+      );
+      return null;
+    } else {
+      return _snapshot[place];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return MovieAppScaffold(
       title: "Discover",
-      child: Column(
-        children: [
-          Expanded(
-            child: CupertinoContainer(
-              child: FutureBuilder(
-                future: _cachedFuture,
-                builder: (context, AsyncSnapshot<List<Movie>> snapshot) => GridView.builder(
-                  padding: EdgeInsets.zero,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 9 / 16,
-                      crossAxisSpacing: 5,
-                    ),
-                  itemCount: snapshot.hasData ? snapshot.data!.length : 0,
-                  itemBuilder: _buildChildren(snapshot),
-                ),
-              ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: GridView.builder(
+          padding: EdgeInsets.zero,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 9 / 16,
+              crossAxisSpacing: 5,
             ),
-          ),
-        ],
-      ),
+            itemCount: 100,
+            itemBuilder: _buildChildren
+        ),
+      )
     );
   }
 
-  Widget Function(BuildContext, int) _buildChildren(
-      AsyncSnapshot<List<Movie>> snapshot) {
-    return (context, i) {
-      return snapshot.hasData
-          ? MoviePosterTitle(snapshot.data![i])
-          : const Placeholder();
-    };
+  Widget _buildChildren(BuildContext context, int place) {
+    final value = _getAtPlace(place);
+    if (value != null) {
+      return MoviePosterTitle(value);
+    } else {
+      return const Center(child: CupertinoActivityIndicator());
+    }
   }
 }
 
