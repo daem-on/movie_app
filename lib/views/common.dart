@@ -15,7 +15,7 @@ class CupertinoContainer extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: CupertinoColors.systemBackground,
+          color: CupertinoColors.systemBackground.resolveFrom(context),
         ),
         child: child
     );
@@ -26,17 +26,20 @@ class PickerModal extends StatelessWidget {
   PickerModal({
     Key? key,
     required this.options,
-  }) : super(key: key);
+    int initialItem = 0
+  }) : super(key: key) {
+    _controller = FixedExtentScrollController(initialItem: initialItem);
+  }
 
   final List<String> options;
-  final FixedExtentScrollController _controller = FixedExtentScrollController();
+  late final FixedExtentScrollController _controller;
 
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       heightFactor: 0.3,
       child: Container(
-        color: CupertinoColors.white,
+        color: CupertinoColors.systemBackground.resolveFrom(context),
         child: Column(
           children: [
             Expanded(
@@ -82,6 +85,7 @@ class SettingRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -90,7 +94,7 @@ class SettingRow extends StatelessWidget {
             children: [
               Text(text),
               if (secondText != null)
-                Text(secondText!, style: Theme.of(context).textTheme.bodyMedium,)
+                Text(secondText!, style: CupertinoTheme.of(context).textTheme.actionTextStyle,)
             ],
           ),
           Padding(
@@ -117,9 +121,7 @@ class MovieAppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         backgroundColor: CupertinoColors.secondarySystemBackground,
-        navigationBar: CupertinoNavigationBar(
-          middle: Text(title),
-        ),
+        navigationBar: const CupertinoNavigationBar(),
         child: Container(
             padding: const EdgeInsets.only(top: 80),
             child: child

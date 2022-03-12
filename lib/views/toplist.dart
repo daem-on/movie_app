@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/views/discover.dart';
+import 'package:movie_app/views/search.dart';
 
 import '../data/model/basic.dart';
 import 'common.dart';
@@ -31,7 +32,7 @@ class _ToplistViewState extends State<ToplistView> {
   ];
 
   void _gotoSearchAddMovie() async {
-    Movie? movie = await Navigator.of(context).pushNamed<dynamic>("/search");
+    Movie? movie = await Navigator.of(context).push(Search.route);
     if (movie == null) return;
     setState(() {
       _list.add(movie);
@@ -39,9 +40,8 @@ class _ToplistViewState extends State<ToplistView> {
   }
 
   void _gotoDiscoverAddMovie() async {
-    Movie? movie = await Navigator.of(context).pushNamed<dynamic>(
-        "/discover",
-        arguments: _settings
+    Movie? movie = await Navigator.of(context).push(
+        Discover.route(_settings)
     );
     if (movie == null) return;
     setState(() {
@@ -75,6 +75,26 @@ class _ToplistViewState extends State<ToplistView> {
     return null;
   }
 
+  void _chooseGenre() async {
+    final List<String> names = genres.entries.map((e) => e.key).toList();
+    final List<int> values = genres.entries.map((e) => e.value).toList();
+    int initialIndex =
+    (_settings.genres != null) ? values.indexOf(_settings.genres![0]) : 0;
+    var index = await showCupertinoModalPopup<int?>(
+        context: context,
+        semanticsDismissible: true,
+        builder: (context) => PickerModal(
+          options: names,
+          initialItem: initialIndex,
+        )
+    );
+    if (index == null) return;
+
+    setState(() {
+      _settings.genres = [values[index]];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MovieAppScaffold(
@@ -102,7 +122,7 @@ class _ToplistViewState extends State<ToplistView> {
                 SettingRow(
                   text: "Restrict to genre",
                   secondText: (_settings.genres != null) ? "Selected: ${_getSelectedGenre()}" : null,
-                  onPressed: () {},
+                  onPressed: _chooseGenre,
                 ),
               ],
             ),

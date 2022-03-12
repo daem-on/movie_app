@@ -8,6 +8,11 @@ import '../data/tmdb.dart';
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
+  static Route<Movie> get route => CupertinoPageRoute(
+      builder: (context) => const Search(),
+      title: "Search"
+  );
+
   @override
   State<Search> createState() => _SearchState();
 }
@@ -31,6 +36,7 @@ class _SearchState extends State<Search> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: CupertinoSearchTextField(
+              autofocus: true,
               onSubmitted: (value) => setState(() {
                 _cachedFuture = tmdb.searchMovies(value);
               }),

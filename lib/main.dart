@@ -26,13 +26,11 @@ class MovieApp extends StatelessWidget {
         DefaultCupertinoLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
       ],
-      theme: const CupertinoThemeData(
-        primaryColor: CupertinoColors.systemPink
+      theme: CupertinoThemeData(
+        primaryColor: CupertinoColors.systemPink,
+        primaryContrastingColor: CupertinoColors.white,
+        brightness: WidgetsBinding.instance?.platformDispatcher.platformBrightness
       ),
-      routes: <String, WidgetBuilder> {
-        "/search": (context) => const Search(),
-        "/discover": (context) => const Discover(),
-      },
       home: const ToplistView(),
     );
   }

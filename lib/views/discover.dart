@@ -43,6 +43,12 @@ class DiscoverArguments {
 class Discover extends StatefulWidget {
   const Discover({Key? key}) : super(key: key);
 
+  static Route<Movie> route(DiscoverArguments args) => CupertinoPageRoute(
+      builder: (context) => const Discover(),
+      title: "Discover",
+      settings: RouteSettings(arguments: args)
+  );
+
   @override
   State<Discover> createState() => _DiscoverState();
 }
