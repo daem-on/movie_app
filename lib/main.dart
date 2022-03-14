@@ -29,6 +29,7 @@ class MovieApp extends StatelessWidget {
       theme: CupertinoThemeData(
         primaryColor: CupertinoColors.systemPink,
         primaryContrastingColor: CupertinoColors.white,
+        scaffoldBackgroundColor: CupertinoColors.secondarySystemBackground,
         brightness: WidgetsBinding.instance?.platformDispatcher.platformBrightness
       ),
       home: const ToplistView(),

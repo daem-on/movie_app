@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:movie_app/data/model/basic.dart';
 import 'package:movie_app/views/common.dart';
 import 'package:movie_app/views/search.dart';
@@ -26,6 +25,12 @@ class DiscoverArguments {
     this.shorterThan,
     this.longerThan
   });
+
+  int? get genre => genres?[0];
+  int? get keyword => keywords?[0];
+
+  set genre(int? v) => genres = (v == null) ? [] : [v];
+  set keyword(int? v) => keywords = (v == null) ? [] : [v];
 
   Map<String, dynamic> toMap() {
     return {

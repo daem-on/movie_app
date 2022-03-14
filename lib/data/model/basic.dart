@@ -3,6 +3,14 @@ import 'dart:developer';
 
 import '../tmdb.dart';
 
+class Result<T> {
+  T? value;
+  bool get hasValue => value != null;
+
+  Result.clear();
+  Result(this.value);
+}
+
 class Movie {
   int id;
   late String title;
@@ -59,6 +67,26 @@ Map<String, int> genres = {
   "Thriller": 53,
   "War": 10752,
   "Western": 37,
+};
+
+Map<String, int> keywords = {
+  "Superhero": 9715,
+  "Video Game": 282,
+  "World War I": 2504,
+  "Spy": 470,
+  "Heist": 10051,
+  "Adapted": 818,
+  "Coming of Age": 10683
+};
+
+Map<String, String> languages = {
+  "English": "en",
+  "French": "fr",
+  "Italian": "it",
+  "Japanese": "ja",
+  "Hungarian": "hu",
+  "German": "de",
+  "Spanish": "es",
 };
 
 class Award {

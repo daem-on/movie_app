@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../data/model/basic.dart';
+
 class CupertinoContainer extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -26,13 +28,15 @@ class PickerModal extends StatelessWidget {
   PickerModal({
     Key? key,
     required this.options,
-    int initialItem = 0
+    this.button = "Select",
+    int? initialItem,
   }) : super(key: key) {
-    _controller = FixedExtentScrollController(initialItem: initialItem);
+    _controller = FixedExtentScrollController(initialItem: initialItem ?? 0);
   }
 
   final List<String> options;
   late final FixedExtentScrollController _controller;
+  final String button;
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +59,98 @@ class PickerModal extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: FractionallySizedBox(
                 widthFactor: 0.8,
-                child: CupertinoButton.filled(child: const Text("Select"), onPressed: () {
+                child: CupertinoButton.filled(child: Text(button), onPressed: () {
                   Navigator.of(context).pop(_controller.selectedItem);
                 }),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DateModal extends StatelessWidget {
+  DateModal({
+    Key? key,
+  }) : super(key: key);
+
+  DateTime _value = DateTime.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return FractionallySizedBox(
+      heightFactor: 0.3,
+      child: Container(
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: Column(
+          children: [
+            Expanded(
+              child: CupertinoDatePicker(
+                initialDateTime: DateTime(DateTime.now().year),
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (DateTime value) {_value = value;},
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(child: CupertinoButton(
+                    child: const Text("Clear"),
+                    onPressed: () {Navigator.of(context).pop(Result.clear());}
+                  ),),
+                  Expanded(child: CupertinoButton.filled(
+                    child: const Text("Done"),
+                    onPressed: () {Navigator.of(context).pop(Result(_value));}
+                  ),),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DurationModal extends StatelessWidget {
+  DurationModal({
+    Key? key,
+    required this.value
+  }) : super(key: key);
+
+  Duration value;
+
+  @override
+  Widget build(BuildContext context) {
+    return FractionallySizedBox(
+      heightFactor: 0.3,
+      child: Container(
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: Column(
+          children: [
+            Expanded(
+              child: CupertinoTimerPicker(
+                initialTimerDuration: value,
+                mode: CupertinoTimerPickerMode.hm,
+                onTimerDurationChanged: (Duration v) {value = v;},
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(child: CupertinoButton(
+                    child: const Text("Clear"),
+                    onPressed: () {Navigator.of(context).pop(Result.clear());}
+                  ),),
+                  Expanded(child: CupertinoButton.filled(
+                    child: const Text("Done"),
+                    onPressed: () {Navigator.of(context).pop(Result(value));}
+                  ),),
+                ],
               ),
             )
           ],
@@ -120,12 +213,8 @@ class MovieAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        backgroundColor: CupertinoColors.secondarySystemBackground,
         navigationBar: const CupertinoNavigationBar(),
-        child: Container(
-            padding: const EdgeInsets.only(top: 80),
-            child: child
-        )
+        child: SafeArea(child: child)
     );
   }
 }

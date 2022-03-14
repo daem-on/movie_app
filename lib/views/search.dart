@@ -34,7 +34,7 @@ class _SearchState extends State<Search> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: CupertinoSearchTextField(
               autofocus: true,
               onSubmitted: (value) => setState(() {
