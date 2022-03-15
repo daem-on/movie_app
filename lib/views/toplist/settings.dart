@@ -4,35 +4,51 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/views/discover.dart';
 import 'package:movie_app/views/search.dart';
+import 'package:movie_app/views/toplist/appearance.dart';
 
-import '../data/model/basic.dart';
-import 'common.dart';
+import '../../data/model/basic.dart';
+import '../common.dart';
 
-class ToplistView extends StatefulWidget {
-  const ToplistView({Key? key}) : super(key: key);
+class ToplistSettingsView extends StatefulWidget {
+  const ToplistSettingsView({Key? key}) : super(key: key);
+
+  static Route get route => CupertinoPageRoute(
+      builder: (context) => const ToplistSettingsView(),
+      title: "Toplist"
+  );
 
   @override
-  State<ToplistView> createState() => _ToplistViewState();
+  State<ToplistSettingsView> createState() => _ToplistSettingsViewState();
 }
 
 class ToplistTemplate {
-  DiscoverArguments settings;
+  DiscoverArguments arguments;
   String title;
-  ToplistTemplate(this.title, this.settings);
+  ToplistTemplate(this.title, this.arguments);
 }
 
-class _ToplistViewState extends State<ToplistView> {
-  final List<Movie> _list = List.empty(growable: true);
-  DiscoverArguments _settings = DiscoverArguments();
+class ToplistSettings {
+  DiscoverArguments arguments = DiscoverArguments();
+  String title = "";
+  final List<Movie> list = List.empty(growable: true);
+
+  loadTemplate(ToplistTemplate template) {
+    title = template.title; arguments = template.arguments;
+  }
+}
+
+class _ToplistSettingsViewState extends State<ToplistSettingsView> {
+  final ToplistSettings _settings = ToplistSettings();
   final List<ToplistTemplate> _templates = [
     ToplistTemplate("90's comedies", DiscoverArguments(genres: [35], laterThan: "1990-01-01", earlierThan: "1999-12-31")),
     ToplistTemplate("Superhero movies", DiscoverArguments(keywords: [9715])),
     ToplistTemplate("Horror movies", DiscoverArguments(genres: [27])),
     ToplistTemplate("Japanese language movies", DiscoverArguments(originalLang: "ja")),
   ];
+  DiscoverArguments get _args => _settings.arguments;
+  List<Movie> get _list => _settings.list;
 
   List<String> _optionsFrom(Map<String, dynamic> map) => ["None", ...map.keys];
-
   List<int> _valuesFrom(Map<String, int> map) => [0, ...map.values];
 
   int _getInitialIndex<T>(List<T> list, T? val) {
@@ -50,7 +66,7 @@ class _ToplistViewState extends State<ToplistView> {
 
   void _gotoDiscoverAddMovie() async {
     Movie? movie = await Navigator.of(context).push(
-        Discover.route(_settings)
+        Discover.route(_args)
     );
     if (movie == null) return;
     setState(() {
@@ -60,7 +76,7 @@ class _ToplistViewState extends State<ToplistView> {
 
   void loadTemplate(ToplistTemplate template) {
     setState(() {
-      _settings = template.settings;
+      _settings.loadTemplate(template);
     });
   }
 
@@ -82,62 +98,62 @@ class _ToplistViewState extends State<ToplistView> {
 
   String? get _selectedGenreText {
     Map<int, String> backwards = genres.map((key, value) => MapEntry(value, key));
-    if (_settings.genre != null) {
-      return "Selected: " + backwards[_settings.genre]!;
+    if (_args.genre != null) {
+      return "Selected: " + backwards[_args.genre]!;
     }
     return null;
   }
 
   String? get _selectedKeywordText {
     Map<int, String> backwards = keywords.map((key, value) => MapEntry(value, key));
-    if (_settings.keyword != null) {
-      return "Selected: " + backwards[_settings.keyword]!;
+    if (_args.keyword != null) {
+      return "Selected: " + backwards[_args.keyword]!;
     }
     return null;
   }
 
   String? get _selectedLangText {
     Map<String, String> backwards = languages.map((key, value) => MapEntry(value, key));
-    if (_settings.originalLang != null) {
-      return "Selected: " + backwards[_settings.originalLang]!;
+    if (_args.originalLang != null) {
+      return "Selected: " + backwards[_args.originalLang]!;
     }
     return null;
   }
 
   void _chooseGenre() async {
-    final init = _getInitialIndex(_valuesFrom(genres), _settings.genre);
+    final init = _getInitialIndex(_valuesFrom(genres), _args.genre);
     final index = await _showPickerModal(_optionsFrom(genres), init);
     if (index == null) return;
 
     if (index == 0) {
-      setState(() {_settings.genre = null;});
+      setState(() {_args.genre = null;});
     } else {
-      setState(() {_settings.genre = _valuesFrom(genres)[index];});
+      setState(() {_args.genre = _valuesFrom(genres)[index];});
     }
   }
 
   void _chooseKeyword() async {
-    final init = _getInitialIndex<int>(_valuesFrom(keywords), _settings.keyword);
+    final init = _getInitialIndex<int>(_valuesFrom(keywords), _args.keyword);
     final index = await _showPickerModal(_optionsFrom(keywords), init);
     if (index == null) return;
 
     if (index == 0) {
-      setState(() {_settings.keyword = null;});
+      setState(() {_args.keyword = null;});
     } else {
-      setState(() {_settings.keyword = _valuesFrom(keywords)[index];});
+      setState(() {_args.keyword = _valuesFrom(keywords)[index];});
     }
   }
 
   void _chooseLang() async {
     final values = ["", ...languages.values];
-    final init = _getInitialIndex(values, _settings.originalLang);
+    final init = _getInitialIndex(values, _args.originalLang);
     final index = await _showPickerModal(_optionsFrom(languages), init);
     if (index == null) return;
 
     if (index == 0) {
-      setState(() {_settings.originalLang = null;});
+      setState(() {_args.originalLang = null;});
     } else {
-      setState(() {_settings.originalLang = values[index];});
+      setState(() {_args.originalLang = values[index];});
     }
   }
 
@@ -168,7 +184,12 @@ class _ToplistViewState extends State<ToplistView> {
   @override
   Widget build(BuildContext context) {
     return MovieAppScaffold(
-      title: "Toplist",
+      trailing: TrailingButton(
+        onPressed: () {
+          Navigator.of(context).push(ToplistAppearanceView.route(_settings));
+        },
+        text: "Appearance",
+      ),
       child: Column(
         children: [
           Expanded(
@@ -203,26 +224,26 @@ class _ToplistViewState extends State<ToplistView> {
                   ),
                   SettingRow(
                     text: "Released later than",
-                    secondText: (_settings.laterThan != null) ? "Selected: ${_settings.laterThan}" : null,
+                    secondText: (_args.laterThan != null) ? "Selected: ${_args.laterThan}" : null,
                     onPressed: () async {
-                      final date = await _chooseDate(_settings.laterThan);
-                      setState(() {_settings.laterThan = date;});
+                      final date = await _chooseDate(_args.laterThan);
+                      setState(() {_args.laterThan = date;});
                     },
                   ),
                   SettingRow(
                     text: "Released earlier than",
-                    secondText: (_settings.earlierThan != null) ? "Selected: ${_settings.earlierThan}" : null,
+                    secondText: (_args.earlierThan != null) ? "Selected: ${_args.earlierThan}" : null,
                     onPressed: () async {
-                      final date = await _chooseDate(_settings.earlierThan);
-                      setState(() {_settings.earlierThan = date;});
+                      final date = await _chooseDate(_args.earlierThan);
+                      setState(() {_args.earlierThan = date;});
                     },
                   ),
                   SettingRow(
                     text: "Restrict to shorter than",
-                    secondText: (_settings.shorterThan != null) ? "Selected: ${_settings.shorterThan} min" : null,
+                    secondText: (_args.shorterThan != null) ? "Selected: ${_args.shorterThan} min" : null,
                     onPressed: () async {
-                      final dur = await _chooseDuration(_settings.shorterThan);
-                      setState(() {_settings.shorterThan = dur;});
+                      final dur = await _chooseDuration(_args.shorterThan);
+                      setState(() {_args.shorterThan = dur;});
                     },
                   ),
                   SettingRow(

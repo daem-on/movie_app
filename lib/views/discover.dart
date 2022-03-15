@@ -101,7 +101,6 @@ class _DiscoverState extends State<Discover> {
   @override
   Widget build(BuildContext context) {
     return MovieAppScaffold(
-      title: "Discover",
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: GridView.builder(

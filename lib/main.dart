@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/testHomePage.dart';
 import 'package:movie_app/views/discover.dart';
+import 'package:movie_app/views/home.dart';
 import 'package:movie_app/views/search.dart';
-import 'package:movie_app/views/toplist.dart';
+import 'package:movie_app/views/toplist/settings.dart';
 
 import 'data/database.dart';
 import 'data/model/basic.dart';
@@ -32,7 +33,7 @@ class MovieApp extends StatelessWidget {
         scaffoldBackgroundColor: CupertinoColors.secondarySystemBackground,
         brightness: WidgetsBinding.instance?.platformDispatcher.platformBrightness
       ),
-      home: const ToplistView(),
+      home: const HomeView(),
     );
   }
 }

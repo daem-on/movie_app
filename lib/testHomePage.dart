@@ -80,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             FloatingButton(
               onPressed: _incrementCounter,
+              text: "increment",
             )
           ],
         )
@@ -89,9 +90,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class FloatingButton extends StatelessWidget {
   final void Function()? onPressed;
+  final String text;
+  final Icon icon;
 
   const FloatingButton({
-    Key? key, this.onPressed
+    Key? key,
+    this.onPressed,
+    required this.text,
+    this.icon = const Icon(CupertinoIcons.add)
   }) : super(key: key);
 
   @override
@@ -102,13 +108,16 @@ class FloatingButton extends StatelessWidget {
       child: Center(
         child: CupertinoButton.filled(
           borderRadius: BorderRadius.circular(1000),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           onPressed: onPressed,
           child: IntrinsicWidth(
             child: Row(
-              children: const [
-                Icon(CupertinoIcons.add),
-                Text("Increment"),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: icon,
+                ),
+                Text(text),
               ],
             ),
           ),

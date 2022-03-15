@@ -202,19 +202,57 @@ class SettingRow extends StatelessWidget {
 
 class MovieAppScaffold extends StatelessWidget {
   final Widget child;
-  final String title;
+  final Widget? trailing;
 
   const MovieAppScaffold({
     Key? key,
     required this.child,
-    required this.title,
+    this.trailing
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(),
+        navigationBar: CupertinoNavigationBar(
+          trailing: trailing,
+        ),
         child: SafeArea(child: child)
+    );
+  }
+}
+
+class TrailingButton extends StatelessWidget {
+  final String text;
+  final void Function()? onPressed;
+
+  const TrailingButton({
+    Key? key, required this.text, required this.onPressed
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(text),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: 6, end: 2),
+            child: Text.rich(
+              TextSpan(
+                text: String.fromCharCode(CupertinoIcons.forward.codePoint),
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontFamily: CupertinoIcons.forward.fontFamily,
+                  package: CupertinoIcons.forward.fontPackage,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+      padding: EdgeInsets.zero,
     );
   }
 }
