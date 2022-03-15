@@ -41,7 +41,7 @@ class Person {
 
   Person.fromJSON(this.id, Map<String, dynamic> object) {
     name = object["name"];
-    profile = object["poster_path"];
+    profile = object["profile_path"];
   }
 
   Person(this.id, this.name);

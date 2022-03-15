@@ -29,8 +29,8 @@ class DiscoverArguments {
   int? get genre => genres?[0];
   int? get keyword => keywords?[0];
 
-  set genre(int? v) => genres = (v == null) ? [] : [v];
-  set keyword(int? v) => keywords = (v == null) ? [] : [v];
+  set genre(int? v) => genres = (v == null) ? null : [v];
+  set keyword(int? v) => keywords = (v == null) ? null : [v];
 
   Map<String, dynamic> toMap() {
     return {

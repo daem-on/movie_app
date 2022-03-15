@@ -38,7 +38,7 @@ class _SearchState extends State<Search> {
             child: CupertinoSearchTextField(
               autofocus: true,
               onSubmitted: (value) => setState(() {
-                _cachedFuture = tmdb.searchMovies(value);
+                _cachedFuture = tmdb.search<Movie>(value);
               }),
             ),
           ),
