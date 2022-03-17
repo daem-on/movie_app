@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:movie_app/views/common.dart';
 import 'package:movie_app/views/toplist/preview.dart';
 import 'package:movie_app/views/toplist/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ToplistAppearanceView extends StatefulWidget {
   const ToplistAppearanceView({Key? key}) : super(key: key);
@@ -17,13 +18,24 @@ class ToplistAppearanceView extends StatefulWidget {
 }
 
 class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
-  bool _setting = false;
+  bool _setting = true;
   late ToplistSettings _settings;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _settings = ModalRoute.of(context)!.settings.arguments as ToplistSettings;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUsername();
+  }
+
+  void getUsername() async {
+    var name = (await SharedPreferences.getInstance()).getString("username");
+    setState(() {_settings.username = name ?? "";});
   }
 
   @override
@@ -39,16 +51,16 @@ class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
         child: Column(
           children: [
             CupertinoFormSection(
-                header: Text("Uhh".toUpperCase(), style: TextStyle(fontSize: 20)),
+                // header: Text("Settings".toUpperCase(), style: TextStyle(fontSize: 20)),
                 children: [
                   CupertinoFormRow(
-                    prefix: const Text("Enable whatever"),
+                    prefix: const Text("Show username"),
                     child: CupertinoSwitch(value: _setting, onChanged: (v) {
                       setState(() {_setting = v;});
                     }),
                   ),
                   CupertinoTextFormFieldRow(
-                    placeholder: "How",
+                    placeholder: "Title",
                     initialValue: _settings.title,
                     onChanged: (v) => _settings.title = v,
                   )

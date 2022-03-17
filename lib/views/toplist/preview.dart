@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:movie_app/testHomePage.dart';
@@ -24,6 +22,7 @@ class ToplistView extends StatefulWidget {
 GlobalKey previewContainerKey = GlobalKey();
 
 class _ToplistViewState extends State<ToplistView> {
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -97,7 +96,7 @@ class _Preview extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text("By: username"),
+              Text("By: ${settings.username}"),
               if (da.laterThan != null) Text("From ${da.laterThan}"),
               if (da.earlierThan != null) Text("To ${da.earlierThan}"),
             ],

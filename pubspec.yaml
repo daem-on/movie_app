@@ -34,6 +34,7 @@ dependencies:
   http:
   marquee:
   share_files_and_screenshot_widgets_plus: ^1.0.4
+  shared_preferences:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

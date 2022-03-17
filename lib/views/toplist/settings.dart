@@ -30,6 +30,7 @@ class ToplistTemplate {
 class ToplistSettings {
   DiscoverArguments arguments = DiscoverArguments();
   String title = "";
+  String username = "";
   final List<Movie> list = List.empty(growable: true);
 
   loadTemplate(ToplistTemplate template) {
