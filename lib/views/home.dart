@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/views/awards/settings.dart';
 import 'package:movie_app/views/common.dart';
 import 'package:movie_app/views/register.dart';
 import 'package:movie_app/views/toplist/settings.dart';
@@ -46,12 +47,21 @@ class _HomeViewState extends State<HomeView> {
                 }
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: CupertinoButton.filled(
+                child: const Text("Go to Awards"),
+                onPressed: () {
+                  Navigator.of(context).push(AwardsSettingsView.route);
+                }
+              ),
+            ),
             CupertinoButton.filled(
               child: const Text("Delete username"),
               onPressed: () async {
                 (await SharedPreferences.getInstance()).remove("username");
               }
-            )
+            ),
           ],
         ),
       ),
