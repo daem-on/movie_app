@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:movie_app/views/awards/settings.dart';
 import 'package:movie_app/views/common.dart';
 import 'package:movie_app/views/register.dart';

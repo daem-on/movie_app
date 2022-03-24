@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:movie_app/testHomePage.dart';
 import 'package:movie_app/views/discover.dart';
 import 'package:movie_app/views/toplist/settings.dart';
 import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
+
+import '../common.dart';
 
 class ToplistView extends StatefulWidget {
   const ToplistView({Key? key}) : super(key: key);

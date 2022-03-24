@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../data/model/basic.dart';
 
@@ -71,6 +70,7 @@ class PickerModal extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class DateModal extends StatelessWidget {
   DateModal({
     Key? key,
@@ -115,6 +115,10 @@ class DateModal extends StatelessWidget {
   }
 }
 
+// Actually I agree that this should not be immutable but it works fine
+// and doesn't use setState() at all. Also it's not my fault the timepicker
+// doesn't have a controller
+// ignore: must_be_immutable
 class DurationModal extends StatelessWidget {
   DurationModal({
     Key? key,
@@ -253,6 +257,45 @@ class TrailingButton extends StatelessWidget {
         ],
       ),
       padding: EdgeInsets.zero,
+    );
+  }
+}
+
+class FloatingButton extends StatelessWidget {
+  final void Function()? onPressed;
+  final String text;
+  final Icon icon;
+
+  const FloatingButton({
+    Key? key,
+    this.onPressed,
+    required this.text,
+    this.icon = const Icon(CupertinoIcons.add)
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      width: MediaQuery.of(context).size.width,
+      bottom: 32,
+      child: Center(
+        child: CupertinoButton.filled(
+          borderRadius: BorderRadius.circular(1000),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          onPressed: onPressed,
+          child: IntrinsicWidth(
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: icon,
+                ),
+                Text(text),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

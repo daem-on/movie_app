@@ -1,10 +1,6 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:movie_app/views/discover.dart';
 import 'package:movie_app/views/search.dart';
-import 'package:movie_app/views/toplist/appearance.dart';
 
 import '../../data/model/basic.dart';
 import '../../data/tmdb.dart';
