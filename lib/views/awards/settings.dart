@@ -1,5 +1,6 @@
-
-import 'package:flutter/cupertino.dart';
+ import 'package:flutter/cupertino.dart';
+import 'package:movie_app/data/constants.dart';
+import 'package:movie_app/views/awards/appearance.dart';
 import 'package:movie_app/views/search.dart';
 
 import '../../data/model/basic.dart';
@@ -24,7 +25,7 @@ class AwardsTemplate {
   AwardsTemplate(this.title, this.slots);
 }
 
-class ToplistSettings {
+class AwardsSettings {
   String title = "";
   String username = "";
   List<Award> list = [];
@@ -32,14 +33,15 @@ class ToplistSettings {
 
   loadTemplate(AwardsTemplate template) {
     title = template.title;
-    list = template.slots.map((element) => Award(element, null)).toList();
+    list = template.slots.map((element) => Award(element, "", null)).toList();
   }
 }
 
 class _AwardsSettingsViewState extends State<AwardsSettingsView> {
-  final ToplistSettings _settings = ToplistSettings();
+  final AwardsSettings _settings = AwardsSettings();
   final List<AwardsTemplate> _templates = [
-    AwardsTemplate("Oscars", ["Set design", "Best Picture"]),
+    AwardsTemplate("Oscars", oscarsTemplate),
+    AwardsTemplate("Golden Globes (Movies)", goldenGlobesTemplate),
   ];
   List<Award> get _list => _settings.list;
 
@@ -75,7 +77,7 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
     var result = await _showPickerModal(options, dates.indexOf(_settings.date));
 
     if (result != null) {
-      setState(() {_settings.date = result;});
+      setState(() {_settings.date = dates[result];});
     }
   }
 
@@ -83,7 +85,9 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
   Widget build(BuildContext context) {
     return MovieAppScaffold(
       trailing: TrailingButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(AwardsAppearanceView.route(_settings));
+        },
         text: "Appearance",
       ),
       child: Column(
@@ -92,7 +96,7 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
             child: Column(
               children: [
                 SettingRow(
-                  text: "Start with a template",
+                  text: "Choose template",
                   onPressed: _chooseTemplate,
                 ),
                 SettingRow(
@@ -104,50 +108,57 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
             ),
           ),
           Expanded(
-            child: CupertinoContainer(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: ListView(
-                children: [
-                  for (final element in _settings.list)
-                    GestureDetector(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: SizedBox(
-                                width: 50,
-                                child: (element.picked?.poster == null) ?
-                                  const Icon(CupertinoIcons.film) :
-                                  Image.network(
-                                      TMDB.buildImageURL(element.picked!.poster!)
-                                  ),
+            child: ListView(
+              children: [
+                for (final element in _settings.list)
+                  CupertinoContainer(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Column(
+                      children: [
+                        Text(element.name),
+                        GestureDetector(
+                          onTap: () async {
+                            final result = await Navigator.of(context).push(Search.route);
+                            if (result != null) setState(() { element.picked = result; });
+                          },
+                          onLongPress: () async {
+                            setState(() { element.picked = null; });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Container(
+                                  width: 50,
+                                  height: 75,
+                                  color: CupertinoColors.secondarySystemBackground,
+                                  child: (element.picked?.poster == null) ?
+                                    const Icon(CupertinoIcons.film) :
+                                    Image.network(
+                                        TMDB.buildImageURL(element.picked!.poster!)
+                                    ),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Text(element.name),
-                                  Text(element.picked?.fullTitle ?? "None yet")
-                                ],
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Text(element.picked?.fullTitle ?? "None yet")
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      onTap: () async {
-                        final result = await Navigator.of(context).push(Search.route);
-                        if (result != null) setState(() { element.picked = result; });
-                      },
-                      onLongPress: () async {
-                        setState(() { element.picked = null; });
-                      },
+                        CupertinoTextField.borderless(
+                          placeholder: "Comment",
+                          onChanged: (value) => element.comment = value,
+                        )
+                      ],
                     )
-                ],
-              )
-            ),
-          )
+                  )
+              ],
+            )
+          ),
         ],
       ),
     );

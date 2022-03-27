@@ -44,53 +44,12 @@ class Person {
   Person(this.id, this.name);
 }
 
-Map<String, int> genres = {
-  "Action": 28,
-  "Adventure": 12,
-  "Animation": 16,
-  "Comedy": 35,
-  "Crime": 80,
-  "Documentary": 99,
-  "Drama": 18,
-  "Family": 10751,
-  "Fantasy": 14,
-  "History": 36,
-  "Horror": 27,
-  "Music": 10402,
-  "Mystery": 9648,
-  "Romance": 10749,
-  "Science Fiction": 878,
-  "TV Movie": 10770,
-  "Thriller": 53,
-  "War": 10752,
-  "Western": 37,
-};
-
-Map<String, int> keywords = {
-  "Superhero": 9715,
-  "Video Game": 282,
-  "World War I": 2504,
-  "Spy": 470,
-  "Heist": 10051,
-  "Adapted": 818,
-  "Coming of Age": 10683
-};
-
-Map<String, String> languages = {
-  "English": "en",
-  "French": "fr",
-  "Italian": "it",
-  "Japanese": "ja",
-  "Hungarian": "hu",
-  "German": "de",
-  "Spanish": "es",
-};
-
 class Award {
   String name;
+  String comment;
   Movie? picked;
 
-  Award(this.name, this.picked);
+  Award(this.name, this.comment, this.picked);
 }
 
 abstract class Rated {

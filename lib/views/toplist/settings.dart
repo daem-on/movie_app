@@ -5,6 +5,7 @@ import 'package:movie_app/views/discover.dart';
 import 'package:movie_app/views/search.dart';
 import 'package:movie_app/views/toplist/appearance.dart';
 
+import '../../data/constants.dart';
 import '../../data/model/basic.dart';
 import '../common.dart';
 

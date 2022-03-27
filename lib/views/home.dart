@@ -55,7 +55,7 @@ class _HomeViewState extends State<HomeView> {
                 }
               ),
             ),
-            CupertinoButton.filled(
+            CupertinoButton(
               child: const Text("Delete username"),
               onPressed: () async {
                 (await SharedPreferences.getInstance()).remove("username");
