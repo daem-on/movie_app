@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
 
 import '../data/model/basic.dart';
+import '../data/tmdb.dart';
 
 class CupertinoContainer extends StatelessWidget {
   final Widget child;
@@ -294,6 +296,78 @@ class FloatingButton extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ShareablePreview extends StatelessWidget {
+  ShareablePreview({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  final GlobalKey previewContainerKey = GlobalKey();
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.black,
+      navigationBar: const CupertinoNavigationBar(
+        backgroundColor: CupertinoColors.black,
+      ),
+      child: Stack(fit: StackFit.expand, children: [
+        SafeArea(
+          child: SingleChildScrollView(
+            child: RepaintBoundary(
+              key: previewContainerKey,
+              child: child,
+            ),
+          ),
+        ),
+        FloatingButton(
+            onPressed: () {
+              ShareFilesAndScreenshotWidgets().shareScreenshot(
+                  previewContainerKey, 800, "Title", "Name.png", "image/png",
+                  text: "This is the caption!");
+            },
+            text: "Share",
+            icon: const Icon(CupertinoIcons.share))
+      ]),
+    );
+  }
+}
+
+class MoviePosterSimple extends StatelessWidget {
+  final Movie movie;
+  final double width;
+  final int posterWidth;
+
+  const MoviePosterSimple(this.movie, {
+    this.width = 154,
+    this.posterWidth = 92,
+    Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (movie.poster != null)
+    ? Center(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(width / 10),
+        child: Image.network(
+          TMDB.buildImageURL(movie.poster!, posterWidth),
+          width: width,
+        ),
+      ),
+    )
+    : Center(
+      child: AspectRatio(
+        aspectRatio: 2 / 3,
+        child: Container(
+          color: CupertinoColors.tertiarySystemGroupedBackground,
+          child: const Center(child: Icon(CupertinoIcons.film)),
         ),
       ),
     );

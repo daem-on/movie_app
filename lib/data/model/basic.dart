@@ -13,6 +13,7 @@ class Movie {
   late String title;
   late int? year;
   late String? poster;
+  bool get hasPoster => poster != null;
 
   Movie(this.id, this.title, this.year, this.poster);
 
@@ -35,6 +36,7 @@ class Person {
   int id;
   late String name;
   late String? profile;
+  bool get hasProfile => profile != null;
 
   Person.fromJSON(this.id, Map<String, dynamic> object) {
     name = object["name"];
@@ -48,6 +50,7 @@ class Award {
   String name;
   String comment;
   Movie? picked;
+  bool get isPicked => picked != null;
 
   Award(this.name, this.comment, this.picked);
 }

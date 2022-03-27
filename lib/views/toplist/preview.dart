@@ -20,47 +20,13 @@ class ToplistView extends StatefulWidget {
   State<ToplistView> createState() => _ToplistViewState();
 }
 
-GlobalKey previewContainerKey = GlobalKey();
-
 class _ToplistViewState extends State<ToplistView> {
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     final args = ModalRoute.of(context)!.settings.arguments as ToplistSettings;
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.black,
-      navigationBar: const CupertinoNavigationBar(
-        backgroundColor: CupertinoColors.black,
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          SafeArea(
-            child: SingleChildScrollView(
-              child: RepaintBoundary(
-                  key: previewContainerKey,
-                  child: _Preview(settings: args),
-              ),
-            ),
-          ),
-          FloatingButton(
-              onPressed: () {
-                ShareFilesAndScreenshotWidgets().shareScreenshot(
-                    previewContainerKey,
-                    800,
-                    "Title",
-                    "Name.png",
-                    "image/png",
-                    text: "This is the caption!"
-                );
-              },
-              text: "Share",
-              icon: const Icon(CupertinoIcons.share)
-          )
-        ]
-      ),
-    );
+    return ShareablePreview(child: _Preview(settings: args));
   }
 }
 

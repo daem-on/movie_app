@@ -22,13 +22,17 @@ class AwardsSettingsView extends StatefulWidget {
 class AwardsTemplate {
   String title;
   List<String> slots;
-  AwardsTemplate(this.title, this.slots);
+  String displayTitle;
+  AwardsTemplate(this.title, this.displayTitle, this.slots);
 }
 
 class AwardsSettings {
   String title = "";
   String username = "";
   List<Award> list = [];
+  bool showUsername = true;
+  bool showPosters = true;
+  bool showYear = true;
   int date = DateTime.now().year;
 
   loadTemplate(AwardsTemplate template) {
@@ -40,8 +44,8 @@ class AwardsSettings {
 class _AwardsSettingsViewState extends State<AwardsSettingsView> {
   final AwardsSettings _settings = AwardsSettings();
   final List<AwardsTemplate> _templates = [
-    AwardsTemplate("Oscars", oscarsTemplate),
-    AwardsTemplate("Golden Globes (Movies)", goldenGlobesTemplate),
+    AwardsTemplate("Oscars", "The Academy Awards", oscarsTemplate),
+    AwardsTemplate("Golden Globes (Movies)", "The Golden Globe Awards", goldenGlobesTemplate),
   ];
   List<Award> get _list => _settings.list;
 
@@ -110,6 +114,8 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
           Expanded(
             child: ListView(
               children: [
+                if (_settings.list.isEmpty)
+                  const Align(alignment: Alignment.center, child: Text("Choose a template to start.")),
                 for (final element in _settings.list)
                   CupertinoContainer(
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -150,7 +156,7 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
                           ),
                         ),
                         CupertinoTextField.borderless(
-                          placeholder: "Comment",
+                          placeholder: "Recipient",
                           onChanged: (value) => element.comment = value,
                         )
                       ],

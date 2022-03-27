@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:movie_app/views/awards/preview.dart';
 import 'package:movie_app/views/awards/settings.dart';
 import 'package:movie_app/views/common.dart';
 import 'package:movie_app/views/toplist/preview.dart';
@@ -19,7 +20,6 @@ class AwardsAppearanceView extends StatefulWidget {
 }
 
 class _AwardsAppearanceViewState extends State<AwardsAppearanceView> {
-  bool _setting = true;
   late AwardsSettings _settings;
 
   @override
@@ -31,10 +31,10 @@ class _AwardsAppearanceViewState extends State<AwardsAppearanceView> {
   @override
   void initState() {
     super.initState();
-    getUsername();
+    _getUsername();
   }
 
-  void getUsername() async {
+  void _getUsername() async {
     var name = (await SharedPreferences.getInstance()).getString("username");
     setState(() {_settings.username = name ?? "";});
   }
@@ -43,7 +43,9 @@ class _AwardsAppearanceViewState extends State<AwardsAppearanceView> {
   Widget build(BuildContext context) {
     return MovieAppScaffold(
       trailing: TrailingButton(
-        text: "Preview", onPressed: () {},
+        text: "Preview", onPressed: () {
+          Navigator.of(context).push(AwardsView.route(_settings));
+        },
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -54,8 +56,20 @@ class _AwardsAppearanceViewState extends State<AwardsAppearanceView> {
                 children: [
                   CupertinoFormRow(
                     prefix: const Text("Show username"),
-                    child: CupertinoSwitch(value: _setting, onChanged: (v) {
-                      setState(() {_setting = v;});
+                    child: CupertinoSwitch(value: _settings.showUsername, onChanged: (v) {
+                      setState(() {_settings.showUsername = v;});
+                    }),
+                  ),
+                  CupertinoFormRow(
+                    prefix: const Text("Show posters"),
+                    child: CupertinoSwitch(value: _settings.showPosters, onChanged: (v) {
+                      setState(() {_settings.showPosters = v;});
+                    }),
+                  ),
+                  CupertinoFormRow(
+                    prefix: const Text("Show year"),
+                    child: CupertinoSwitch(value: _settings.showYear, onChanged: (v) {
+                      setState(() {_settings.showYear = v;});
                     }),
                   ),
                   CupertinoTextFormFieldRow(
