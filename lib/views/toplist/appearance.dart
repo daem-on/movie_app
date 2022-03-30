@@ -18,7 +18,6 @@ class ToplistAppearanceView extends StatefulWidget {
 }
 
 class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
-  bool _setting = true;
   late ToplistSettings _settings;
 
   @override
@@ -55,8 +54,26 @@ class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
                 children: [
                   CupertinoFormRow(
                     prefix: const Text("Show username"),
-                    child: CupertinoSwitch(value: _setting, onChanged: (v) {
-                      setState(() {_setting = v;});
+                    child: CupertinoSwitch(value: _settings.showUsername, onChanged: (v) {
+                      setState(() {_settings.showUsername = v;});
+                    }),
+                  ),
+                  CupertinoFormRow(
+                    prefix: const Text("Use movie backdrop"),
+                    child: CupertinoSwitch(value: _settings.useMovieBackdrop, onChanged: (v) {
+                      setState(() {_settings.useMovieBackdrop = v;});
+                    }),
+                  ),
+                  CupertinoFormRow(
+                    prefix: const Text("Show posters"),
+                    child: CupertinoSwitch(value: _settings.showPosters, onChanged: (v) {
+                      setState(() {_settings.showPosters = v;});
+                    }),
+                  ),
+                  CupertinoFormRow(
+                    prefix: const Text("Light color scheme"),
+                    child: CupertinoSwitch(value: _settings.lightColors, onChanged: (v) {
+                      setState(() {_settings.lightColors = v;});
                     }),
                   ),
                   CupertinoTextFormFieldRow(

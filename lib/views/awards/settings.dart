@@ -36,7 +36,7 @@ class AwardsSettings {
   int date = DateTime.now().year;
 
   loadTemplate(AwardsTemplate template) {
-    title = template.title;
+    title = template.displayTitle;
     list = template.slots.map((element) => Award(element, "", null)).toList();
   }
 }
@@ -88,7 +88,8 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
   @override
   Widget build(BuildContext context) {
     return MovieAppScaffold(
-      trailing: TrailingButton(
+      trailing: (_settings.list.isEmpty) ? null :
+      TrailingButton(
         onPressed: () {
           Navigator.of(context).push(AwardsAppearanceView.route(_settings));
         },

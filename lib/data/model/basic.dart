@@ -13,7 +13,9 @@ class Movie {
   late String title;
   late int? year;
   late String? poster;
+  late String? backdrop;
   bool get hasPoster => poster != null;
+  bool get hasBackdrop => backdrop != null;
 
   Movie(this.id, this.title, this.year, this.poster);
 
@@ -25,6 +27,7 @@ class Movie {
       year = null;
     }
     poster = object["poster_path"];
+    backdrop = object["backdrop_path"];
   }
 
   String get fullTitle {

@@ -31,6 +31,10 @@ class ToplistSettings {
   DiscoverArguments arguments = DiscoverArguments();
   String title = "";
   String username = "";
+  bool showUsername = true;
+  bool useMovieBackdrop = true;
+  bool showPosters = true;
+  bool lightColors = false;
   final List<Movie> list = List.empty(growable: true);
 
   loadTemplate(ToplistTemplate template) {
