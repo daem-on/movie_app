@@ -35,6 +35,7 @@ class ToplistSettings {
   bool useMovieBackdrop = true;
   bool showPosters = true;
   bool lightColors = false;
+  bool dynamicColor = false;
   final List<Movie> list = List.empty(growable: true);
 
   loadTemplate(ToplistTemplate template) {

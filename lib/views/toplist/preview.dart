@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:movie_app/data/tmdb.dart';
 import 'package:movie_app/views/discover.dart';
 import 'package:movie_app/views/toplist/settings.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
 
 import '../common.dart';
@@ -21,10 +22,13 @@ class ToplistView extends StatefulWidget {
   State<ToplistView> createState() => _ToplistViewState();
 }
 
+final imageKey = GlobalKey();
+
 class _ToplistViewState extends State<ToplistView> {
-  late Widget _background;
+  late ImageProvider _background;
   late ToplistSettings _args;
   late List<Color> _gradient;
+  PaletteGenerator? _paletteGenerator;
 
   @override
   void didChangeDependencies() {
@@ -34,14 +38,27 @@ class _ToplistViewState extends State<ToplistView> {
       var path = _args.list
           .firstWhere((element) => element.hasBackdrop)
           .backdrop!;
-      _background = Image.network(
+      _background = NetworkImage(
           TMDB.buildImageURL(path, 780)
       );
       _gradient = _linearGradient;
     } else {
-      _background = Image.asset('assets/popcorn.jpg');
+      _background = const AssetImage('assets/popcorn.jpg');
       _gradient = _brightTopGradient;
     }
+    _updatePaletteGenerator();
+  }
+
+  void _updatePaletteGenerator() async {
+    if (!_args.dynamicColor) {
+      _paletteGenerator = null;
+      return;
+    }
+    _paletteGenerator = await PaletteGenerator.fromImageProvider(
+      _background,
+      maximumColorCount: 20,
+    );
+    setState(() {});
   }
 
   @override
@@ -52,6 +69,7 @@ class _ToplistViewState extends State<ToplistView> {
         settings: _args,
         gradient: _gradient,
         background: _background,
+        palette: _paletteGenerator,
         extraPadding: const EdgeInsets.only(top: 60)
       )
     );
@@ -84,13 +102,15 @@ class _Preview extends StatelessWidget {
     required this.settings,
     required this.gradient,
     required this.background,
+    required this.palette,
     this.extraPadding = EdgeInsets.zero,
   }) : super(key: key);
 
   final EdgeInsetsGeometry extraPadding;
   final ToplistSettings settings;
   final List<Color> gradient;
-  final Widget background;
+  final ImageProvider background;
+  final PaletteGenerator? palette;
   DiscoverArguments get da => settings.arguments;
 
   @override
@@ -98,10 +118,14 @@ class _Preview extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: _borderRadius,
-        color: settings.lightColors ? CupertinoColors.white : CupertinoColors.black,
+        color: palette?.darkVibrantColor?.color ??
+            (settings.lightColors ? CupertinoColors.white : CupertinoColors.black),
       ),
       child: DefaultTextStyle(
-        style: TextStyle(color: settings.lightColors ? CupertinoColors.black : CupertinoColors.white),
+        style: TextStyle(
+            color: palette?.lightVibrantColor?.color ??
+            (settings.lightColors ? CupertinoColors.black : CupertinoColors.white)
+        ),
         child: Stack(
           children: [
             ClipRRect(
@@ -115,7 +139,10 @@ class _Preview extends StatelessWidget {
                   ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
                 },
                 blendMode: BlendMode.dstIn,
-                child: background,
+                child: Image(
+                  key: imageKey,
+                  image: background,
+                )
               ),
             ),
             Padding(
@@ -129,8 +156,9 @@ class _Preview extends StatelessWidget {
                     child: Text(
                       settings.title,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(
-                        fontSize: 40
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: palette?.colors.elementAt(2)
                       ),
                     ),
                   ),

@@ -36,6 +36,7 @@ dependencies:
   share_files_and_screenshot_widgets_plus: ^1.0.4
   shared_preferences:
   flutter_svg: ^1.0.3
+  palette_generator:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
