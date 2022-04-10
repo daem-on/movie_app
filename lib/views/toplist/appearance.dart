@@ -76,7 +76,7 @@ class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
                       setState(() {_settings.lightColors = v;});
                     }),
                   ),
-                  CupertinoFormRow(
+                  if (_settings.useMovieBackdrop) CupertinoFormRow(
                     prefix: const Text("Dynamic colors from backdrop"),
                     child: CupertinoSwitch(value: _settings.dynamicColor, onChanged: (v) {
                       setState(() {_settings.dynamicColor = v;});

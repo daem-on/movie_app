@@ -75,7 +75,7 @@ class _AwardsSettingsViewState extends State<AwardsSettingsView> {
   }
 
   void _chooseDate() async {
-    final currentYear = DateTime.now().year;
+    final currentYear = DateTime.now().year+1;
     final dates = List.generate(60, (index) => currentYear - index);
     final options = dates.map((e) => e.toString()).toList();
     var result = await _showPickerModal(options, dates.indexOf(_settings.date));
