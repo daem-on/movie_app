@@ -24,6 +24,10 @@ class TMDB {
     return http.get(Uri.https(_authority, "/3/discover/movie", query));
   }
 
+  Future<http.Response> _movieCredits(int personId) {
+    return http.get(Uri.https(_authority, "/3/person/$personId/movie_credits", {"api_key": _apiKey}));
+  }
+
   Future<Movie> movieFromId(int id) async {
     var response = await _fetchDetailsById(id);
     if (response.statusCode != 200) throw "Fetch details failed";
@@ -48,6 +52,17 @@ class TMDB {
     if (response.statusCode != 200) throw "Discover failed";
     List<dynamic> list = jsonDecode(response.body)["results"];
     return list.map((e) => Movie.fromJSON(e["id"], e)).toList();
+  }
+
+  Future<Filmography> filmography(int personId) async {
+    var response = await _movieCredits(personId);
+    if (response.statusCode != 200) throw "Get filmography failed";
+    List<dynamic> list1 = jsonDecode(response.body)["cast"];
+    List<dynamic> list2 = jsonDecode(response.body)["crew"];
+    return Filmography(
+      list1.map((e) => Movie.fromJSON(e["id"], e)).toList(),
+      list2.map((e) => Movie.fromJSON(e["id"], e)).toList(),
+    );
   }
 
 }

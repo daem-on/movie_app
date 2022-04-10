@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:movie_app/views/awards/settings.dart';
 import 'package:movie_app/views/common.dart';
+import 'package:movie_app/views/filmography/settings.dart';
 import 'package:movie_app/views/register.dart';
 import 'package:movie_app/views/toplist/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,6 +53,15 @@ class _HomeViewState extends State<HomeView> {
                 child: const Text("Go to Awards"),
                 onPressed: () {
                   Navigator.of(context).push(AwardsSettingsView.route);
+                }
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: CupertinoButton.filled(
+                child: const Text("Go to Filmography"),
+                onPressed: () {
+                  Navigator.of(context).push(FilmographySettingsView.route);
                 }
               ),
             ),

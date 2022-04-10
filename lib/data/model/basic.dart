@@ -35,6 +35,12 @@ class Movie {
   }
 }
 
+class Filmography {
+  List<Movie> cast;
+  List<Movie> crew;
+  Filmography(this.cast, this.crew);
+}
+
 class Person {
   int id;
   late String name;
