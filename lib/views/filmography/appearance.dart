@@ -50,7 +50,6 @@ class _FilmographyAppearanceViewState extends State<FilmographyAppearanceView> {
         child: Column(
           children: [
             CupertinoFormSection(
-                // header: Text("Settings".toUpperCase(), style: TextStyle(fontSize: 20)),
                 children: [
                   CupertinoFormRow(
                     prefix: const Text("Show username"),
@@ -70,16 +69,65 @@ class _FilmographyAppearanceViewState extends State<FilmographyAppearanceView> {
                       setState(() {_settings.useNumbers = v;});
                     }),
                   ),
-                  CupertinoTextFormFieldRow(
-                    placeholder: "Title",
-                    initialValue: _settings.title,
-                    onChanged: (v) => _settings.title = v,
-                  )
                 ]
+            ),
+            CupertinoFormSection(
+              header: Text("Title".toUpperCase()),
+              children: [
+                CupertinoTextFormFieldRow(
+                  placeholder: "Title",
+                  initialValue: _settings.title,
+                  onChanged: (v) => _settings.title = v,
+                )
+              ]
+            ),
+            CupertinoRadioGroup<SortMovies>(
+              options: const {
+                "By popularity": SortMovies.popularity,
+                "By year": SortMovies.year,
+                "By my rating": SortMovies.rating,
+              },
+              title: "Sort movies",
+              currentValue: _settings.sort,
+              callback: (v) => setState(() => _settings.sort = v)
             )
           ],
         ),
       )
+    );
+  }
+}
+
+class CupertinoRadioGroup<T> extends StatelessWidget {
+  const CupertinoRadioGroup({Key? key, required this.options, required this.title, required this.currentValue, required this.callback}) : super(key: key);
+
+  final Map<String, T> options;
+  final T currentValue;
+  final String title;
+  final Function(T val) callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoFormSection(
+      header: Text(title.toUpperCase()),
+      children: [
+        for (final option in options.entries)
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            child: CupertinoFormRow(
+              prefix: Text(option.key),
+              child: SizedBox(
+                height: 30,
+                child: AnimatedOpacity(
+                  opacity: (currentValue==option.value) ? 1 : 0,
+                  duration: const Duration(milliseconds: 100),
+                  child: const Icon(CupertinoIcons.check_mark)
+                )
+              ),
+            ),
+            onTap: () {callback(option.value);},
+          )
+      ]
     );
   }
 }

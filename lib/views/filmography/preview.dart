@@ -29,11 +29,26 @@ class _FilmographyViewState extends State<FilmographyView> {
   late FilmographySettings _args;
   List<MovieRating> _filteredList = [];
 
+  int _popularitySorter(MovieRating a, MovieRating b) => ((b.movie.popularity??0)-(a.movie.popularity??0)).toInt();
+  int _yearSorter(MovieRating a, MovieRating b) => (a.movie.year??0)-(b.movie.year??0);
+  int _ratingSorter(MovieRating a, MovieRating b) => a.rating-b.rating;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _args = ModalRoute.of(context)!.settings.arguments as FilmographySettings;
     _filteredList = _args.list.where((e) => e.rating != 0).toList(growable: false);
+    switch (_args.sort) {
+      case SortMovies.popularity:
+        _filteredList.sort(_popularitySorter);
+        break;
+      case SortMovies.year:
+        _filteredList.sort(_yearSorter);
+        break;
+      case SortMovies.rating:
+        _filteredList.sort(_ratingSorter);
+        break;
+    }
   }
 
   @override
@@ -76,6 +91,7 @@ class _Preview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int i = 0;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -106,20 +122,28 @@ class _Preview extends StatelessWidget {
             ),
             for (final element in filteredList)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Row(
+                  textDirection: i++%2==0 ? TextDirection.rtl:TextDirection.ltr,
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: MoviePosterSimple(element.movie, width: 60,)
+                    if (settings.showPosters) Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: MoviePosterSimple(element.movie, width: 60,),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          Text(element.movie.fullTitle, style: TextStyles.movieTitle),
-                          _displayRating(element)
-                        ],
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          crossAxisAlignment: i%2==0 ? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              element.movie.fullTitle, style: TextStyles.movieTitle,
+                              textAlign: i%2==0 ? TextAlign.start:TextAlign.end,
+                            ),
+                            _displayRating(element)
+                          ],
+                        ),
                       ),
                     ),
                   ],

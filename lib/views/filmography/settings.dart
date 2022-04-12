@@ -24,6 +24,7 @@ class FilmographySettingsView extends StatefulWidget {
 }
 
 enum Role {both, cast, crew, director}
+enum SortMovies {popularity, year, rating}
 
 class FilmographySettings {
   String title = "";
@@ -34,6 +35,7 @@ class FilmographySettings {
   bool showUsername = true;
   bool showPosters = true;
   bool useNumbers = false;
+  SortMovies sort = SortMovies.popularity;
 }
 
 class OptionsModal extends StatelessWidget {
