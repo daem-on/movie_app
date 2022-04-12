@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:movie_app/TextStyles.dart';
+import 'package:movie_app/views/filmography/appearance.dart';
 import 'package:movie_app/views/search_people.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -20,36 +23,105 @@ class FilmographySettingsView extends StatefulWidget {
   State<FilmographySettingsView> createState() => _FilmographySettingsViewState();
 }
 
+enum Role {both, cast, crew, director}
+
 class FilmographySettings {
   String title = "";
   String username = "";
   Person? person;
-  List<Movie> list = [];
-  List<int> ratings = [];
+  Role role = Role.both;
+  List<MovieRating> list = [];
   bool showUsername = true;
   bool showPosters = true;
+  bool useNumbers = false;
+}
+
+class OptionsModal extends StatelessWidget {
+  const OptionsModal({
+    Key? key,
+    required this.options,
+  }) : super(key: key);
+
+  final Map<String, dynamic> options;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoActionSheet(
+      title: const Text(
+        "Show roles",
+        style: TextStyle(fontSize: 24)
+      ),
+      actions: [
+        for (final element in options.entries)
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.of(context).pop(element.value);
+            },
+            child: Text(element.key)
+          )
+      ],
+    );
+  }
 }
 
 class _FilmographySettingsViewState extends State<FilmographySettingsView> {
   final FilmographySettings _settings = FilmographySettings();
-  List<Movie> get _list => _settings.list;
+  List<MovieRating> get _list => _settings.list;
   final _tmdb = TMDB();
+  static final roleOptions = {
+    "All": Role.both,
+    "Cast": Role.cast,
+    "Crew": Role.crew,
+    "Director": Role.director,
+  };
+
+  int _popularitySorter(Movie a, Movie b) {
+    return ((b.popularity??0)-(a.popularity??0)).toInt();
+  }
 
   void getList() async {
-    if (_settings.person == null) return;
-    final filmography = await _tmdb.filmography(_settings.person!.id);
+    final person = _settings.person;
+    if (person == null) return;
+    final filmography = await _tmdb.filmography(person.id);
+    List<MovieCredit> list;
+    switch (_settings.role) {
+      case Role.crew:
+        list = filmography.crew;
+        break;
+      case Role.director:
+        list = filmography.crew;
+        list.retainWhere((e) => e.job?.toLowerCase()=="director");
+        break;
+      case Role.cast:
+        list = filmography.cast;
+        break;
+      case Role.both:
+        list = [...filmography.cast, ...filmography.crew];
+    }
+    list.sort(_popularitySorter);
     setState(() {
-      _settings.list = [...filmography.cast, ...filmography.crew];
+      _settings.list = list.map((e) => MovieRating(e, 0)).toList();
+      _settings.title = "Filmography of ${person.name}";
     });
   }
 
   void _choosePerson() async {
     Person? person = await Navigator.of(context).push(PeopleSearch.route);
     if (person == null) return;
+    _settings.role = await showCupertinoModalPopup(
+        context: context,
+        semanticsDismissible: false,
+        builder: (context) => OptionsModal(options: roleOptions)
+    ) ?? Role.both;
     setState(() {
       _settings.person = person;
     });
     getList();
+  }
+
+  String? _creditDescription(MovieCredit credit) {
+    if (credit.character!=null) return "as ${credit.character}";
+    return credit.job;
   }
 
   @override
@@ -57,7 +129,9 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
     return MovieAppScaffold(
       trailing: (_settings.list.isEmpty) ? null :
       TrailingButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(FilmographyAppearanceView.route(_settings));
+        },
         text: "Appearance",
       ),
       child: Column(
@@ -67,8 +141,9 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
               children: [
                 SettingRow(
                   text: "Choose person",
-                  secondText: "Current: ${_settings.person?.name}",
+                  secondText: _settings.person!=null ? "Current: ${_settings.person?.name}" : null,
                   onPressed: _choosePerson,
+                  icon: const Icon(CupertinoIcons.person),
                 ),
               ],
             ),
@@ -83,20 +158,15 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
                         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         child: Column(
                           children: [
-                            Text(element.fullTitle),
-                            RatingBar.builder(
-                              initialRating: 0,
-                              minRating: 0.5,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                              itemBuilder: (context, _) => const Icon(
-                                CupertinoIcons.star_fill,
-                                color: CupertinoColors.systemYellow,
-                              ),
-                              onRatingUpdate: (rating) {
-                                log(rating.toString());
+                            Text(element.movie.fullTitle),
+                            Text(
+                              _creditDescription(element.movie as MovieCredit) ?? "",
+                              style: TextStyles.subtitle,
+                            ),
+                            _StarRatingSlider(
+                              movieRating: element,
+                              callback: (rating) {
+                                setState(() { element.rating = rating; });
                               },
                             ),
                           ],
@@ -107,6 +177,42 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _StarRatingSlider extends StatelessWidget {
+  const _StarRatingSlider({
+    Key? key,
+    required this.movieRating, required this.callback,
+  }) : super(key: key);
+
+  final MovieRating movieRating;
+  final Function callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RatingBar.builder(
+          initialRating: movieRating.rating/2,
+          minRating: 0.5,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          itemCount: 5,
+          itemBuilder: (context, _) => const Icon(
+            CupertinoIcons.star_fill,
+            color: CupertinoColors.systemYellow,
+          ),
+          onRatingUpdate: (rating) {callback((rating*2).toInt());},
+        ),
+        CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () {callback(0);},
+          child: const Icon(CupertinoIcons.arrow_counterclockwise)
+        )
+      ],
     );
   }
 }

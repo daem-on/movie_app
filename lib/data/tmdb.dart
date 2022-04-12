@@ -60,8 +60,8 @@ class TMDB {
     List<dynamic> list1 = jsonDecode(response.body)["cast"];
     List<dynamic> list2 = jsonDecode(response.body)["crew"];
     return Filmography(
-      list1.map((e) => Movie.fromJSON(e["id"], e)).toList(),
-      list2.map((e) => Movie.fromJSON(e["id"], e)).toList(),
+      list1.map((e) => MovieCredit.fromJSON(e["id"], e)).toList(),
+      list2.map((e) => MovieCredit.fromJSON(e["id"], e)).toList(),
     );
   }
 

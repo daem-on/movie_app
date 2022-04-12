@@ -79,20 +79,7 @@ class PersonListItem extends StatelessWidget {
       onTap: () => Navigator.of(context).pop(person),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Center(
-              child: (person.hasProfile)
-                ? CircleAvatar(
-                  foregroundImage: NetworkImage(
-                    TMDB.buildImageURL(person.profile!, 154),
-                  ),
-                )
-                : CircleAvatar(
-                  child: Text(person.name.substring(0, 1)),
-                ),
-            ),
-          ),
+          ProfilePicture(person: person),
           Expanded(child: Text(person.name)),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
 
 import '../data/model/basic.dart';
@@ -369,6 +370,24 @@ class MoviePosterSimple extends StatelessWidget {
           color: CupertinoColors.tertiarySystemGroupedBackground,
           child: const Center(child: Icon(CupertinoIcons.film)),
         ),
+      ),
+    );
+  }
+}
+
+class ProfilePicture extends StatelessWidget {
+  const ProfilePicture({Key? key, required this.person, this.radius}) : super(key: key);
+  final Person person;
+  final double? radius;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Center(
+        child: (person.hasProfile)
+          ? CircleAvatar(foregroundImage: NetworkImage(TMDB.buildImageURL(person.profile!, 154)), radius: radius)
+          : CircleAvatar(child: Text(person.name.substring(0, 1)), radius: radius,),
       ),
     );
   }

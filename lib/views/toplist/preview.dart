@@ -6,6 +6,7 @@ import 'package:movie_app/views/toplist/settings.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
 
+import '../../TextStyles.dart';
 import '../common.dart';
 
 class ToplistView extends StatefulWidget {
@@ -83,18 +84,6 @@ const _brightTopGradient = [
   Color(0x00000000)
 ];
 const _linearGradient =  [Color(0xFF000000), Color(0x00000000)];
-
-class _TextStyles {
-  static const number = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w300,
-  );
-  static const movieTitle = TextStyle(
-  );
-  static const mainTitle = TextStyle(
-      fontSize: 30,
-  );
-}
 
 class _Preview extends StatelessWidget {
   const _Preview({
@@ -184,8 +173,8 @@ class _Preview extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("#${i+1}", style: _TextStyles.number),
-                                Text(settings.list[i].fullTitle, style: _TextStyles.movieTitle),
+                                Text("#${i+1}", style: TextStyles.number),
+                                Text(settings.list[i].fullTitle, style: TextStyles.movieTitle),
                               ],
                             ),
                           ),

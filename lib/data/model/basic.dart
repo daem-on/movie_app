@@ -14,6 +14,8 @@ class Movie {
   late int? year;
   late String? poster;
   late String? backdrop;
+  late double? popularity;
+  late double? voteAvg;
   bool get hasPoster => poster != null;
   bool get hasBackdrop => backdrop != null;
 
@@ -28,6 +30,8 @@ class Movie {
     }
     poster = object["poster_path"];
     backdrop = object["backdrop_path"];
+    popularity = object["popularity"];
+    voteAvg = object["vote_average"];
   }
 
   String get fullTitle {
@@ -35,9 +39,19 @@ class Movie {
   }
 }
 
+class MovieCredit extends Movie {
+  String? job;
+  String? character;
+
+  MovieCredit.fromJSON(int id, Map<String, dynamic> object) : super.fromJSON(id, object) {
+    job = object["job"];
+    character = object["character"];
+  }
+}
+
 class Filmography {
-  List<Movie> cast;
-  List<Movie> crew;
+  List<MovieCredit> cast;
+  List<MovieCredit> crew;
   Filmography(this.cast, this.crew);
 }
 
