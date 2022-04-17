@@ -116,7 +116,7 @@ class _Preview extends StatelessWidget {
                 children: [
                   if (settings.person != null)
                     ProfilePicture(person: settings.person!, radius: 30,),
-                  Text(settings.title, style: TextStyles.mainTitleSans),
+                  Text(settings.title, style: TextStyles.mainTitleSans, textAlign: TextAlign.center,),
                 ],
               ),
             ),

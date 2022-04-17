@@ -31,7 +31,12 @@ class Movie {
     poster = object["poster_path"];
     backdrop = object["backdrop_path"];
     popularity = object["popularity"];
-    voteAvg = object["vote_average"];
+    dynamic va = object["vote_average"];
+    if (va.runtimeType == int) {
+      voteAvg = va.toDouble();
+    } else {
+      voteAvg = va;
+    }
   }
 
   String get fullTitle {
