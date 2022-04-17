@@ -165,8 +165,8 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
                               _creditDescription(element.movie as MovieCredit) ?? "",
                               style: TextStyles.subtitle,
                             ),
-                            _StarRatingSlider(
-                              movieRating: element,
+                            StarRatingSlider(
+                              rating: element.rating,
                               callback: (rating) {
                                 setState(() { element.rating = rating; });
                               },
@@ -183,41 +183,6 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
   }
 }
 
-class _StarRatingSlider extends StatelessWidget {
-  const _StarRatingSlider({
-    Key? key,
-    required this.movieRating, required this.callback,
-  }) : super(key: key);
-
-  final MovieRating movieRating;
-  final Function callback;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        RatingBar.builder(
-          initialRating: movieRating.rating/2,
-          minRating: 0.5,
-          direction: Axis.horizontal,
-          allowHalfRating: true,
-          itemCount: 5,
-          itemBuilder: (context, _) => const Icon(
-            CupertinoIcons.star_fill,
-            color: CupertinoColors.systemYellow,
-          ),
-          onRatingUpdate: (rating) {callback((rating*2).toInt());},
-        ),
-        CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {callback(0);},
-          child: const Icon(CupertinoIcons.arrow_counterclockwise)
-        )
-      ],
-    );
-  }
-}
 
 
 

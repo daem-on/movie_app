@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
 
 import '../data/model/basic.dart';
@@ -389,6 +390,43 @@ class ProfilePicture extends StatelessWidget {
           ? CircleAvatar(foregroundImage: NetworkImage(TMDB.buildImageURL(person.profile!, 154)), radius: radius)
           : CircleAvatar(child: Text(person.name.substring(0, 1)), radius: radius,),
       ),
+    );
+  }
+}
+
+
+class StarRatingSlider extends StatelessWidget {
+  const StarRatingSlider({
+    Key? key,
+    required this.rating, required this.callback,
+  }) : super(key: key);
+
+  final int rating;
+  final Function callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RatingBar.builder(
+          initialRating: rating/2,
+          minRating: 0.5,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          itemCount: 5,
+          itemBuilder: (context, _) => const Icon(
+            CupertinoIcons.star_fill,
+            color: CupertinoColors.systemYellow,
+          ),
+          onRatingUpdate: (r) {callback((r*2).toInt());},
+        ),
+        CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {callback(0);},
+            child: const Icon(CupertinoIcons.arrow_counterclockwise)
+        )
+      ],
     );
   }
 }

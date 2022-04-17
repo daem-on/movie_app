@@ -24,8 +24,12 @@ class TMDB {
     return http.get(Uri.https(_authority, "/3/discover/movie", query));
   }
 
-  Future<http.Response> _movieCredits(int personId) {
+  Future<http.Response> _getCreditsForPerson(int personId) {
     return http.get(Uri.https(_authority, "/3/person/$personId/movie_credits", {"api_key": _apiKey}));
+  }
+
+  Future<http.Response> _getCreditsForMovie(int movieId) {
+    return http.get(Uri.https(_authority, "/3/movie/$movieId/credits", {"api_key": _apiKey}));
   }
 
   Future<Movie> movieFromId(int id) async {
@@ -55,13 +59,24 @@ class TMDB {
   }
 
   Future<Filmography> filmography(int personId) async {
-    var response = await _movieCredits(personId);
+    var response = await _getCreditsForPerson(personId);
     if (response.statusCode != 200) throw "Get filmography failed";
     List<dynamic> list1 = jsonDecode(response.body)["cast"];
     List<dynamic> list2 = jsonDecode(response.body)["crew"];
     return Filmography(
       list1.map((e) => MovieCredit.fromJSON(e["id"], e)).toList(),
       list2.map((e) => MovieCredit.fromJSON(e["id"], e)).toList(),
+    );
+  }
+
+  Future<PersonCredits> movieCredits(int movieId) async {
+    var response = await _getCreditsForMovie(movieId);
+    if (response.statusCode != 200) throw "Get credits failed";
+    List<dynamic> list1 = jsonDecode(response.body)["cast"];
+    List<dynamic> list2 = jsonDecode(response.body)["crew"];
+    return PersonCredits(
+      list1.map((e) => PersonCredit.fromJSON(e["id"], e)).toList(),
+      list2.map((e) => PersonCredit.fromJSON(e["id"], e)).toList(),
     );
   }
 

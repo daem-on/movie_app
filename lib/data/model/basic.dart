@@ -74,6 +74,22 @@ class Person {
   Person(this.id, this.name);
 }
 
+class PersonCredit extends Person {
+  String? job;
+  String? character;
+
+  PersonCredit.fromJSON(int id, Map<String, dynamic> object) : super.fromJSON(id, object) {
+    job = object["job"];
+    character = object["character"];
+  }
+}
+
+class PersonCredits {
+  List<PersonCredit> cast;
+  List<PersonCredit> crew;
+  PersonCredits(this.cast, this.crew);
+}
+
 class Award {
   String name;
   String comment;
