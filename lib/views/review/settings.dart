@@ -39,34 +39,6 @@ class ReviewSettings {
   bool useNumbers = false;
 }
 
-class OptionsModal extends StatelessWidget {
-  const OptionsModal({
-    Key? key,
-    required this.options,
-  }) : super(key: key);
-
-  final Map<String, dynamic> options;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoActionSheet(
-      title: const Text(
-        "Show roles",
-        style: TextStyle(fontSize: 24)
-      ),
-      actions: [
-        for (final element in options.entries)
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Navigator.of(context).pop(element.value);
-            },
-            child: Text(element.key)
-          )
-      ],
-    );
-  }
-}
-
 class _ReviewSettingsViewState extends State<ReviewSettingsView> {
   final ReviewSettings _settings = ReviewSettings();
   final _tmdb = TMDB();

@@ -26,10 +26,29 @@ class _HomeViewState extends State<HomeView> {
     handleNotRegistered();
   }
 
+  // These routes have to be new every time, because they can't be used
+  // after being disposed
+  static Map<String, Route> get _menuContent => {
+    "Toplist": ToplistSettingsView.route,
+    "Awards": AwardsSettingsView.route,
+    "Filmography": FilmographySettingsView.route,
+    "Review": ReviewSettingsView.route
+  };
+
   void handleNotRegistered() async {
     if ((await SharedPreferences.getInstance()).getString("username") == null) {
       Navigator.of(context).pushAndRemoveUntil(RegisterView.route, (r) => false);
     }
+  }
+
+  void _openMenu() async {
+    final choice = await showCupertinoModalPopup<Route>(
+        context: context,
+        semanticsDismissible: true,
+        builder: (context) => OptionsModal(options: _menuContent, title: "Create new")
+    );
+    if (choice == null) return;
+    Navigator.of(context).push(choice);
   }
 
   @override
@@ -40,39 +59,12 @@ class _HomeViewState extends State<HomeView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
+              padding: const EdgeInsets.all(8),
               child: CupertinoButton.filled(
-                child: const Text("Go to Toplist"),
-                onPressed: () {
-                  Navigator.of(context).push(ToplistSettingsView.route);
-                }
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: CupertinoButton.filled(
-                child: const Text("Go to Awards"),
-                onPressed: () {
-                  Navigator.of(context).push(AwardsSettingsView.route);
-                }
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: CupertinoButton.filled(
-                child: const Text("Go to Filmography"),
-                onPressed: () {
-                  Navigator.of(context).push(FilmographySettingsView.route);
-                }
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: CupertinoButton.filled(
-                child: const Text("Go to Review"),
-                onPressed: () {
-                  Navigator.of(context).push(ReviewSettingsView.route);
-                }
+                padding: EdgeInsets.zero,
+                borderRadius: const BorderRadius.all(Radius.circular(90)),
+                child: const Icon(CupertinoIcons.add),
+                onPressed: _openMenu
               ),
             ),
             CupertinoButton(

@@ -66,6 +66,7 @@ class _SelectCreditState extends State<SelectCredit> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         child: Row(
           children: [
             ProfilePicture(person: element),

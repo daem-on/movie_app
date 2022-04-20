@@ -38,20 +38,21 @@ class FilmographySettings {
   SortMovies sort = SortMovies.popularity;
 }
 
-class OptionsModal extends StatelessWidget {
+class OptionsModal<T> extends StatelessWidget {
   const OptionsModal({
     Key? key,
-    required this.options,
+    required this.options, required this.title,
   }) : super(key: key);
 
-  final Map<String, dynamic> options;
+  final Map<String, T> options;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoActionSheet(
-      title: const Text(
-        "Show roles",
-        style: TextStyle(fontSize: 24)
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 24)
       ),
       actions: [
         for (final element in options.entries)
@@ -113,7 +114,7 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
     _settings.role = await showCupertinoModalPopup(
         context: context,
         semanticsDismissible: false,
-        builder: (context) => OptionsModal(options: roleOptions)
+        builder: (context) => OptionsModal(options: roleOptions, title: "Show roles")
     ) ?? Role.both;
     setState(() {
       _settings.person = person;
