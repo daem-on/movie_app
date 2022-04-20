@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/TextStyles.dart';
@@ -43,6 +44,15 @@ class _ReviewViewState extends State<ReviewView> {
   }
 }
 
+const _aspectIcons = {
+  "Editing": CupertinoIcons.scissors,
+  "Set design": CupertinoIcons.building_2_fill,
+  "Cinematography": CupertinoIcons.crop,
+  "Lighting": CupertinoIcons.lightbulb,
+  "Visual effects": CupertinoIcons.wand_stars,
+  "Special effects": CupertinoIcons.burst,
+};
+
 class _Preview extends StatelessWidget {
   const _Preview({
     Key? key,
@@ -51,7 +61,7 @@ class _Preview extends StatelessWidget {
 
   final ReviewSettings settings;
 
-  Widget _displayRating(MovieRating mr) {
+  Widget _displayRating(RatedItem mr, [double size = 30]) {
     if (settings.useNumbers) {
       return Text("${mr.rating}/10", style: TextStyles.bigRating);
     } else {
@@ -60,7 +70,7 @@ class _Preview extends StatelessWidget {
         ignoreGestures: true,
         allowHalfRating: true,
         itemCount: 5,
-        itemSize: 30,
+        itemSize: size,
         itemBuilder: (context, _) => const Icon(
           CupertinoIcons.star_fill,
           color: Color(0xffff155f),
@@ -68,6 +78,38 @@ class _Preview extends StatelessWidget {
         onRatingUpdate: (_) {},
       );
     }
+  }
+
+  _displayAspect(Aspect element) {
+    return Row(
+      children: [
+        if (_aspectIcons.containsKey(element.item))
+          Padding(padding: const EdgeInsets.all(8), child: CircleAvatar(child: Icon(_aspectIcons[element.item]))),
+        Text(element.item + " ", style: TextStyles.movieTitle),
+        _displayRating(element, 15)
+      ],
+    );
+  }
+
+  _displayPerson(RatedItem<PersonCredit> element) {
+    return Row(
+      children: [
+        ProfilePicture(person: element.item),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(element.item.name, style: TextStyles.movieTitle),
+                const Text(" • "),
+                Text(element.item.job ?? element.item.character ?? ""),
+              ],
+            ),
+            _displayRating(element, 15)
+          ],
+        ),
+      ],
+    );
   }
 
   @override
@@ -88,8 +130,31 @@ class _Preview extends StatelessWidget {
       ),
       child: DefaultTextStyle(
         style: const TextStyle(color: CupertinoColors.white),
-        child: Column(
-          children: [],
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: MoviePosterSimple(settings.movie!, width: 50,),
+                  ),
+                  Text(
+                    "${settings.username}'s review of ${settings.movie!.title}",
+                    style: TextStyles.movieTitle,
+                  ),
+                  if (settings.title != "")
+                    Text(settings.title, style: TextStyles.mainTitleSans),
+                ],
+              ),
+              const SizedBox(height: 16),
+              for (final element in settings.aspects)
+                _displayAspect(element),
+              for (final element in settings.people)
+                _displayPerson(element),
+            ],
+          ),
         ),
       ),
     );

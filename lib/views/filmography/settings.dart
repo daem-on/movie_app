@@ -160,12 +160,12 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
                         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         child: Column(
                           children: [
-                            Text(element.movie.fullTitle),
+                            Text(element.item.fullTitle),
                             Text(
-                              _creditDescription(element.movie as MovieCredit) ?? "",
+                              _creditDescription(element.item as MovieCredit) ?? "",
                               style: TextStyles.subtitle,
                             ),
-                            StarRatingSlider(
+                            NonNullStarRatingSlider(
                               rating: element.rating,
                               callback: (rating) {
                                 setState(() { element.rating = rating; });

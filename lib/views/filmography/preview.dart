@@ -29,8 +29,8 @@ class _FilmographyViewState extends State<FilmographyView> {
   late FilmographySettings _args;
   List<MovieRating> _filteredList = [];
 
-  int _popularitySorter(MovieRating a, MovieRating b) => ((b.movie.popularity??0)-(a.movie.popularity??0)).toInt();
-  int _yearSorter(MovieRating a, MovieRating b) => (a.movie.year??0)-(b.movie.year??0);
+  int _popularitySorter(MovieRating a, MovieRating b) => ((b.item.popularity??0)-(a.item.popularity??0)).toInt();
+  int _yearSorter(MovieRating a, MovieRating b) => (a.item.year??0)-(b.item.year??0);
   int _ratingSorter(MovieRating a, MovieRating b) => a.rating-b.rating;
 
   @override
@@ -128,7 +128,7 @@ class _Preview extends StatelessWidget {
                   children: [
                     if (settings.showPosters) Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: MoviePosterSimple(element.movie, width: 60,),
+                      child: MoviePosterSimple(element.item, width: 60,),
                     ),
                     Flexible(
                       fit: FlexFit.tight,
@@ -138,7 +138,7 @@ class _Preview extends StatelessWidget {
                           crossAxisAlignment: i%2==0 ? CrossAxisAlignment.start:CrossAxisAlignment.end,
                           children: [
                             Text(
-                              element.movie.fullTitle, style: TextStyles.movieTitle,
+                              element.item.fullTitle, style: TextStyles.movieTitle,
                               textAlign: i%2==0 ? TextAlign.start:TextAlign.end,
                             ),
                             _displayRating(element)

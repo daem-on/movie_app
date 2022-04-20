@@ -430,3 +430,34 @@ class StarRatingSlider extends StatelessWidget {
     );
   }
 }
+
+class NonNullStarRatingSlider extends StatelessWidget {
+  const NonNullStarRatingSlider({
+    Key? key,
+    required this.rating, required this.callback,
+  }) : super(key: key);
+
+  final int rating;
+  final Function callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RatingBar.builder(
+          initialRating: rating/2,
+          minRating: 0.5,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          itemCount: 5,
+          itemBuilder: (context, _) => const Icon(
+            CupertinoIcons.star_fill,
+            color: CupertinoColors.systemYellow,
+          ),
+          onRatingUpdate: (r) {callback((r*2).toInt());},
+        ),
+      ],
+    );
+  }
+}

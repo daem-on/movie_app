@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/data/model/basic.dart';
 import 'package:movie_app/views/common.dart';
 
+import '../TextStyles.dart';
 import '../data/tmdb.dart';
 
 class SelectCredit extends StatefulWidget {
@@ -20,39 +21,67 @@ class SelectCredit extends StatefulWidget {
 
 class _SelectCreditState extends State<SelectCredit> {
   var tmdb = TMDB();
-  Future<List<Movie>>? _cachedFuture;
   late PersonCredits _args;
-  late List<PersonCredit> _allCredits;
+  bool _selectedView = false;
+  List<PersonCredit> get _currentCredits => _selectedView ? _args.crew : _args.cast;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _args = ModalRoute.of(context)!.settings.arguments as PersonCredits;
-    _allCredits = _args.cast + _args.crew;
   }
 
   @override
   Widget build(BuildContext context) {
     return MovieAppScaffold(
-      child: ListView.builder(
-        itemCount: _allCredits.length,
-          itemBuilder: _itemBuilder
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: CupertinoSlidingSegmentedControl<bool>(
+              children: const {
+                false: SizedBox(width: 100, child: Center(child: Text("Cast"))),
+                true: Text("Crew"),
+              },
+              groupValue: _selectedView,
+              onValueChanged: (bool? t) {
+                setState(() {
+                  _selectedView = t??false;
+                });
+              }),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _currentCredits.length,
+                itemBuilder: _itemBuilder
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    var element = _allCredits.elementAt(index);
-    return GestureDetector(
-      child: Column(
-        children: [
-          Text(element.name),
-          Text(element.job ?? element.character ?? "None"),
-        ],
+    var element = _currentCredits.elementAt(index);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: GestureDetector(
+        child: Row(
+          children: [
+            ProfilePicture(person: element),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(element.name),
+                Text(element.job ?? element.character ?? "None", style: TextStyles.subtitle,),
+              ],
+            ),
+          ],
+        ),
+        onTap: () {
+          Navigator.of(context).pop(element);
+        },
       ),
-      onTap: () {
-        Navigator.of(context).pop(element);
-      },
     );
   }
 }

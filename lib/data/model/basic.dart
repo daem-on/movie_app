@@ -105,20 +105,14 @@ abstract class Rated {
   Rated(this.rating);
 }
 
-class Aspect extends Rated {
-  String name;
+class RatedItem<T> extends Rated {
+  T item;
 
-  Aspect(this.name, int rating) : super(rating);
+  RatedItem(this.item, [int? rating]) : super(rating??0);
 }
 
-class PersonRating extends Rated {
-  Person person;
+typedef Aspect = RatedItem<String>;
 
-  PersonRating(this.person, int rating) : super(rating);
-}
+typedef PersonRating = RatedItem<Person>;
 
-class MovieRating extends Rated {
-  Movie movie;
-
-  MovieRating(this.movie, int rating) : super(rating);
-}
+typedef MovieRating = RatedItem<Movie>;
