@@ -61,6 +61,10 @@ class _Preview extends StatelessWidget {
 
   final ReviewSettings settings;
 
+  get _textAlign =>
+      [TextAlign.start, TextAlign.center, TextAlign.end]
+      [settings.alignText];
+
   Widget _displayRating(RatedItem mr, [double size = 30]) {
     if (settings.useNumbers) {
       return Text("${mr.rating}/10", style: TextStyles.bigRating);
@@ -135,17 +139,33 @@ class _Preview extends StatelessWidget {
           child: Column(
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: MoviePosterSimple(settings.movie!, width: 50,),
                   ),
                   Text(
-                    "${settings.username}'s review of ${settings.movie!.title}",
+                    "${settings.username}'s review of",
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    settings.movie!.title, textAlign: TextAlign.center,
                     style: TextStyles.movieTitle,
                   ),
                   if (settings.title != "")
-                    Text(settings.title, style: TextStyles.mainTitleSans),
+                    Text(
+                      settings.title, textAlign: TextAlign.center,
+                      style: TextStyles.mainTitleSans
+                    ),
+                  if (settings.textReview != "")
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      child: Text(
+                        settings.textReview, style: TextStyles.comment,
+                        textAlign: _textAlign,
+                      ),
+                    ),
                 ],
               ),
               const SizedBox(height: 16),

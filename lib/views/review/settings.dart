@@ -31,6 +31,7 @@ class ReviewSettings {
   String username = "";
   Movie? movie;
   int overallRating = 5;
+  int alignText = 0;
   List<RatedItem<PersonCredit>> people = [];
   List<Aspect> aspects = [];
   bool showUsername = true;

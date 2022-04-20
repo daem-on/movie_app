@@ -50,7 +50,53 @@ class _ReviewAppearanceViewState extends State<ReviewAppearanceView> {
       child: Container(
         padding: const EdgeInsets.all(16),
         child: Column(
-          children: [],
+          children: [
+            CupertinoFormSection(
+                children: [
+                  CupertinoFormRow(
+                    prefix: const Text("Use numbers instead of stars"),
+                    child: CupertinoSwitch(value: _settings.useNumbers, onChanged: (v) {
+                      setState(() {_settings.useNumbers = v;});
+                    }),
+                  ),
+                  CupertinoFormRow(
+                    prefix: const Text("Align review text"),
+                    child: CupertinoSlidingSegmentedControl<int>(
+                      children: const {
+                        0: Icon(CupertinoIcons.text_alignleft),
+                        1: Icon(CupertinoIcons.text_aligncenter),
+                        2: Icon(CupertinoIcons.text_alignright),
+                      },
+                      groupValue: _settings.alignText,
+                      onValueChanged: (val) {setState(() {_settings.alignText = val??0;});},
+                    ),
+                  ),
+                ]
+            ),
+            CupertinoFormSection(
+                header: Text("Title".toUpperCase()),
+                children: [
+                  CupertinoTextFormFieldRow(
+                    placeholder: "Optional",
+                    initialValue: _settings.title,
+                    onChanged: (v) => _settings.title = v,
+                  ),
+                ]
+            ),
+            CupertinoFormSection(
+                header: Text("Review text".toUpperCase()),
+                children: [
+                  CupertinoTextFormFieldRow(
+                    placeholder: "Optional",
+                    expands: true,
+                    minLines: null,
+                    maxLines: null,
+                    initialValue: _settings.textReview,
+                    onChanged: (v) => _settings.textReview = v,
+                  ),
+                ]
+            ),
+          ],
         ),
       )
     );
