@@ -153,6 +153,10 @@ class _Preview extends StatelessWidget {
                     settings.movie!.title, textAlign: TextAlign.center,
                     style: TextStyles.movieTitle,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Center(child: _displayRating(RatedItem<dynamic>(null, settings.overallRating))),
+                  ),
                   if (settings.title != "")
                     Text(
                       settings.title, textAlign: TextAlign.center,

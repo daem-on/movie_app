@@ -190,13 +190,21 @@ class SettingRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(text),
-              if (secondText != null)
-                Text(secondText!, style: CupertinoTheme.of(context).textTheme.actionTextStyle,)
-            ],
+          Flexible(
+            fit: FlexFit.loose,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(text),
+                if (secondText != null)
+                  Text(
+                    secondText!,
+                    style: CupertinoTheme.of(context).textTheme.actionTextStyle,
+                    overflow: TextOverflow.fade,
+                    softWrap: false
+                  )
+              ],
+            ),
           ),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 5),

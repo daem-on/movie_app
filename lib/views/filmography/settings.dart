@@ -166,7 +166,7 @@ class _FilmographySettingsViewState extends State<FilmographySettingsView> {
                               _creditDescription(element.item as MovieCredit) ?? "",
                               style: TextStyles.subtitle,
                             ),
-                            NonNullStarRatingSlider(
+                            StarRatingSlider(
                               rating: element.rating,
                               callback: (rating) {
                                 setState(() { element.rating = rating; });

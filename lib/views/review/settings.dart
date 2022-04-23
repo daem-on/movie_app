@@ -92,16 +92,25 @@ class _ReviewSettingsViewState extends State<ReviewSettingsView> {
   }
 
   Widget _partRating(String text, RatedItem element) {
-    return Column(
-      children: [
-        Text(text),
-        NonNullStarRatingSlider(
-            rating: element.rating,
-            callback: (rating) {
-              setState(() {element.rating = rating;});
-            }
-        )
-      ],
+    return Dismissible(
+      key: ValueKey(element),
+      child: Column(
+        children: [
+          Text(text),
+          NonNullStarRatingSlider(
+              rating: element.rating,
+              callback: (rating) {
+                setState(() {element.rating = rating;});
+              }
+          )
+        ],
+      ),
+      onDismissed: (dir) {
+        setState(() {
+          _settings.aspects.remove(element);
+          _settings.people.remove(element);
+        });
+      },
     );
   }
 
@@ -120,6 +129,7 @@ class _ReviewSettingsViewState extends State<ReviewSettingsView> {
           CupertinoContainer(
             child: SettingRow(
               text: "Choose movie",
+              secondText: _settings.movie!=null ? "Current: ${_settings.movie?.fullTitle}" : null,
               onPressed: _chooseMovie,
             )
           ),
@@ -142,10 +152,12 @@ class _ReviewSettingsViewState extends State<ReviewSettingsView> {
                       SettingRow(
                         text: "Add rating for person",
                         onPressed: _addCredit,
+                        icon: const Icon(CupertinoIcons.add),
                       ),
                       SettingRow(
                         text: "Add rating for aspect",
                         onPressed: _addAspect,
+                        icon: const Icon(CupertinoIcons.add),
                       )
                     ],
                   )
