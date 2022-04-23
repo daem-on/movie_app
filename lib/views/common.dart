@@ -352,20 +352,24 @@ class ShareablePreview extends StatelessWidget {
 
 class MoviePosterSimple extends StatelessWidget {
   final Movie movie;
-  final double width;
+  final double? width;
   final int posterWidth;
+  final bool placeholderText;
 
   const MoviePosterSimple(this.movie, {
     this.width = 154,
     this.posterWidth = 92,
+    this.placeholderText = false,
     Key? key}) : super(key: key);
+
+  BorderRadius get _br => BorderRadius.circular((width ?? 154) / 10);
 
   @override
   Widget build(BuildContext context) {
     return (movie.poster != null)
     ? Center(
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(width / 10),
+        borderRadius: _br,
         child: Image.network(
           TMDB.buildImageURL(movie.poster!, posterWidth),
           width: width,
@@ -376,8 +380,13 @@ class MoviePosterSimple extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 2 / 3,
         child: Container(
-          color: CupertinoColors.tertiarySystemGroupedBackground,
-          child: const Center(child: Icon(CupertinoIcons.film)),
+          decoration: BoxDecoration(
+            color: CupertinoColors.tertiarySystemGroupedBackground,
+            borderRadius: _br,
+          ),
+          child: placeholderText
+              ? Center(child: Text(movie.fullTitle))
+              : const Center(child: Icon(CupertinoIcons.film)),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:movie_app/views/awards/settings.dart';
 import 'package:movie_app/views/common.dart';
 import 'package:movie_app/views/filmography/settings.dart';
+import 'package:movie_app/views/recently_watched.dart';
 import 'package:movie_app/views/register.dart';
 import 'package:movie_app/views/review/settings.dart';
 import 'package:movie_app/views/toplist/settings.dart';
@@ -53,27 +54,35 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return MovieAppScaffold(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: CupertinoButton.filled(
-                padding: EdgeInsets.zero,
-                borderRadius: const BorderRadius.all(Radius.circular(90)),
-                child: const Icon(CupertinoIcons.add),
-                onPressed: _openMenu
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.systemBackground,
+      child: SafeArea(
+        child: FractionallySizedBox(
+          widthFactor: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Expanded(
+                child: RecentlyWatchedCarousel(),
               ),
-            ),
-            CupertinoButton(
-              child: const Text("Delete username"),
-              onPressed: () async {
-                (await SharedPreferences.getInstance()).remove("username");
-              }
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: CupertinoButton.filled(
+                  padding: EdgeInsets.zero,
+                  borderRadius: const BorderRadius.all(Radius.circular(90)),
+                  child: const Icon(CupertinoIcons.add),
+                  onPressed: _openMenu
+                ),
+              ),
+              CupertinoButton(
+                child: const Text("Delete username"),
+                onPressed: () async {
+                  (await SharedPreferences.getInstance()).remove("username");
+                }
+              ),
+            ],
+          ),
         ),
       ),
     );

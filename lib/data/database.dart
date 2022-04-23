@@ -39,7 +39,7 @@ class DatabaseManager extends ChangeNotifier {
   Future<int> insertEntry(Movie entry) async {
     final result = await _database.insert(
       "recent",
-      { "id": entry.id, "day": DateTime.now().millisecondsSinceEpoch },
+      { "tmdbid": entry.id, "day": DateTime.now().millisecondsSinceEpoch },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     notifyListeners();
@@ -50,7 +50,7 @@ class DatabaseManager extends ChangeNotifier {
     final List<Future<Movie>> returned = [];
     for (var map in maps) {
       try {
-        returned.add(tmdb.movieFromId(map["id"]));
+        returned.add(tmdb.movieFromId(map["tmdbid"]));
       } catch (e) {
         log("Error! " + e.toString());
       }
@@ -59,10 +59,10 @@ class DatabaseManager extends ChangeNotifier {
   }
 
   Future<List<Future<Movie>>> listEntries() async {
-    return _mapsToMovies(await _database.query('entries'));
+    return _mapsToMovies(await _database.query("recent", orderBy: "day DESC"));
   }
 
   Future<int> removeEntryById(int id) async {
-    return await _database.delete("id = ?", whereArgs: [id]);
+    return await _database.delete("recent", where: "tmdbid = ?", whereArgs: [id]);
   }
 }

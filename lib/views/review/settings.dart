@@ -21,6 +21,12 @@ class ReviewSettingsView extends StatefulWidget {
       title: "Review"
   );
 
+  static Route routeWithMove(Movie movie) => CupertinoPageRoute(
+      builder: (context) => const ReviewSettingsView(),
+      title: "Review",
+      settings: RouteSettings(arguments: movie)
+  );
+
   @override
   State<ReviewSettingsView> createState() => _ReviewSettingsViewState();
 }
@@ -40,6 +46,13 @@ class ReviewSettings {
 }
 
 class _ReviewSettingsViewState extends State<ReviewSettingsView> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)!.settings.arguments;
+    if (args.runtimeType == Movie) _settings.movie = args as Movie;
+  }
+
   final ReviewSettings _settings = ReviewSettings();
   final _tmdb = TMDB();
   static const _aspects = [
