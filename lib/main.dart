@@ -20,7 +20,7 @@ class MovieApp extends StatelessWidget {
         DefaultWidgetsLocalizations.delegate,
       ],
       theme: CupertinoThemeData(
-        primaryColor: CupertinoColors.systemPink,
+        primaryColor: const Color(0xFFC70D8E),
         // primaryColor: CupertinoColors.systemBlue,
         primaryContrastingColor: CupertinoColors.white,
         scaffoldBackgroundColor: CupertinoColors.secondarySystemBackground,

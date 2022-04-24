@@ -5,6 +5,10 @@ import 'package:movie_app/views/common.dart';
 
 import '../data/tmdb.dart';
 
+/// A movie search view.
+///
+/// The user is able to provide a search query, pick a movie from
+/// a list of results, and the resulting [Movie] will be returned in `pop()`
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
@@ -19,13 +23,8 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   var tmdb = TMDB();
+  /// The result of the search. Null if the search hasn't happened yet.
   Future<List<Movie>>? _cachedFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    // _cachedFuture = tmdb.searchMovies("Spider-Man");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +72,13 @@ class _SearchState extends State<Search> {
   }
 }
 
+/// A poster with a tooltip saying the title of the movie.
+///
+/// To be used *specifically* with search type views, because when tapped
+/// the poster calls [Navigator.pop] with [movie].
+/// Also includes a placeholder text saying "No image"
 class MoviePosterTitle extends StatelessWidget {
+  /// The movie to be displayed.
   final Movie movie;
 
   const MoviePosterTitle(this.movie, {Key? key}) : super(key: key);

@@ -10,6 +10,12 @@ import 'package:movie_app/views/search.dart';
 import '../data/model/basic.dart';
 import '../data/tmdb.dart';
 
+/// A carousel of recently watched movies
+///
+/// This is the stateful widget part, which handles logic.
+/// Gets the list of movie IDs from the [DatabaseManager],
+/// looks them up in [TMDB] and shows them in a carousel,
+/// which is displayed in a [_RecentlyWatchedCarousel].
 class RecentlyWatchedCarousel extends StatefulWidget {
   const RecentlyWatchedCarousel({Key? key}) : super(key: key);
 
@@ -22,6 +28,11 @@ class _RecentlyWatchedCarouselState extends State<RecentlyWatchedCarousel> {
   List<Future<Movie>> _futureList = [];
   AsyncSnapshot<List<Movie>> _snapshot = const AsyncSnapshot.waiting();
 
+  /// Called when initialized or on a database update.
+  ///
+  /// This method loads stored `Future<Movie>`s from the database, translates
+  /// each one into a movie by awaiting them, and fills [_snapshot] with the
+  /// resulting list of movies.
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -39,6 +50,8 @@ class _RecentlyWatchedCarouselState extends State<RecentlyWatchedCarousel> {
     });
   }
 
+  /// Callback to add a new movie to recently watched. Opens [Search] and
+  /// saves the resulting movie.
   _add() async {
     Movie? movie = await Navigator.of(context).push(Search.route);
     if (movie == null) return;
@@ -46,6 +59,7 @@ class _RecentlyWatchedCarouselState extends State<RecentlyWatchedCarousel> {
     didChangeDependencies();
   }
 
+  /// Callback to delete a movie from recently watched.
   _delete(Movie movie) async {
     await _db.removeEntryById(movie.id);
     didChangeDependencies();
@@ -59,6 +73,9 @@ class _RecentlyWatchedCarouselState extends State<RecentlyWatchedCarousel> {
   }
 }
 
+/// Wrapper used to handle contents of the carousel.
+/// The first item is special, because it's not a movie, it's a button
+/// to add new items.
 class _Displayed {
   bool isFirst;
   Movie? movie;
@@ -66,6 +83,11 @@ class _Displayed {
   _Displayed(this.isFirst, this.movie);
 }
 
+/// The widget which actually displays movies.
+///
+/// This is only built when [RecentlyWatchedCarousel] already has
+/// the list of movies, which is passed in as [snapshot].
+/// All the logic is handled through callbacks passed in the constructor.
 class _RecentlyWatchedCarousel extends StatelessWidget {
 
   const _RecentlyWatchedCarousel(
@@ -75,8 +97,11 @@ class _RecentlyWatchedCarousel extends StatelessWidget {
       {Key? key}) : super(key: key);
 
   final List<Movie> snapshot;
+  /// Will be called when the first item (add button) is tapped.
   final Function() addCallback;
+  /// Will be called when the remove button on a movie is tapped.
   final Function(Movie movie) deleteCallback;
+  /// The list which will get displayed. A first item without a movie is added.
   List<_Displayed> get _list {
     return [_Displayed(true, null)]
         + snapshot.map((e) => _Displayed(false, e)).toList();

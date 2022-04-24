@@ -6,6 +6,10 @@ import 'package:movie_app/views/common.dart';
 import '../TextStyles.dart';
 import '../data/tmdb.dart';
 
+/// Shows a list of [PersonCredits], where the user can select a
+/// [PersonCredit] which will be returned in [Navigator.pop].
+///
+/// Divides credits into cast and crew, which are shown separately.
 class SelectCredit extends StatefulWidget {
   const SelectCredit({Key? key}) : super(key: key);
 
@@ -22,7 +26,9 @@ class SelectCredit extends StatefulWidget {
 class _SelectCreditState extends State<SelectCredit> {
   var tmdb = TMDB();
   late PersonCredits _args;
+  /// The selected view. Cast is false, Crew is true.
   bool _selectedView = false;
+  /// The currently displayed credits (cast or crew).
   List<PersonCredit> get _currentCredits => _selectedView ? _args.crew : _args.cast;
 
   @override

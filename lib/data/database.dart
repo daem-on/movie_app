@@ -8,6 +8,9 @@ import 'package:sqflite/utils/utils.dart';
 
 import 'model/basic.dart';
 
+/// Local database manager.
+///
+/// You must call [initDatabase] before using the database.
 class DatabaseManager extends ChangeNotifier {
   late Database _database;
   final TMDB tmdb = TMDB();
@@ -23,6 +26,7 @@ class DatabaseManager extends ChangeNotifier {
     return count! > 0;
   }
 
+  /// Initializes the database. Must be called before using it.
   Future<void> initDatabase() async {
     WidgetsFlutterBinding.ensureInitialized();
     _database = await openDatabase(
@@ -36,6 +40,7 @@ class DatabaseManager extends ChangeNotifier {
     if (!await _tableExists(_database, "recent")) _database.execute(_recentTableCreateQuery);
   }
 
+  /// Insert a movie into recently watched list.
   Future<int> insertEntry(Movie entry) async {
     final result = await _database.insert(
       "recent",
@@ -58,10 +63,14 @@ class DatabaseManager extends ChangeNotifier {
     return returned;
   }
 
+  /// Returns the recently watched movies with most recent first.
+  /// Only returns futures of movies, because only IDs are stored, and
+  /// the movies have to be fetched from [TMDB].
   Future<List<Future<Movie>>> listEntries() async {
     return _mapsToMovies(await _database.query("recent", orderBy: "day DESC"));
   }
 
+  /// Remove all recently watched movies with given id.
   Future<int> removeEntryById(int id) async {
     return await _database.delete("recent", where: "tmdbid = ?", whereArgs: [id]);
   }

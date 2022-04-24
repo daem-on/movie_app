@@ -8,6 +8,10 @@ import 'package:movie_app/views/review/settings.dart';
 import 'package:movie_app/views/toplist/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// View for the home page of the app.
+///
+/// Contains a carousel of recently watched movies and a button
+/// for creating a new post, which opens a menu showing post formats.
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -27,8 +31,10 @@ class _HomeViewState extends State<HomeView> {
     handleNotRegistered();
   }
 
-  // These routes have to be new every time, because they can't be used
-  // after being disposed
+  /// Contents of the menu, each item is a [Route] to a settings view.
+  ///
+  /// These routes have to be new every time, because they can't be used
+  /// after being disposed
   static Map<String, Route> get _menuContent => {
     "Toplist": ToplistSettingsView.route,
     "Awards": AwardsSettingsView.route,
@@ -36,6 +42,7 @@ class _HomeViewState extends State<HomeView> {
     "Review": ReviewSettingsView.route
   };
 
+  /// Handle case where username is not set yet: shows [RegisterView].
   void handleNotRegistered() async {
     if ((await SharedPreferences.getInstance()).getString("username") == null) {
       Navigator.of(context).pushAndRemoveUntil(RegisterView.route, (r) => false);

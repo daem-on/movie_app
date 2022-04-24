@@ -5,6 +5,10 @@ import 'package:movie_app/views/common.dart';
 
 import '../data/tmdb.dart';
 
+/// A person search view.
+///
+/// The user is able to provide a search query, pick a person from
+/// a list of results, and the resulting [Person] will be returned in `pop()`
 class PeopleSearch extends StatefulWidget {
   const PeopleSearch({Key? key}) : super(key: key);
 
@@ -19,13 +23,8 @@ class PeopleSearch extends StatefulWidget {
 
 class _PeopleSearchState extends State<PeopleSearch> {
   var tmdb = TMDB();
+  /// The result of the search. Null if the search hasn't happened yet.
   Future<List<Person>>? _cachedFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    // _cachedFuture = tmdb.searchMovies("Spider-Man");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +67,8 @@ class _PeopleSearchState extends State<PeopleSearch> {
   }
 }
 
+/// A widget which displays the profile picture and
+/// name of the given [person]. Calls [Navigator.pop] when tapped.
 class PersonListItem extends StatelessWidget {
   final Person person;
 

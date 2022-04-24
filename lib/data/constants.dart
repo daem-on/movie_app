@@ -1,4 +1,5 @@
 
+/// List of all genres accepted by TMDB.
 const Map<String, int> genres = {
   "Action": 28,
   "Adventure": 12,
@@ -21,6 +22,7 @@ const Map<String, int> genres = {
   "Western": 37,
 };
 
+/// Selection of keywords from TMDB.
 const Map<String, int> keywords = {
   "Superhero": 9715,
   "Video Game": 282,
@@ -31,6 +33,7 @@ const Map<String, int> keywords = {
   "Coming of Age": 10683
 };
 
+/// Selection of languages and their ISO codes.
 const Map<String, String> languages = {
   "English": "en",
   "French": "fr",
@@ -41,6 +44,7 @@ const Map<String, String> languages = {
   "Spanish": "es",
 };
 
+/// Template for the Academy Awards.
 const oscarsTemplate = [
   "Best Picture",
   "Best Director",
@@ -67,6 +71,7 @@ const oscarsTemplate = [
   "Best Original Screenplay"
 ];
 
+/// Template for the Golden Globes.
 const goldenGlobesTemplate = [
   "Best Motion Picture – Drama",
   "Best Motion Picture – Musical or Comedy",

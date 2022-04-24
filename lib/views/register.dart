@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
+/// This view handles the username registration.
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
