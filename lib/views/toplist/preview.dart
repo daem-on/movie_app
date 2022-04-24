@@ -1,13 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:movie_app/data/tmdb.dart';
-import 'package:movie_app/views/discover.dart';
-import 'package:movie_app/views/toplist/settings.dart';
-import 'package:palette_generator/palette_generator.dart';
-import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
-
-import '../../TextStyles.dart';
-import '../common.dart';
+part of "toplist.dart";
 
 class ToplistView extends StatefulWidget {
   const ToplistView({Key? key}) : super(key: key);

@@ -1,10 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:movie_app/views/awards/preview.dart';
-import 'package:movie_app/views/awards/settings.dart';
-import 'package:movie_app/views/common.dart';
-import 'package:movie_app/views/toplist/preview.dart';
-import 'package:movie_app/views/toplist/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+part of "awards.dart";
 
 class AwardsAppearanceView extends StatefulWidget {
   const AwardsAppearanceView({Key? key}) : super(key: key);

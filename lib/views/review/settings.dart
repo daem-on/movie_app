@@ -1,17 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
-import 'package:movie_app/TextStyles.dart';
-import 'package:movie_app/views/filmography/appearance.dart';
-import 'package:movie_app/views/review/appearance.dart';
-import 'package:movie_app/views/search_people.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-import '../../data/model/basic.dart';
-import '../../data/tmdb.dart';
-import '../common.dart';
-import '../search.dart';
-import '../select_credit.dart';
+part of "review.dart";
 
 class ReviewSettingsView extends StatefulWidget {
   const ReviewSettingsView({Key? key}) : super(key: key);

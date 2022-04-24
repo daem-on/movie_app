@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:movie_app/views/awards/settings.dart';
-
-import '../common.dart';
+part of "awards.dart";
 
 class AwardsView extends StatefulWidget {
   const AwardsView({Key? key}) : super(key: key);

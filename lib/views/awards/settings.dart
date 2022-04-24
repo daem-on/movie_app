@@ -1,11 +1,4 @@
- import 'package:flutter/cupertino.dart';
-import 'package:movie_app/data/constants.dart';
-import 'package:movie_app/views/awards/appearance.dart';
-import 'package:movie_app/views/search.dart';
-
-import '../../data/model/basic.dart';
-import '../../data/tmdb.dart';
-import '../common.dart';
+part of "awards.dart";
 
 class AwardsSettingsView extends StatefulWidget {
   const AwardsSettingsView({Key? key}) : super(key: key);

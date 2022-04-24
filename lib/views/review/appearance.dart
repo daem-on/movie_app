@@ -1,10 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:movie_app/views/common.dart';
-import 'package:movie_app/views/filmography/preview.dart';
-import 'package:movie_app/views/filmography/settings.dart';
-import 'package:movie_app/views/review/preview.dart';
-import 'package:movie_app/views/review/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+part of "review.dart";
 
 class ReviewAppearanceView extends StatefulWidget {
   const ReviewAppearanceView({Key? key}) : super(key: key);

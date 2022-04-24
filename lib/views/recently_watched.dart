@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:movie_app/data/database.dart';
-import 'package:movie_app/views/common.dart';
-import 'package:movie_app/views/review/settings.dart';
-import 'package:movie_app/views/search.dart';
+import '../data/database.dart';
+import 'common.dart';
+import 'review/review.dart';
+import 'search.dart';
 
 import '../data/model/basic.dart';
 import '../data/tmdb.dart';

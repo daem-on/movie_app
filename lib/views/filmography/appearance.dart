@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:movie_app/views/common.dart';
-import 'package:movie_app/views/filmography/preview.dart';
-import 'package:movie_app/views/filmography/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+part of "filmography.dart";
 
 class FilmographyAppearanceView extends StatefulWidget {
   const FilmographyAppearanceView({Key? key}) : super(key: key);

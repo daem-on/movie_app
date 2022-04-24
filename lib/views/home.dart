@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:movie_app/views/awards/settings.dart';
-import 'package:movie_app/views/common.dart';
-import 'package:movie_app/views/filmography/settings.dart';
-import 'package:movie_app/views/recently_watched.dart';
-import 'package:movie_app/views/register.dart';
-import 'package:movie_app/views/review/settings.dart';
-import 'package:movie_app/views/toplist/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'awards/awards.dart';
+import 'filmography/filmography.dart';
+import 'recently_watched.dart';
+import 'register.dart';
+import 'review/review.dart';
+import 'toplist/toplist.dart';
 
 /// View for the home page of the app.
 ///

@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:movie_app/views/common.dart';
-import 'package:movie_app/views/toplist/preview.dart';
-import 'package:movie_app/views/toplist/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+part of "toplist.dart";
 
 class ToplistAppearanceView extends StatefulWidget {
   const ToplistAppearanceView({Key? key}) : super(key: key);

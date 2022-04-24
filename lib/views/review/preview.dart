@@ -1,14 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:movie_app/TextStyles.dart';
-import 'package:movie_app/data/model/basic.dart';
-import 'package:movie_app/views/filmography/settings.dart';
-import 'package:movie_app/views/review/settings.dart';
-
-import '../../data/tmdb.dart';
-import '../common.dart';
+part of "review.dart";
 
 class ReviewView extends StatefulWidget {
   const ReviewView({Key? key}) : super(key: key);

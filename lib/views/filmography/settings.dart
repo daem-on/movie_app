@@ -1,15 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:movie_app/TextStyles.dart';
-import 'package:movie_app/views/filmography/appearance.dart';
-import 'package:movie_app/views/search_people.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-import '../../data/model/basic.dart';
-import '../../data/tmdb.dart';
-import '../common.dart';
+part of "filmography.dart";
 
 class FilmographySettingsView extends StatefulWidget {
   const FilmographySettingsView({Key? key}) : super(key: key);
