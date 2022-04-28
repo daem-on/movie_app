@@ -192,6 +192,7 @@ class _ToplistSettingsViewState extends State<ToplistSettingsView> {
           Expanded(
             child: CupertinoContainer(
               child: ListView(
+                controller: ScrollController(),
                 padding: EdgeInsets.zero,
                 children: [
                   SettingRow(
