@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/data/model/basic.dart';
 import 'package:movie_app/views/common.dart';
 
-import '../TextStyles.dart';
+import '../text_styles.dart';
 import '../data/tmdb.dart';
 
 /// Shows a list of [PersonCredits], where the user can select a

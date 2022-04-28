@@ -60,86 +60,63 @@ class _Preview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xffffd25f),
-            Color(0xffffbd2c),
-          ]
-        ),
-      ),
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xff151515),
-              Color(0xff0e0e0e),
-            ]
-          )
-        ),
-        child: DefaultTextStyle(
-          style: const TextStyle(color: _textColor),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (settings.showUsername) Text(
-                  "${settings.username}'s picks for",
-                  style: _TextStyles.name,
-                  textAlign: TextAlign.center,
-              ),
-              Padding(
+    return PresetDisplay(
+      preset: LookPresets.goldenBorder,
+      padding: const EdgeInsets.all(30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (settings.showUsername) Text(
+              "${settings.username}'s picks for",
+              style: _TextStyles.name,
+              textAlign: TextAlign.center,
+          ),
+          Builder(
+            builder: (context) {
+              return Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Center(child: SvgPicture.asset(
                     "assets/Laurel_Wreath.svg",
                     height: 50,
-                    color: _textColor,
+                    color: DefaultTextStyle.of(context).style.color,
                     semanticsLabel: 'Laurels'
                 )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  _titleText().toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: _TextStyles.mainTitle,
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              _titleText().toUpperCase(),
+              textAlign: TextAlign.center,
+              style: _TextStyles.mainTitle,
+            ),
+          ),
+          for (final element in settings.list)
+            if (element.isPicked)
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  children: [
+                    if (settings.showPosters && element.picked!.hasPoster)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: MoviePosterSimple(element.picked!, width: 50),
+                      ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(element.name, style: _TextStyles.awardName),
+                          if (element.comment != "") Text(element.comment, style: _TextStyles.comment),
+                          Text(element.picked!.fullTitle, style: _TextStyles.movieTitle),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              for (final element in settings.list)
-                if (element.isPicked)
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      children: [
-                        if (settings.showPosters && element.picked!.hasPoster)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: MoviePosterSimple(element.picked!, width: 50),
-                          ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(element.name, style: _TextStyles.awardName),
-                              if (element.comment != "") Text(element.comment, style: _TextStyles.comment),
-                              Text(element.picked!.fullTitle, style: _TextStyles.movieTitle),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }

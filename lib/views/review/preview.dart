@@ -65,9 +65,9 @@ class _Preview extends StatelessWidget {
         allowHalfRating: true,
         itemCount: 5,
         itemSize: size,
-        itemBuilder: (context, _) => const Icon(
+        itemBuilder: (context, _) => Icon(
           CupertinoIcons.star_fill,
-          color: Color(0xffff155f),
+          color: LookPresets.purpleGradient.accentColor,
         ),
         onRatingUpdate: (_) {},
       );
@@ -108,68 +108,51 @@ class _Preview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xff0d52c7),
-              Color(0xff751ece),
-              Color(0xff5e033e),
-            ]
-        ),
-      ),
-      child: DefaultTextStyle(
-        style: const TextStyle(color: CupertinoColors.white),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
+    return PresetDisplay(
+      preset: LookPresets.purpleGradient,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: MoviePosterSimple(settings.movie!, width: 50,),
-                  ),
-                  Text(
-                    "${settings.username}'s review of",
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    settings.movie!.title, textAlign: TextAlign.center,
-                    style: TextStyles.movieTitle,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Center(child: _displayRating(RatedItem<dynamic>(null, settings.overallRating))),
-                  ),
-                  if (settings.title != "")
-                    Text(
-                      settings.title, textAlign: TextAlign.center,
-                      style: TextStyles.mainTitleSans
-                    ),
-                  if (settings.textReview != "")
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      child: Text(
-                        settings.textReview, style: TextStyles.comment,
-                        textAlign: _textAlign,
-                      ),
-                    ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: MoviePosterSimple(settings.movie!, width: 50,),
               ),
-              const SizedBox(height: 16),
-              for (final element in settings.aspects)
-                _displayAspect(element),
-              for (final element in settings.people)
-                _displayPerson(element),
+              Text(
+                "${settings.username}'s review of",
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                settings.movie!.title, textAlign: TextAlign.center,
+                style: TextStyles.movieTitle,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Center(child: _displayRating(RatedItem<dynamic>(null, settings.overallRating))),
+              ),
+              if (settings.title != "")
+                Text(
+                  settings.title, textAlign: TextAlign.center,
+                  style: TextStyles.mainTitleSans
+                ),
+              if (settings.textReview != "")
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Text(
+                    settings.textReview, style: TextStyles.comment,
+                    textAlign: _textAlign,
+                  ),
+                ),
             ],
           ),
-        ),
+          const SizedBox(height: 16),
+          for (final element in settings.aspects)
+            _displayAspect(element),
+          for (final element in settings.people)
+            _displayPerson(element),
+        ],
       ),
     );
   }

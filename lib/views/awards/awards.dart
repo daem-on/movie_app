@@ -1,9 +1,11 @@
 library awards;
 
 import 'package:flutter/cupertino.dart';
+import 'package:movie_app/preset_display.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/constants.dart';
+import '../../data/look_presets.dart';
 import '../../data/model/basic.dart';
 import '../../data/tmdb.dart';
 import '../common.dart';

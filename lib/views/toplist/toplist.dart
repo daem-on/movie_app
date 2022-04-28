@@ -10,7 +10,7 @@ import '../../data/model/basic.dart';
 import '../../data/tmdb.dart';
 import '../common.dart';
 import '../search.dart';
-import '../../TextStyles.dart';
+import '../../text_styles.dart';
 import '../discover.dart';
 
 part 'appearance.dart';

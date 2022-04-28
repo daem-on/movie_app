@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import '../common.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../TextStyles.dart';
+import '../../text_styles.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../data/model/basic.dart';
