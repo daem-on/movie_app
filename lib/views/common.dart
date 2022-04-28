@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:share_files_and_screenshot_widgets_plus/share_files_and_screenshot_widgets_plus.dart';
+import 'package:movie_app/screenshot_share.dart';
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 
 import '../data/model/basic.dart';
 import '../data/tmdb.dart';
@@ -339,9 +340,7 @@ class ShareablePreview extends StatelessWidget {
         ),
         FloatingButton(
             onPressed: () {
-              ShareFilesAndScreenshotWidgets().shareScreenshot(
-                  previewContainerKey, 800, "Title", "Name.png", "image/png",
-                  text: "This is the caption!");
+              screenshotShare(previewContainerKey);
             },
             text: "Share",
             icon: const Icon(CupertinoIcons.share))
