@@ -38,6 +38,7 @@ class _ReviewSettingsViewState extends State<ReviewSettingsView> {
     super.didChangeDependencies();
     final args = ModalRoute.of(context)!.settings.arguments;
     if (args.runtimeType == Movie) _settings.movie = args as Movie;
+    _loadCredits();
   }
 
   final ReviewSettings _settings = ReviewSettings();
@@ -54,7 +55,12 @@ class _ReviewSettingsViewState extends State<ReviewSettingsView> {
     final result = await Navigator.of(context).push(Search.route);
     if (result == null) return;
     setState(() { _settings.movie = result; });
-    _credits = await _tmdb.movieCredits(result.id);
+    _loadCredits();
+  }
+
+  void _loadCredits() async {
+    if (_settings.movie == null) return;
+    _credits = await _tmdb.movieCredits(_settings.movie!.id);
   }
 
   void _addCredit() async {
