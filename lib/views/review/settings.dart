@@ -30,6 +30,10 @@ class ReviewSettings {
   bool showUsername = true;
   bool showPosters = true;
   bool useNumbers = false;
+  LookPreset preset = LookPresets.purpleGradient;
+
+  TextAlign get alignTextOut =>
+      [TextAlign.start, TextAlign.center, TextAlign.end][alignText];
 }
 
 class _ReviewSettingsViewState extends State<ReviewSettingsView> {

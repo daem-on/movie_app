@@ -43,7 +43,7 @@ class _ReviewAppearanceViewState extends State<ReviewAppearanceView> {
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child: ListView(
           children: [
             CupertinoFormSection(
                 children: [
@@ -54,15 +54,21 @@ class _ReviewAppearanceViewState extends State<ReviewAppearanceView> {
                     }),
                   ),
                   CupertinoFormRow(
-                    prefix: const Text("Align review text"),
-                    child: CupertinoSlidingSegmentedControl<int>(
-                      children: const {
-                        0: Icon(CupertinoIcons.text_alignleft),
-                        1: Icon(CupertinoIcons.text_aligncenter),
-                        2: Icon(CupertinoIcons.text_alignright),
+                    prefix: const Text("Appearance preset"),
+                    child: CupertinoButton(
+                      onPressed: () async {
+                        LookPreset? result = await showCupertinoModalPopup(
+                            context: context,
+                            semanticsDismissible: true,
+                            builder: (context) => const OptionsModal<LookPreset>(
+                              options: presetsAsOptions,
+                              title: "Pick preset"
+                            )
+                        );
+                        if (result == null) return;
+                        setState(() {_settings.preset = result;});
                       },
-                      groupValue: _settings.alignText,
-                      onValueChanged: (val) {setState(() {_settings.alignText = val??0;});},
+                      child: Text(_settings.preset.title),
                     ),
                   ),
                 ]
@@ -80,12 +86,25 @@ class _ReviewAppearanceViewState extends State<ReviewAppearanceView> {
             CupertinoFormSection(
                 header: Text("Review text".toUpperCase()),
                 children: [
+                  CupertinoFormRow(
+                    prefix: const Text("Align text"),
+                    child: CupertinoSlidingSegmentedControl<int>(
+                      children: const {
+                        0: Icon(CupertinoIcons.text_alignleft),
+                        1: Icon(CupertinoIcons.text_aligncenter),
+                        2: Icon(CupertinoIcons.text_alignright),
+                      },
+                      groupValue: _settings.alignText,
+                      onValueChanged: (val) {setState(() {_settings.alignText = val??0;});},
+                    ),
+                  ),
                   CupertinoTextFormFieldRow(
                     placeholder: "Optional",
                     expands: true,
                     minLines: null,
                     maxLines: null,
                     initialValue: _settings.textReview,
+                    textAlign: _settings.alignTextOut,
                     onChanged: (v) => _settings.textReview = v,
                   ),
                 ]

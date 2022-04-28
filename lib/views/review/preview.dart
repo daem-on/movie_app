@@ -51,9 +51,7 @@ class _Preview extends StatelessWidget {
 
   final ReviewSettings settings;
 
-  get _textAlign =>
-      [TextAlign.start, TextAlign.center, TextAlign.end]
-      [settings.alignText];
+  get _textAlign => settings.alignTextOut;
 
   Widget _displayRating(RatedItem mr, [double size = 30]) {
     if (settings.useNumbers) {
@@ -67,7 +65,7 @@ class _Preview extends StatelessWidget {
         itemSize: size,
         itemBuilder: (context, _) => Icon(
           CupertinoIcons.star_fill,
-          color: LookPresets.purpleGradient.accentColor,
+          color: settings.preset.accentColor,
         ),
         onRatingUpdate: (_) {},
       );
@@ -109,7 +107,7 @@ class _Preview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PresetDisplay(
-      preset: LookPresets.purpleGradient,
+      preset: settings.preset,
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [

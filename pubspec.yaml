@@ -30,6 +30,9 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite:
+  sqflite_common_ffi:
+  sqlite3_flutter_libs:
+  path_provider:
   path:
   http:
   marquee:

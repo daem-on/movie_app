@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:movie_app/data/tmdb.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/utils/utils.dart';
 
@@ -29,8 +30,9 @@ class DatabaseManager extends ChangeNotifier {
   /// Initializes the database. Must be called before using it.
   Future<void> initDatabase() async {
     WidgetsFlutterBinding.ensureInitialized();
+    var path = await getApplicationSupportDirectory();
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'movie_app_database.db'),
+      join(path.path, 'movie_app_database.db'),
       onCreate: (db, version) {
         db.execute(_recentTableCreateQuery);
       },

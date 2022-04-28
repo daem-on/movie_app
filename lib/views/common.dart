@@ -478,3 +478,32 @@ class NonNullStarRatingSlider extends StatelessWidget {
     );
   }
 }
+
+class OptionsModal<T> extends StatelessWidget {
+  const OptionsModal({
+    Key? key,
+    required this.options, required this.title,
+  }) : super(key: key);
+
+  final Map<String, T> options;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoActionSheet(
+      title: Text(
+          title,
+          style: const TextStyle(fontSize: 24)
+      ),
+      actions: [
+        for (final element in options.entries)
+          CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pop(element.value);
+              },
+              child: Text(element.key)
+          )
+      ],
+    );
+  }
+}

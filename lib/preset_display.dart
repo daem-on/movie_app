@@ -5,31 +5,63 @@ class LookPreset {
   final Gradient? borderGradient;
   final Color? backgroundColor;
   final Color? borderColor;
-  final BorderRadiusGeometry? radius;
+  final BorderRadius? radius;
   final TextStyle? defaultTextStyle;
   final Color? accentColor;
+  final ImageProvider? topImage;
+  final ImageProvider? bottomImage;
+  final EdgeInsetsGeometry? extraPadding;
+  final String title;
 
   bool get doubleContainer => borderGradient != null;
   bool get hasSolidBorder => borderColor != null;
+  bool get stacked => topImage != null || bottomImage != null;
+  bool get onBottom => bottomImage != null;
 
-  const LookPreset({
-      this.gradient,
-      this.borderGradient,
-      this.backgroundColor,
-      this.borderColor,
-      this.radius,
-      this.defaultTextStyle,
-      this.accentColor
+  const LookPreset(this.title, {
+    this.gradient,
+    this.borderGradient,
+    this.backgroundColor,
+    this.borderColor,
+    this.radius,
+    this.defaultTextStyle,
+    this.accentColor,
+    this.topImage,
+    this.bottomImage,
+    this.extraPadding,
   });
 }
 
+const _topDownGradient = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [Color(0xFF000000), Color(0x00000000)],
+);
+const _reversedGradient = LinearGradient(
+  begin: Alignment.bottomCenter,
+  end: Alignment.topCenter,
+  colors: [Color(0xFF000000), Color(0x00000000)],
+);
+const _brightTopGradient = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [Color(0xFF000000), Color(0x3C000000), Color(0x00000000)],
+);
+
 class PresetDisplay extends StatelessWidget {
-  const PresetDisplay({Key? key, required this.child, required this.preset, this.padding})
+  const PresetDisplay(
+      {Key? key,
+      required this.child,
+      required this.preset,
+      this.padding,
+      this.topImage})
       : super(key: key);
 
   final Widget child;
   final LookPreset preset;
   final EdgeInsetsGeometry? padding;
+  final ImageProvider? topImage;
+  bool get stacked => preset.stacked || topImage != null;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +80,7 @@ class PresetDisplay extends StatelessWidget {
   Widget _buildInner(BuildContext context) {
     return Container(
         margin: preset.doubleContainer ? const EdgeInsets.all(10) : null,
-        padding: padding,
+        padding: stacked ? null : padding,
         decoration: BoxDecoration(
           borderRadius: preset.radius,
           gradient: preset.gradient,
@@ -58,7 +90,41 @@ class PresetDisplay extends StatelessWidget {
               : null,
         ),
         child: preset.defaultTextStyle != null
-            ? DefaultTextStyle(style: preset.defaultTextStyle!, child: child)
-            : child);
+            ? DefaultTextStyle(
+                style: preset.defaultTextStyle!, child: _buildStack(context))
+            : _buildStack(context));
+  }
+
+  Widget _buildStack(BuildContext context) {
+    if (stacked) {
+      return Stack(
+        alignment: preset.onBottom ? Alignment.bottomCenter : Alignment.topCenter,
+        children: [
+          Positioned(
+            child: ClipRRect(
+              borderRadius: preset.radius,
+              child: ShaderMask(
+                shaderCallback: (rect) {
+                  return (preset.onBottom ? _reversedGradient : _topDownGradient)
+                      .createShader(
+                      Rect.fromLTRB(0, 0, rect.width, rect.height)
+                  );
+                },
+                blendMode: BlendMode.dstIn,
+                child: Image(
+                  image: preset.topImage ?? preset.bottomImage ?? topImage!)
+              ),
+            ),
+          ),
+          Padding(
+            padding: (padding ?? EdgeInsets.zero)
+                .add(preset.extraPadding ?? EdgeInsets.zero),
+            child: child,
+          ),
+        ],
+      );
+    } else {
+      return child;
+    }
   }
 }

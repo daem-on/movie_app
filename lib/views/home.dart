@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'awards/awards.dart';
+import 'common.dart';
 import 'filmography/filmography.dart';
 import 'recently_watched.dart';
 import 'register.dart';
