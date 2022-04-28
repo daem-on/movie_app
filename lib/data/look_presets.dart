@@ -56,7 +56,8 @@ abstract class LookPresets {
     defaultTextStyle: TextStyle(color: CupertinoColors.white),
     backgroundColor: Color(0xFF340404),
     radius: BorderRadius.all(Radius.circular(20)),
-    extraPadding: EdgeInsets.only(bottom: 70)
+    extraPadding: EdgeInsets.only(bottom: 70),
+    accentColor: Color(0xFFE52525)
   );
 }
 

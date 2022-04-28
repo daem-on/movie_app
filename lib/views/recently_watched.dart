@@ -109,14 +109,14 @@ class _RecentlyWatchedCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isPortrait =
+    bool isLandscape =
         MediaQuery.of(context).size.width>MediaQuery.of(context).size.height;
     return Container(
         padding: const EdgeInsets.only(top: 50),
         child: CarouselSlider(
           options: CarouselOptions(
               height: 400.0,
-              viewportFraction: isPortrait ? 0.3 : 0.6,
+              viewportFraction: isLandscape ? 0.3 : 0.6,
               enlargeStrategy: CenterPageEnlargeStrategy.height,
               enableInfiniteScroll: false,
               initialPage: 1,

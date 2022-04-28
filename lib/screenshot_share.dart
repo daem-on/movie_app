@@ -7,11 +7,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 void _saveTempFileShare(Uint8List bytes) async {
+  if (Platform.isWindows) return _saveOnWindows(bytes);
   final tempDir = await getTemporaryDirectory();
   final file = File('${tempDir.path}/sharedImage.png');
   await file.writeAsBytes(bytes);
-
   Share.shareFiles([file.path], mimeTypes: ["image/png"]);
+}
+
+void _saveOnWindows(Uint8List bytes) async {
+  final dir = await getApplicationDocumentsDirectory();
+  final file = File('${dir.path}/sharedImage.png');
+  await file.writeAsBytes(bytes);
 }
 
 void screenshotShare(GlobalKey previewContainerKey) async {
