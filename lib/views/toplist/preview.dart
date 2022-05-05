@@ -25,32 +25,10 @@ class _ToplistViewState extends State<ToplistView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _args = ModalRoute.of(context)!.settings.arguments as ToplistSettings;
-    if (_args.useMovieBackdrop && _args.list.any((element) => element.hasBackdrop)) {
-      var path = _args.list
-          .firstWhere((element) => element.hasBackdrop)
-          .backdrop!;
-      _background = NetworkImage(
-          TMDB.buildImageURL(path, 780)
-      );
-      _gradient = _linearGradient;
-    } else {
-      _background = const AssetImage('assets/popcorn.jpg');
-      _gradient = _brightTopGradient;
-    }
-    _updatePaletteGenerator();
-  }
-
-  void _updatePaletteGenerator() async {
-    if (!_args.dynamicColor) {
-      _paletteGenerator = null;
-      return;
-    }
-    _paletteGenerator = await PaletteGenerator.fromImageProvider(
-      _background,
-      maximumColorCount: 20,
-    );
-    setState(() {});
+    _args = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as ToplistSettings;
   }
 
   @override
@@ -59,124 +37,141 @@ class _ToplistViewState extends State<ToplistView> {
     return ShareablePreview(
       child: _Preview(
         settings: _args,
-        gradient: _gradient,
-        background: _background,
-        palette: _paletteGenerator,
-        extraPadding: const EdgeInsets.only(top: 60)
       )
     );
   }
 }
 
-const _borderRadius = BorderRadius.all(Radius.circular(20));
-const _brightTopGradient = [
-  Color(0xFF000000),
-  Color(0x3C000000),
-  Color(0x00000000)
-];
-const _linearGradient =  [Color(0xFF000000), Color(0x00000000)];
-
 class _Preview extends StatelessWidget {
   const _Preview({
     Key? key,
     required this.settings,
-    required this.gradient,
-    required this.background,
-    required this.palette,
-    this.extraPadding = EdgeInsets.zero,
   }) : super(key: key);
 
-  final EdgeInsetsGeometry extraPadding;
   final ToplistSettings settings;
-  final List<Color> gradient;
-  final ImageProvider background;
-  final PaletteGenerator? palette;
   DiscoverArguments get da => settings.arguments;
+  String get later => da.laterThan!.split("-")[0];
+  String get earlier => da.earlierThan!.split("-")[0];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: _borderRadius,
-        color: palette?.darkVibrantColor?.color ??
-            (settings.lightColors ? CupertinoColors.white : CupertinoColors.black),
-      ),
-      child: DefaultTextStyle(
-        style: TextStyle(
-            color: palette?.lightVibrantColor?.color ??
-            (settings.lightColors ? CupertinoColors.black : CupertinoColors.white)
-        ),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: _borderRadius,
-              child: ShaderMask(
-                shaderCallback: (rect) {
-                  return LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: gradient,
-                  ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
-                },
-                blendMode: BlendMode.dstIn,
-                child: Image(
-                  key: imageKey,
-                  image: background,
-                )
-              ),
+    _IconWithText.gradient = LinearGradient(
+        colors: [settings.preset.accentColor
+            ?? settings.preset.defaultTextStyle!.color!],
+      stops: const [0]
+    );
+    return PresetDisplay(
+      preset: settings.preset,
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16).add(const EdgeInsets.only(bottom: 20)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  settings.title,
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(fontSize: 40),
+                ),
+                if (settings.showUsername) Text("A list by ${settings.username}"),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(30)
-                  .add(extraPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+          ),
+          Wrap(
+            alignment: WrapAlignment.center,
+            runSpacing: 20,
+            children: [
+              if (da.laterThan != null && da.earlierThan != null)
+                _IconWithText(
+                    icon: CupertinoIcons.calendar,
+                    text: (later != earlier) ? "$later-$earlier" : earlier
+              ) else if (da.laterThan != null) _IconWithText(
+                  icon: CupertinoIcons.calendar,
+                  text: "$later-"
+              ) else if (da.earlierThan != null) _IconWithText(
+                  icon: CupertinoIcons.arrow_counterclockwise,
+                  text: "Before $earlier"
+              ),
+              if (da.genre != null) _IconWithText(
+                  icon: CupertinoIcons.film_fill, text: "${_genreLookup[da.genre]}"
+              ),
+              if (da.keyword != null) _IconWithText(
+                  icon: CupertinoIcons.tag_fill, text: "${_keywordLookup[da.keyword]}"
+              ),
+              if (da.shorterThan != null) _IconWithText(
+                  icon: CupertinoIcons.clock_fill, text: "Under ${da.shorterThan}m"
+              ),
+              if (da.longerThan != null) _IconWithText(
+                  icon: CupertinoIcons.clock_fill, text: "Over ${da.longerThan}m"
+              ),
+              if (da.originalLang != null) _IconWithText(
+                  icon: CupertinoIcons.captions_bubble_fill, text: "In ${_langLookup [da.originalLang]}"
+              ),
+            ],
+          ),
+          for (var i = 0; i < settings.list.length; i++)
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      settings.title,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontSize: 40,
-                        color: palette?.colors.elementAt(2)
-                      ),
+                  if (settings.showPosters && settings.list[i].hasPoster)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: MoviePosterSimple(settings.list[i], width: 50),
+                    ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("#${i+1}", style: TextStyles.number),
+                        Text(settings.list[i].fullTitle, style: TextStyles.movieTitle),
+                      ],
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (settings.showUsername) Text("By: ${settings.username}"),
-                      if (da.laterThan != null) Text("From ${da.laterThan}"),
-                      if (da.earlierThan != null) Text("To ${da.earlierThan}"),
-                    ],
-                  ),
-                  for (var i = 0; i < settings.list.length; i++)
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Row(
-                        children: [
-                          if (settings.showPosters && settings.list[i].hasPoster)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: MoviePosterSimple(settings.list[i], width: 50),
-                            ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("#${i+1}", style: TextStyles.number),
-                                Text(settings.list[i].fullTitle, style: TextStyles.movieTitle),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                 ],
               ),
             ),
-          ],
-        ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IconWithText extends StatelessWidget {
+  const _IconWithText({
+    Key? key,
+    required this.icon,
+    required this.text,
+  }) : super(key: key);
+
+  final IconData icon;
+  final String text;
+  static LinearGradient gradient =
+    const LinearGradient(colors: [CupertinoColors.white], stops: [0]);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 120,
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: ShaderMask(
+              blendMode: BlendMode.srcOut,
+              shaderCallback: gradient.createShader,
+              child: Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(icon, size: 60)
+              ),
+            ),
+          ),
+          Padding(padding: const EdgeInsets.only(top: 8), child: Text(text))
+        ],
       ),
     );
   }

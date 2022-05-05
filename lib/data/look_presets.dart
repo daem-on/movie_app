@@ -50,9 +50,27 @@ const Map<String, LookPreset> lookPresets = {
   "Cinema seats": LookPreset(
     bottomImage: AssetImage('assets/seats.jpg'),
     defaultTextStyle: TextStyle(color: CupertinoColors.white),
-    backgroundColor: Color(0xFF340404),
+    backgroundColor: Color(0xFF1C0000),
     radius: BorderRadius.all(Radius.circular(20)),
     extraPadding: EdgeInsets.only(bottom: 70),
-    accentColor: Color(0xFFE52525)
+    accentColor: Color(0xFF7D1E22)
+  ),
+
+  "Fancy": LookPreset(
+    defaultTextStyle: TextStyle(
+        color: CupertinoColors.white,
+        fontFamilyFallback: ["Georgia", "serif"]
+    ),
+    gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFF340000),
+          Color(0xFF580C10),
+          Color(0xFF240505),
+        ]
+    ),
+    radius: BorderRadius.all(Radius.circular(20)),
+    accentColor: Color(0xFFF8AD1A)
   ),
 };

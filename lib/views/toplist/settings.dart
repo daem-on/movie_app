@@ -28,6 +28,7 @@ class ToplistSettings {
   bool lightColors = false;
   bool dynamicColor = false;
   final List<Movie> list = List.empty(growable: true);
+  LookPreset preset = lookPresets["Purple gradient"]!;
 
   loadTemplate(ToplistTemplate template) {
     title = template.title; arguments = template.arguments;
@@ -94,25 +95,22 @@ class _ToplistSettingsViewState extends State<ToplistSettingsView> {
   }
 
   String? get _selectedGenreText {
-    Map<int, String> backwards = genres.map((key, value) => MapEntry(value, key));
     if (_args.genre != null) {
-      return "Selected: " + backwards[_args.genre]!;
+      return "Selected: " + _genreLookup[_args.genre]!;
     }
     return null;
   }
 
   String? get _selectedKeywordText {
-    Map<int, String> backwards = keywords.map((key, value) => MapEntry(value, key));
     if (_args.keyword != null) {
-      return "Selected: " + backwards[_args.keyword]!;
+      return "Selected: " + _keywordLookup[_args.keyword]!;
     }
     return null;
   }
 
   String? get _selectedLangText {
-    Map<String, String> backwards = languages.map((key, value) => MapEntry(value, key));
     if (_args.originalLang != null) {
-      return "Selected: " + backwards[_args.originalLang]!;
+      return "Selected: " + _langLookup[_args.originalLang]!;
     }
     return null;
   }

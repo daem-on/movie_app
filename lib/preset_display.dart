@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
+enum LookPresetTag {
+  movieBackdrop
+}
+
 class LookPreset {
   final Gradient? gradient;
   final Gradient? borderGradient;
@@ -11,6 +15,7 @@ class LookPreset {
   final ImageProvider? topImage;
   final ImageProvider? bottomImage;
   final EdgeInsetsGeometry? extraPadding;
+  final LookPresetTag? tag;
 
   bool get doubleContainer => borderGradient != null;
   bool get hasSolidBorder => borderColor != null;
@@ -28,6 +33,7 @@ class LookPreset {
     this.topImage,
     this.bottomImage,
     this.extraPadding,
+    this.tag
   });
 }
 

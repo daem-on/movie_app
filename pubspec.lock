@@ -289,13 +289,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
-  share_files_and_screenshot_widgets:
-    dependency: "direct main"
-    description:
-      name: share_files_and_screenshot_widgets
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.6"
   share_plus:
     dependency: "direct main"
     description:

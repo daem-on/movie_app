@@ -511,7 +511,8 @@ class OptionsModal<T> extends StatelessWidget {
 class AppearanceSelectorRow extends StatelessWidget {
   final void Function(LookPreset) callback;
   final LookPreset current;
-  const AppearanceSelectorRow({Key? key, required this.callback, required this.current}) : super(key: key);
+  final Map<String, LookPreset> options;
+  const AppearanceSelectorRow({Key? key, required this.callback, required this.current, this.options = lookPresets}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -523,8 +524,8 @@ class AppearanceSelectorRow extends StatelessWidget {
           LookPreset? result = await showCupertinoModalPopup(
               context: context,
               semanticsDismissible: true,
-              builder: (context) => const OptionsModal<LookPreset>(
-                  options: lookPresets,
+              builder: (context) => OptionsModal<LookPreset>(
+                  options: options,
                   title: "Pick preset"
               )
           );

@@ -20,6 +20,7 @@ class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _settings = ModalRoute.of(context)!.settings.arguments as ToplistSettings;
+    _createDynamicPreset();
   }
 
   @override
@@ -31,6 +32,43 @@ class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
   void getUsername() async {
     var name = (await SharedPreferences.getInstance()).getString("username");
     setState(() {_settings.username = name ?? "";});
+  }
+
+  void _createDynamicPreset() async {
+    if (_settings.preset.tag != LookPresetTag.movieBackdrop) return;
+    var imagePath = _settings.list
+        .firstWhere((element) => element.hasBackdrop)
+        .backdrop;
+    if (imagePath == null) return;
+
+    var backgroundImage = NetworkImage(
+        TMDB.buildImageURL(imagePath, 780)
+    );
+    var paletteGen = await PaletteGenerator.fromImageProvider(
+      backgroundImage, maximumColorCount: 20,
+    );
+    var fg = (_settings.lightColors ? CupertinoColors.black : CupertinoColors.white);
+    if (_settings.dynamicColor) fg = paletteGen.lightVibrantColor?.color ?? fg;
+    var bg = (_settings.lightColors ? CupertinoColors.white : CupertinoColors.black);
+    if (_settings.dynamicColor) bg = paletteGen.darkVibrantColor?.color ?? bg;
+
+    var newPreset = LookPreset(
+      topImage: backgroundImage,
+      radius: const BorderRadius.all(Radius.circular(20)),
+      defaultTextStyle: TextStyle(
+        color: fg,
+      ),
+      extraPadding: const EdgeInsets.only(top: 80),
+      backgroundColor: bg,
+      tag: LookPresetTag.movieBackdrop
+    );
+
+    setState(() {_settings.preset = newPreset;});
+  }
+
+  void _selectLookPreset(LookPreset result) {
+    setState(() {_settings.preset = result;});
+    _createDynamicPreset();
   }
 
   @override
@@ -46,7 +84,6 @@ class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
         child: Column(
           children: [
             CupertinoFormSection(
-                // header: Text("Settings".toUpperCase(), style: TextStyle(fontSize: 20)),
                 children: [
                   CupertinoFormRow(
                     prefix: const Text("Show username"),
@@ -55,34 +92,43 @@ class _ToplistAppearanceViewState extends State<ToplistAppearanceView> {
                     }),
                   ),
                   CupertinoFormRow(
-                    prefix: const Text("Use movie backdrop"),
-                    child: CupertinoSwitch(value: _settings.useMovieBackdrop, onChanged: (v) {
-                      setState(() {_settings.useMovieBackdrop = v;});
-                    }),
-                  ),
-                  CupertinoFormRow(
                     prefix: const Text("Show posters"),
                     child: CupertinoSwitch(value: _settings.showPosters, onChanged: (v) {
                       setState(() {_settings.showPosters = v;});
-                    }),
-                  ),
-                  CupertinoFormRow(
-                    prefix: const Text("Light color scheme"),
-                    child: CupertinoSwitch(value: _settings.lightColors, onChanged: (v) {
-                      setState(() {_settings.lightColors = v;});
-                    }),
-                  ),
-                  if (_settings.useMovieBackdrop) CupertinoFormRow(
-                    prefix: const Text("Dynamic colors from backdrop"),
-                    child: CupertinoSwitch(value: _settings.dynamicColor, onChanged: (v) {
-                      setState(() {_settings.dynamicColor = v;});
                     }),
                   ),
                   CupertinoTextFormFieldRow(
                     placeholder: "Title",
                     initialValue: _settings.title,
                     onChanged: (v) => _settings.title = v,
+                  ),
+                  AppearanceSelectorRow(
+                    callback: _selectLookPreset,
+                    current: _settings.preset,
+                    options: const {
+                      ...lookPresets,
+                      "Movie backdrop": LookPreset(tag: LookPresetTag.movieBackdrop)
+                    },
                   )
+                ]
+            ),
+            CupertinoFormSection(
+                header: Text("Background".toUpperCase()),
+                children: [
+                  CupertinoFormRow(
+                    prefix: const Text("Light color scheme"),
+                    child: CupertinoSwitch(value: _settings.lightColors, onChanged: (v) {
+                      setState(() {_settings.lightColors = v;});
+                      _createDynamicPreset();
+                    }),
+                  ),
+                  if (_settings.useMovieBackdrop) CupertinoFormRow(
+                    prefix: const Text("Dynamic colors from backdrop"),
+                    child: CupertinoSwitch(value: _settings.dynamicColor, onChanged: (v) {
+                      setState(() {_settings.dynamicColor = v;});
+                      _createDynamicPreset();
+                    }),
+                  ),
                 ]
             )
           ],
