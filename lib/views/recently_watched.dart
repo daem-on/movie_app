@@ -38,6 +38,7 @@ class _RecentlyWatchedCarouselState extends State<RecentlyWatchedCarousel> {
     super.didChangeDependencies();
     await _db.initDatabase();
     _futureList = await _db.listEntries();
+    if (mounted == false) return;
     if (_futureList.isEmpty) {
       setState(() {
         _snapshot = const AsyncSnapshot.withData(ConnectionState.none, []);
@@ -45,6 +46,7 @@ class _RecentlyWatchedCarouselState extends State<RecentlyWatchedCarousel> {
       return;
     }
     final movieList = await Future.wait(_futureList);
+    if (mounted == false) return;
     setState(() {
       _snapshot = AsyncSnapshot.withData(ConnectionState.done, movieList);
     });
