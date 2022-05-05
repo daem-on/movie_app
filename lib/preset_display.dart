@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 enum LookPresetTag {
   movieBackdrop
@@ -124,12 +125,35 @@ class PresetDisplay extends StatelessWidget {
           Padding(
             padding: (padding ?? EdgeInsets.zero)
                 .add(preset.extraPadding ?? EdgeInsets.zero),
-            child: child,
+            child: _buildWithWatermark(context),
           ),
         ],
       );
     } else {
-      return child;
+      return _buildWithWatermark(context);
     }
+  }
+
+  Widget _buildWithWatermark(BuildContext context) {
+    return Column(
+      children: [
+        child,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text("Made with"),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: CircleAvatar(
+                child: Icon(CupertinoIcons.film),
+                foregroundColor: CupertinoColors.white,
+                backgroundColor: Color(0x88000000),
+              ),
+            ),
+            Text("movie_app"),
+          ],
+        ),
+      ],
+    );
   }
 }
