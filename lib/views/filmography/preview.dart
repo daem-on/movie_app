@@ -71,9 +71,10 @@ class _Preview extends StatelessWidget {
         allowHalfRating: true,
         itemCount: 5,
         itemSize: 30,
-        itemBuilder: (context, _) => const Icon(
+        // unratedColor: const Color(0x5C747474),
+        itemBuilder: (context, _) => Icon(
           CupertinoIcons.star_fill,
-          color: Color(0xffff155f),
+          color: settings.preset.accentColor,
         ),
         onRatingUpdate: (_) {},
       );
@@ -83,65 +84,51 @@ class _Preview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int i = 0;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xff0d52c7),
-              Color(0xff751ece),
-              Color(0xff5e033e),
-            ]
-        ),
-      ),
-      child: DefaultTextStyle(
-        style: const TextStyle(color: CupertinoColors.white),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  if (settings.person != null)
-                    ProfilePicture(person: settings.person!, radius: 30,),
-                  Text(settings.title, style: TextStyles.mainTitleSans, textAlign: TextAlign.center,),
-                ],
-              ),
+    return PresetDisplay(
+      preset: settings.preset,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (settings.person != null)
+                  ProfilePicture(person: settings.person!, radius: 30,),
+                Text(settings.title, style: TextStyles.mainTitleSans, textAlign: TextAlign.center,),
+              ],
             ),
-            for (final element in filteredList)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Row(
-                  textDirection: i++%2==0 ? TextDirection.rtl:TextDirection.ltr,
-                  children: [
-                    if (settings.showPosters) Padding(
+          ),
+          for (final element in filteredList)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Row(
+                textDirection: i++%2==0 ? TextDirection.rtl:TextDirection.ltr,
+                children: [
+                  if (settings.showPosters) Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: MoviePosterSimple(element.item, width: 60,),
+                  ),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: MoviePosterSimple(element.item, width: 60,),
-                    ),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Column(
-                          crossAxisAlignment: i%2==0 ? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              element.item.fullTitle, style: TextStyles.movieTitle,
-                              textAlign: i%2==0 ? TextAlign.start:TextAlign.end,
-                            ),
-                            _displayRating(element)
-                          ],
-                        ),
+                      child: Column(
+                        crossAxisAlignment: i%2==0 ? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            element.item.fullTitle, style: TextStyles.movieTitle,
+                            textAlign: i%2==0 ? TextAlign.start:TextAlign.end,
+                          ),
+                          _displayRating(element)
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              )
-          ],
-        ),
+                  ),
+                ],
+              ),
+            )
+        ],
       ),
     );
   }
