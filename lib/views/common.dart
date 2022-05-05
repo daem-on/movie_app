@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/screenshot_share.dart';
-import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 
+import '../data/look_presets.dart';
 import '../data/model/basic.dart';
 import '../data/tmdb.dart';
+import '../preset_display.dart';
 
 class CupertinoContainer extends StatelessWidget {
   final Widget child;
@@ -503,6 +504,35 @@ class OptionsModal<T> extends StatelessWidget {
               child: Text(element.key)
           )
       ],
+    );
+  }
+}
+
+class AppearanceSelectorRow extends StatelessWidget {
+  final void Function(LookPreset) callback;
+  final LookPreset current;
+  const AppearanceSelectorRow({Key? key, required this.callback, required this.current}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _lookPresetsInv = lookPresets.map((key, value) => MapEntry(value, key));
+    return CupertinoFormRow(
+      prefix: const Text("Appearance preset"),
+      child: CupertinoButton(
+        onPressed: () async {
+          LookPreset? result = await showCupertinoModalPopup(
+              context: context,
+              semanticsDismissible: true,
+              builder: (context) => const OptionsModal<LookPreset>(
+                  options: lookPresets,
+                  title: "Pick preset"
+              )
+          );
+          if (result == null) return;
+          callback(result);
+        },
+        child: Text(_lookPresetsInv[current] ?? "Other"),
+      ),
     );
   }
 }

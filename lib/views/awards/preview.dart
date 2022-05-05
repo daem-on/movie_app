@@ -52,7 +52,6 @@ class _Preview extends StatelessWidget {
   }) : super(key: key);
 
   final AwardsSettings settings;
-  static const _textColor = CupertinoColors.white;
 
   String _titleText() => settings.showYear
       ? "${settings.title} (${settings.date})"
@@ -61,7 +60,7 @@ class _Preview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PresetDisplay(
-      preset: LookPresets.goldenBorder,
+      preset: settings.preset,
       padding: const EdgeInsets.all(30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

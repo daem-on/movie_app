@@ -25,6 +25,7 @@ class FilmographySettings {
   bool showPosters = true;
   bool useNumbers = false;
   SortMovies sort = SortMovies.popularity;
+  LookPreset preset = lookPresets["Purple gradient"]!;
 }
 
 class _FilmographySettingsViewState extends State<FilmographySettingsView> {

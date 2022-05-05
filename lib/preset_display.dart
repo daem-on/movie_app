@@ -11,14 +11,13 @@ class LookPreset {
   final ImageProvider? topImage;
   final ImageProvider? bottomImage;
   final EdgeInsetsGeometry? extraPadding;
-  final String title;
 
   bool get doubleContainer => borderGradient != null;
   bool get hasSolidBorder => borderColor != null;
   bool get stacked => topImage != null || bottomImage != null;
   bool get onBottom => bottomImage != null;
 
-  const LookPreset(this.title, {
+  const LookPreset({
     this.gradient,
     this.borderGradient,
     this.backgroundColor,

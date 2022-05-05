@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import '../preset_display.dart';
 
-abstract class LookPresets {
-  static const goldenBorder = LookPreset(
-    "Golden border",
+const Map<String, LookPreset> lookPresets = {
+  "Golden border": LookPreset(
     borderGradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
@@ -24,10 +23,9 @@ abstract class LookPresets {
     radius: BorderRadius.all(Radius.circular(20)),
     defaultTextStyle: TextStyle(color: CupertinoColors.white),
     accentColor: Color(0xffffbd2c)
-  );
+  ),
 
-  static const purpleGradient = LookPreset(
-    "Purple gradient",
+  "Purple gradient": LookPreset(
     gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
@@ -40,30 +38,21 @@ abstract class LookPresets {
     defaultTextStyle: TextStyle(color: CupertinoColors.white),
     radius: BorderRadius.all(Radius.circular(20)),
     accentColor: Color(0xffff155f)
-  );
+  ),
 
-  static const popcorn = LookPreset(
-    "Popcorn background",
+  "Popcorn background": LookPreset(
     topImage: AssetImage('assets/popcorn.jpg'),
     defaultTextStyle: TextStyle(color: CupertinoColors.white),
     radius: BorderRadius.all(Radius.circular(20)),
     extraPadding: EdgeInsets.only(top: 40)
-  );
+  ),
 
-  static const seatsBottomBackground = LookPreset(
-    "Cinema seats",
+  "Cinema seats": LookPreset(
     bottomImage: AssetImage('assets/seats.jpg'),
     defaultTextStyle: TextStyle(color: CupertinoColors.white),
     backgroundColor: Color(0xFF340404),
     radius: BorderRadius.all(Radius.circular(20)),
     extraPadding: EdgeInsets.only(bottom: 70),
     accentColor: Color(0xFFE52525)
-  );
-}
-
-const presetsAsOptions = {
-  "Popcorn": LookPresets.popcorn,
-  "Seats": LookPresets.seatsBottomBackground,
-  "Gold border": LookPresets.goldenBorder,
-  "Purple gradient": LookPresets.purpleGradient,
+  ),
 };

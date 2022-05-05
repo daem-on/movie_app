@@ -30,7 +30,7 @@ class ReviewSettings {
   bool showUsername = true;
   bool showPosters = true;
   bool useNumbers = false;
-  LookPreset preset = LookPresets.purpleGradient;
+  LookPreset preset = lookPresets["Purple gradient"]!;
 
   TextAlign get alignTextOut =>
       [TextAlign.start, TextAlign.center, TextAlign.end][alignText];

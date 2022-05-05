@@ -70,6 +70,10 @@ class _AwardsAppearanceViewState extends State<AwardsAppearanceView> {
                     placeholder: "Title",
                     initialValue: _settings.title,
                     onChanged: (v) => _settings.title = v,
+                  ),
+                  AppearanceSelectorRow(
+                    callback: (result) => setState(() {_settings.preset = result;}),
+                    current: _settings.preset,
                   )
                 ]
             )

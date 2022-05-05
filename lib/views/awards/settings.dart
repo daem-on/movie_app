@@ -27,6 +27,7 @@ class AwardsSettings {
   bool showPosters = true;
   bool showYear = true;
   int date = DateTime.now().year;
+  LookPreset preset = lookPresets["Golden border"]!;
 
   loadTemplate(AwardsTemplate template) {
     title = template.displayTitle;

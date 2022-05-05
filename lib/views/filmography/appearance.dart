@@ -65,6 +65,10 @@ class _FilmographyAppearanceViewState extends State<FilmographyAppearanceView> {
                       setState(() {_settings.useNumbers = v;});
                     }),
                   ),
+                  AppearanceSelectorRow(
+                    callback: (result) => setState(() {_settings.preset = result;}),
+                    current: _settings.preset,
+                  )
                 ]
             ),
             CupertinoFormSection(

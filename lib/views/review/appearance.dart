@@ -53,24 +53,10 @@ class _ReviewAppearanceViewState extends State<ReviewAppearanceView> {
                       setState(() {_settings.useNumbers = v;});
                     }),
                   ),
-                  CupertinoFormRow(
-                    prefix: const Text("Appearance preset"),
-                    child: CupertinoButton(
-                      onPressed: () async {
-                        LookPreset? result = await showCupertinoModalPopup(
-                            context: context,
-                            semanticsDismissible: true,
-                            builder: (context) => const OptionsModal<LookPreset>(
-                              options: presetsAsOptions,
-                              title: "Pick preset"
-                            )
-                        );
-                        if (result == null) return;
-                        setState(() {_settings.preset = result;});
-                      },
-                      child: Text(_settings.preset.title),
-                    ),
-                  ),
+                  AppearanceSelectorRow(
+                    callback: (result) => setState(() {_settings.preset = result;}),
+                    current: _settings.preset,
+                  )
                 ]
             ),
             CupertinoFormSection(
