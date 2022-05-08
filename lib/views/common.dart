@@ -8,6 +8,10 @@ import '../data/model/basic.dart';
 import '../data/tmdb.dart';
 import '../preset_display.dart';
 
+/// A container with round corners.
+///
+/// Since `flutter/cupertino` doesn't have a standard conatiner,
+/// we have to make a custom one.
 class CupertinoContainer extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -29,6 +33,8 @@ class CupertinoContainer extends StatelessWidget {
   }
 }
 
+/// A modal view which shows a [CupertinoPicker], with a select button.
+/// Use with [showCupertinoModalPopup].
 class PickerModal extends StatelessWidget {
   PickerModal({
     Key? key,
@@ -39,8 +45,11 @@ class PickerModal extends StatelessWidget {
     _controller = FixedExtentScrollController(initialItem: initialItem ?? 0);
   }
 
+  /// List of the options to be displayed. Use `initialItem` to show one already
+  /// selected.
   final List<String> options;
   late final FixedExtentScrollController _controller;
+  /// The label of the button.
   final String button;
 
   @override
@@ -76,6 +85,9 @@ class PickerModal extends StatelessWidget {
   }
 }
 
+/// A modal view which shows a [CupertinoDatePicker], with a button to set
+/// and to clear the value.
+/// Use with [showCupertinoModalPopup].
 // ignore: must_be_immutable
 class DateModal extends StatelessWidget {
   DateModal({
@@ -121,6 +133,9 @@ class DateModal extends StatelessWidget {
   }
 }
 
+/// A modal view which shows a [CupertinoTimerPicker], with a button to set
+/// and to clear the value.
+/// Use with [showCupertinoModalPopup].
 // Actually I agree that this should not be immutable but it works fine
 // and doesn't use setState() at all. Also it's not my fault the timepicker
 // doesn't have a controller
@@ -131,6 +146,7 @@ class DurationModal extends StatelessWidget {
     required this.value
   }) : super(key: key);
 
+  /// Initial value for the picker.
   Duration value;
 
   @override
@@ -170,10 +186,17 @@ class DurationModal extends StatelessWidget {
   }
 }
 
+/// A row of a settings UI. Use with [CupertinoContainer].
+///
+/// Contains a line of text, optionally two, an icon at the end, and will call
+/// a callback when pressed.
 class SettingRow extends StatelessWidget {
+  /// The icon to show at the end of the row.
   final Icon icon;
+  /// Callback when pressed.
   final void Function()? onPressed;
   final String text;
+  /// Optional second line of text.
   final String? secondText;
 
   const SettingRow({
@@ -218,8 +241,12 @@ class SettingRow extends StatelessWidget {
   }
 }
 
+/// A reusable widget to create a scaffold, a navbar, and
+/// safe area that is used for each view.
 class MovieAppScaffold extends StatelessWidget {
   final Widget child;
+  /// The trailing widget of the navigation bar. Use a [TrailingButton],
+  /// or leave empty.
   final Widget? trailing;
 
   const MovieAppScaffold({
@@ -239,6 +266,10 @@ class MovieAppScaffold extends StatelessWidget {
   }
 }
 
+/// A button to use as the trailing widget in a [CupertinoNavigationBar].
+///
+/// Looks very similar to the navigation bar's back button, so a view
+/// with a back and forward button will look symmetrical.
 class TrailingButton extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
@@ -275,6 +306,8 @@ class TrailingButton extends StatelessWidget {
   }
 }
 
+/// A button which is shown at the bottom center of the screen.
+/// Should be used in a [Stack]
 class FloatingButton extends StatelessWidget {
   final void Function()? onPressed;
   final String text;
@@ -314,6 +347,8 @@ class FloatingButton extends StatelessWidget {
   }
 }
 
+/// A container with given content, which enables the user to share a
+/// screenshot of the content with a button at the bottom.
 class ShareablePreview extends StatelessWidget {
   ShareablePreview({
     Key? key,
@@ -350,10 +385,17 @@ class ShareablePreview extends StatelessWidget {
   }
 }
 
+/// Shows a movie poster for a given [Movie] from TMDB. Not interactive.
+///
+/// Has rounded corners and a placeholder when there is no poster.
 class MoviePosterSimple extends StatelessWidget {
   final Movie movie;
+  /// Optional width of the displayed poster.
   final double? width;
+  /// Width of the image which will be loaded from TMDB.
+  /// Has to be one of TMDB specified widths.
   final int posterWidth;
+  /// Use text as placeholder instead of icon.
   final bool placeholderText;
 
   const MoviePosterSimple(this.movie, {
@@ -393,6 +435,7 @@ class MoviePosterSimple extends StatelessWidget {
   }
 }
 
+/// Shows the profile image of a [Person] from TMDB.
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({Key? key, required this.person, this.radius}) : super(key: key);
   final Person person;
@@ -411,14 +454,16 @@ class ProfilePicture extends StatelessWidget {
   }
 }
 
-
+/// 5-star rating slider.
 class StarRatingSlider extends StatelessWidget {
   const StarRatingSlider({
     Key? key,
     required this.rating, required this.callback,
   }) : super(key: key);
 
+  /// Current value in number of half stars.
   final int rating;
+  /// Called when a new value is set.
   final Function callback;
 
   @override
@@ -448,13 +493,16 @@ class StarRatingSlider extends StatelessWidget {
   }
 }
 
+/// 5-star rating slider with a minimum of half a star.
 class NonNullStarRatingSlider extends StatelessWidget {
   const NonNullStarRatingSlider({
     Key? key,
     required this.rating, required this.callback,
   }) : super(key: key);
 
+  /// Current value in number of half stars.
   final int rating;
+  /// Called when a new value is set.
   final Function callback;
 
   @override
@@ -479,13 +527,19 @@ class NonNullStarRatingSlider extends StatelessWidget {
   }
 }
 
+/// A modal view which shows a [CupertinoActionSheet], created from a list of
+/// options of type [T].
+/// Use with [showCupertinoModalPopup].
 class OptionsModal<T> extends StatelessWidget {
   const OptionsModal({
     Key? key,
     required this.options, required this.title,
   }) : super(key: key);
 
+  /// A map of the options to choose between. Key is the text which will
+  /// be displayed to the user, value will be returned as the result.
   final Map<String, T> options;
+  /// A title to show at the top of the modal.
   final String title;
 
   @override
@@ -508,9 +562,12 @@ class OptionsModal<T> extends StatelessWidget {
   }
 }
 
+/// A setting row which allows for selecting a [LookPreset] from a list of
+/// presets.
 class AppearanceSelectorRow extends StatelessWidget {
   final void Function(LookPreset) callback;
   final LookPreset current;
+  /// The map of options. The key will be displayed to users.
   final Map<String, LookPreset> options;
   const AppearanceSelectorRow({Key? key, required this.callback, required this.current, this.options = lookPresets}) : super(key: key);
 
