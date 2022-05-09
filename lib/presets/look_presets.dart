@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
-import '../preset_display.dart';
+part of 'presets.dart';
 
 const Map<String, LookPreset> lookPresets = {
   "Golden border": LookPreset(

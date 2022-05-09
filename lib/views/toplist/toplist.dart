@@ -6,14 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:palette_generator/palette_generator.dart';
 import '../../data/constants.dart';
-import '../../data/look_presets.dart';
-import '../../data/model/basic.dart';
+import '../../data/model.dart';
 import '../../data/tmdb.dart';
 import '../../preset_display.dart';
 import '../common.dart';
-import '../search.dart';
-import '../../text_styles.dart';
-import '../discover.dart';
+import '../views.dart';
+import '../../presets/presets.dart';
 
 part 'appearance.dart';
 part 'settings.dart';

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'model/basic.dart';
+import 'model.dart';
 
 /// The interface for TheMovieDB's API.
 class TMDB {

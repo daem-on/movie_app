@@ -1,14 +1,4 @@
-import 'dart:developer';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import '../data/database.dart';
-import 'common.dart';
-import 'review/review.dart';
-import 'search.dart';
-
-import '../data/model/basic.dart';
-import '../data/tmdb.dart';
+part of 'home.dart';
 
 /// A carousel of recently watched movies
 ///

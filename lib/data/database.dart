@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/utils/utils.dart';
 
-import 'model/basic.dart';
+import 'model.dart';
 
 /// Local database manager.
 ///

@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'home.dart';
+part of 'views.dart';
 
 /// This view handles the username registration.
 class RegisterView extends StatefulWidget {

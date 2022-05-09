@@ -1,10 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:movie_app/data/model/basic.dart';
-import 'package:movie_app/views/common.dart';
-
-import '../text_styles.dart';
-import '../data/tmdb.dart';
+part of 'views.dart';
 
 /// Shows a list of [PersonCredits], where the user can select a
 /// [PersonCredit] which will be returned in [Navigator.pop].

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+part of 'presets.dart';
 
 class TextStyles {
   static const awardName = TextStyle(

@@ -1,18 +1,34 @@
+/// Library containing [HomeView] and [RecentlyWatchedCarousel].
+library home;
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/database.dart';
 import 'awards/awards.dart';
 import 'common.dart';
 import 'filmography/filmography.dart';
-import 'recently_watched.dart';
-import 'register.dart';
 import 'review/review.dart';
 import 'toplist/toplist.dart';
+import 'views.dart';
+
+import '../data/model.dart';
+import '../data/tmdb.dart';
+
+part 'recently_watched.dart';
 
 /// View for the home page of the app.
 ///
 /// Contains a carousel of recently watched movies and a button
 /// for creating a new post, which opens a menu showing post formats.
+///
+/// - The carousel: [RecentlyWatchedCarousel]
+/// - The options for the formats:
+///   - [ToplistSettingsView]
+///   - [AwardsSettingsView]
+///   - [FilmographySettingsView]
+///   - [ReviewSettingsView]
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 

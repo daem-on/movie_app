@@ -1,3 +1,8 @@
+/// Compile-time constant values
+///
+/// These could be stored in asset files, but these datasets are small
+/// enough to just be stored in memory.
+library constants;
 
 /// List of all genres accepted by TMDB.
 const Map<String, int> genres = {

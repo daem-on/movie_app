@@ -1,3 +1,5 @@
+/// Basic data models, the two main ones are: [Movie] and [Person].
+library model;
 
 /// A wrapper class to be used in modals to differentiate between
 /// an empty value being returned or no value being returned.

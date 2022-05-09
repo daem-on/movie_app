@@ -1,10 +1,13 @@
+/// All the components which are reused between libraries.
+library common;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/screenshot_share.dart';
 
-import '../data/look_presets.dart';
-import '../data/model/basic.dart';
+import '../../presets/presets.dart';
+import '../data/model.dart';
 import '../data/tmdb.dart';
 import '../preset_display.dart';
 

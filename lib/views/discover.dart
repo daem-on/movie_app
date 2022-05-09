@@ -1,11 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
-import 'package:movie_app/data/model/basic.dart';
-import 'package:movie_app/views/common.dart';
-import 'package:movie_app/views/search.dart';
-
-import '../data/tmdb.dart';
+part of 'views.dart';
 
 /// The arguments which will be used to create a `/discover/movie` request
 /// to TheMovieDB. The arguments are basically the same as in the

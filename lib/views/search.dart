@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:movie_app/data/model/basic.dart';
-import 'package:movie_app/views/common.dart';
-
-import '../data/tmdb.dart';
+part of 'views.dart';
 
 /// A movie search view.
 ///
