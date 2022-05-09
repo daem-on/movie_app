@@ -1,3 +1,11 @@
+/// Database access layer for SQLite.
+///
+/// This app only stores one set of data: recently watched movies.
+/// The user can store their watched movies so they can come back later and
+/// write a review for them.
+/// {@category Data}
+library database;
+
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';

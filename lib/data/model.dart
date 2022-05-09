@@ -1,4 +1,5 @@
 /// Basic data models, the two main ones are: [Movie] and [Person].
+/// {@category Data}
 library model;
 
 /// A wrapper class to be used in modals to differentiate between

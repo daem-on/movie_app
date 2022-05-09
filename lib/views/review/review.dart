@@ -1,3 +1,6 @@
+/// The review format.
+///
+/// {@category Formats}
 library review;
 
 import 'package:flutter/cupertino.dart';

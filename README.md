@@ -34,4 +34,4 @@ To generate API docs (the html files), run `flutter pub global run dartdoc .`
 ## More details
 When viewing this page in the API docs view, click this link to continue:
 
-[Continue to library `main`](main/main-library.html)
+[Continue to `main` library](main/main-library.html)

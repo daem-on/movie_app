@@ -1,5 +1,6 @@
 part of 'presets.dart';
 
+/// A static collection of [TextStyle] presets.
 class TextStyles {
   static const awardName = TextStyle(
     fontSize: 24,

@@ -1,3 +1,6 @@
+/// The toplist format.
+///
+/// {@category Formats}
 library toplist;
 
 import 'package:flutter/cupertino.dart';

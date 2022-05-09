@@ -1,5 +1,8 @@
 part of 'presets.dart';
 
+/// This is a map of [LookPreset]s, which can be used with a [PresetDisplay]
+/// to change the appearance of a post. This map can be expanded with new
+/// presets - generated automatically or created by the user - during runtime.
 const Map<String, LookPreset> lookPresets = {
   "Golden border": LookPreset(
     borderGradient: LinearGradient(

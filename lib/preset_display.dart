@@ -5,6 +5,7 @@ enum LookPresetTag {
   movieBackdrop
 }
 
+/// For a static list of these presets, use `lookPresets` from `presets`.
 class LookPreset {
   final Gradient? gradient;
   final Gradient? borderGradient;
