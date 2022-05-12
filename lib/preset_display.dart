@@ -144,7 +144,7 @@ class PresetDisplay extends StatelessWidget {
           children: const [
             Text("Made with"),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               child: CircleAvatar(
                 child: Icon(CupertinoIcons.film),
                 foregroundColor: CupertinoColors.white,

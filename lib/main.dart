@@ -7,30 +7,6 @@
 /// [Navigator]. We will push other pages onto this navigator later, the first
 /// page to be shown is [HomeView]. More details on this: [MovieApp].
 ///
-/// ## Overview
-/// The libraries for the main content of the app, which correspond to
-/// the formats of posts which can be created in the app:
-/// - [Awards](../awards/awards-library.html)
-/// - [Filmography](../filmography/filmography-library.html)
-/// - [Review](../review/review-library.html)
-/// - [Toplist](../toplist/toplist-library.html)
-///
-/// [Common](../common/common-library.html) contains the components
-/// shared by all UI parts.
-///
-/// [Views](../views/views-library.html) contains views outside of the
-/// four main libraries, like search, discover, etc.
-///
-/// ### Data
-/// - [Model](../model/model-library.html) is where classes like [Movie]
-/// (which is the data model for movies in the app) are declared.
-/// - [Constants](../constants/constants-library.html) contains compile-time
-/// constants.
-/// - [TMDB](../tmdb/tmdb-library.html) is where requests to the API are
-/// handled.
-/// - [Database](../database/database-library.html) is the data access layer
-/// for the data stored in SQLite.
-///
 /// {@category Main}
 library main;
 

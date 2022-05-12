@@ -96,6 +96,7 @@ class _Preview extends StatelessWidget {
                 if (settings.person != null)
                   ProfilePicture(person: settings.person!, radius: 30,),
                 Text(settings.title, style: TextStyles.mainTitleSans, textAlign: TextAlign.center,),
+                if (settings.showUsername) Text("Ratings by ${settings.username}", textAlign: TextAlign.center)
               ],
             ),
           ),

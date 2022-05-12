@@ -1,3 +1,5 @@
+/// Contains [TMDB], the interface for TheMovieDB's API.
+///
 /// {@category Data}
 library tmdb;
 
