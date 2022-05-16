@@ -141,7 +141,7 @@ class _DiscoverState extends State<Discover> {
   Widget _buildChildren(BuildContext context, int place) {
     final value = _getAtPlace(place);
     if (value != null) {
-      return MoviePosterTitle(value);
+      return _MoviePosterTitle(value);
     } else {
       return const Center(child: CupertinoActivityIndicator());
     }

@@ -63,7 +63,7 @@ class _SearchState extends State<Search> {
       AsyncSnapshot<List<Movie>> snapshot) {
     return (context, i) {
       return snapshot.hasData
-          ? MoviePosterTitle(snapshot.data![i])
+          ? _MoviePosterTitle(snapshot.data![i])
           : const Placeholder();
     };
   }
@@ -74,11 +74,11 @@ class _SearchState extends State<Search> {
 /// To be used *specifically* with search type views, because when tapped
 /// the poster calls [Navigator.pop] with [movie].
 /// Also includes a placeholder text saying "No image"
-class MoviePosterTitle extends StatelessWidget {
+class _MoviePosterTitle extends StatelessWidget {
   /// The movie to be displayed.
   final Movie movie;
 
-  const MoviePosterTitle(this.movie, {Key? key}) : super(key: key);
+  const _MoviePosterTitle(this.movie, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

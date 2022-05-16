@@ -9,7 +9,7 @@ is the required developer documentation.
 The app can be used to create image posts in various formats. These posts can then be shared
 with others on social media. The posts can be movie reviews, movie toplists, etc.
 
-<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" width="50">
+<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" width="100">
 
 All of the movie and person data comes from TheMovieDB.
 

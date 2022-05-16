@@ -58,7 +58,7 @@ class _PeopleSearchState extends State<PeopleSearch> {
       AsyncSnapshot<List<Person>> snapshot) {
     return (context, i) {
       return snapshot.hasData
-          ? PersonListItem(snapshot.data![i])
+          ? _PersonListItem(snapshot.data![i])
           : const Placeholder();
     };
   }
@@ -66,10 +66,10 @@ class _PeopleSearchState extends State<PeopleSearch> {
 
 /// A widget which displays the profile picture and
 /// name of the given [person]. Calls [Navigator.pop] when tapped.
-class PersonListItem extends StatelessWidget {
+class _PersonListItem extends StatelessWidget {
   final Person person;
 
-  const PersonListItem(this.person, {Key? key}) : super(key: key);
+  const _PersonListItem(this.person, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
