@@ -1,5 +1,5 @@
 /// These are fullscreen views which can be used by the settings pages for
-/// **search**, **discover**, etc.
+/// *search*, *discover*, etc.
 library views;
 
 import 'dart:developer';

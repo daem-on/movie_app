@@ -6,6 +6,8 @@ part of 'home.dart';
 /// Gets the list of movie IDs from the [DatabaseManager],
 /// looks them up in [TMDB] and shows them in a carousel,
 /// which is displayed in a [_RecentlyWatchedCarousel].
+///
+/// {@animation example 300 400 https://github.com/daem-on/movie_app/raw/master/doc_assets/carousel.webm}
 class RecentlyWatchedCarousel extends StatefulWidget {
   const RecentlyWatchedCarousel({Key? key}) : super(key: key);
 

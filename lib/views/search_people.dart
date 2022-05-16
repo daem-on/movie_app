@@ -4,6 +4,8 @@ part of 'views.dart';
 ///
 /// The user is able to provide a search query, pick a person from
 /// a list of results, and the resulting [Person] will be returned in `pop()`
+///
+/// ![Search people](https://github.com/daem-on/movie_app/raw/master/doc_assets/search_person.png)
 class PeopleSearch extends StatefulWidget {
   const PeopleSearch({Key? key}) : super(key: key);
 

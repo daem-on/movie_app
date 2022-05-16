@@ -15,6 +15,8 @@ import '../preset_display.dart';
 ///
 /// Since `flutter/cupertino` doesn't have a standard conatiner,
 /// we have to make a custom one.
+///
+/// ![Two CupertinoContainers on a page](https://github.com/daem-on/movie_app/raw/master/doc_assets/toplist_settings.png)
 class CupertinoContainer extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -193,6 +195,8 @@ class DurationModal extends StatelessWidget {
 ///
 /// Contains a line of text, optionally two, an icon at the end, and will call
 /// a callback when pressed.
+///
+/// ![Multiple SettingRows in the top container](https://github.com/daem-on/movie_app/raw/master/doc_assets/toplist_settings.png)
 class SettingRow extends StatelessWidget {
   /// The icon to show at the end of the row.
   final Icon icon;
@@ -273,6 +277,8 @@ class MovieAppScaffold extends StatelessWidget {
 ///
 /// Looks very similar to the navigation bar's back button, so a view
 /// with a back and forward button will look symmetrical.
+///
+/// ![An example of TrailingButton at the top](https://github.com/daem-on/movie_app/raw/master/doc_assets/awards_appearance.png)
 class TrailingButton extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
@@ -311,6 +317,8 @@ class TrailingButton extends StatelessWidget {
 
 /// A button which is shown at the bottom center of the screen.
 /// Should be used in a [Stack]
+///
+/// ![Example on the bottom](https://github.com/daem-on/movie_app/raw/master/doc_assets/filmography_preview.png)
 class FloatingButton extends StatelessWidget {
   final void Function()? onPressed;
   final String text;
@@ -352,6 +360,8 @@ class FloatingButton extends StatelessWidget {
 
 /// A container with given content, which enables the user to share a
 /// screenshot of the content with a button at the bottom.
+///
+/// ![Example with Filmography](https://github.com/daem-on/movie_app/raw/master/doc_assets/filmography_preview.png)
 class ShareablePreview extends StatelessWidget {
   ShareablePreview({
     Key? key,
@@ -391,6 +401,11 @@ class ShareablePreview extends StatelessWidget {
 /// Shows a movie poster for a given [Movie] from TMDB. Not interactive.
 ///
 /// Has rounded corners and a placeholder when there is no poster.
+///
+/// <img title="Example in a Filmography"
+/// src="https://github.com/daem-on/movie_app/raw/master/doc_assets/filmography.png"
+/// width=300
+/// />
 class MoviePosterSimple extends StatelessWidget {
   final Movie movie;
   /// Optional width of the displayed poster.
@@ -439,6 +454,11 @@ class MoviePosterSimple extends StatelessWidget {
 }
 
 /// Shows the profile image of a [Person] from TMDB.
+///
+/// <img title="Example in a Filmography"
+/// src="https://github.com/daem-on/movie_app/raw/master/doc_assets/filmography.png"
+/// width=300
+/// />
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({Key? key, required this.person, this.radius}) : super(key: key);
   final Person person;
@@ -458,6 +478,8 @@ class ProfilePicture extends StatelessWidget {
 }
 
 /// 5-star rating slider.
+///
+/// {@animation example 300 400 https://github.com/daem-on/movie_app/raw/master/doc_assets/filmography_ratings.webm}
 class StarRatingSlider extends StatelessWidget {
   const StarRatingSlider({
     Key? key,
@@ -496,7 +518,7 @@ class StarRatingSlider extends StatelessWidget {
   }
 }
 
-/// 5-star rating slider with a minimum of half a star.
+/// 5-star rating slider with a minimum of half a star. See [StarRatingSlider].
 class NonNullStarRatingSlider extends StatelessWidget {
   const NonNullStarRatingSlider({
     Key? key,

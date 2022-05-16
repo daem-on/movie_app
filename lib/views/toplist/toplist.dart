@@ -1,5 +1,10 @@
 /// The toplist format.
 ///
+/// <img alt="Example output"
+/// src="https://github.com/daem-on/movie_app/raw/master/doc_assets/toplist.png"
+/// width=300
+/// />
+///
 /// {@category Formats}
 library toplist;
 

@@ -4,6 +4,8 @@ part of 'views.dart';
 /// [PersonCredit] which will be returned in [Navigator.pop].
 ///
 /// Divides credits into cast and crew, which are shown separately.
+///
+/// ![Select credit](https://github.com/daem-on/movie_app/raw/master/doc_assets/select_credit.png)
 class SelectCredit extends StatefulWidget {
   const SelectCredit({Key? key}) : super(key: key);
 

@@ -4,6 +4,8 @@ part of 'views.dart';
 ///
 /// The user is able to provide a search query, pick a movie from
 /// a list of results, and the resulting [Movie] will be returned in `pop()`
+///
+/// ![Search](https://github.com/daem-on/movie_app/raw/master/doc_assets/search.png)
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 

@@ -16,7 +16,20 @@ All of the movie and person data comes from TheMovieDB.
 ## Architecture
 The software architecture is completely standard Flutter app architecture. No state management
 or other libraries are used, and data is accessed with `sqflite` for the database and `http`
-for TheMovieDB API. These choices are obvious for an app of this small scale.
+for TheMovieDB API.
+
+The small scale of this app, and the single developer, are the reasons behind these choices.
+
+No dependency injection solutions or [InheritedWidget]s were used, because the hierarchical
+structure provided by Flutter was adequate for managing state and access to libraries.
+The [DatabaseManager] class is only used in one place, which makes it very simple to implement,
+since there's no need to synchronise with other places it would be displayed.
+Whenever [TMDB] is used, it is a separate instance created locally, which can be done because it's
+stateless. (It should probably be refactored to only have static methods.)
+
+Flutter also provides a great way to handle references to images, [ImageProvider]. Whenever some
+function takes an image it will display as a parameter, it doesn't take a URL but an ImageProvider,
+since you can pass asset images or network images depending on what you need.
 
 ### App structure
 To create a post, the user goes through these pages: *Settings*, *Appearance*, *Preview*.
@@ -32,7 +45,8 @@ or VSCode.
 To generate API docs (the html files), run `flutter pub global run dartdoc .`
 
 ## More details
-When viewing this page in the API docs view, the following links will be clickable.
+> **About the links on this page**
+> The links will only be clickable when viewed in the Flutter API docs view. (See *Building*)
 
 ### Overview
 The libraries for the main content of the app, which correspond to
@@ -42,8 +56,8 @@ the formats of posts which can be created in the app:
 - [Review](review/review-library.html)
 - [Toplist](toplist/toplist-library.html)
 
-[Common](common/common-library.html) contains the components
-shared by all UI parts.
+[Common](common/common-library.html) contains the components shared by all UI parts. This could
+be refactored into separate files, but currently only exists in one file.
 
 [Views](views/views-library.html) contains views outside of the
 four main libraries, like search, discover, etc.
@@ -78,8 +92,9 @@ we get from the *Settings* view route arguments.
 #### Preview
 This is where the final post is shown on the screen, along with a share button.
 
-### Table
+### List
 These are the views for each of the formats:
+
 [AwardsSettingsView] > [AwardsAppearanceView] > [AwardsView]  
 [FilmographySettingsView] > [FilmographyAppearanceView] > [FilmographyView]  
 [ReviewSettingsView] > [ReviewAppearanceView] > [ReviewView]  

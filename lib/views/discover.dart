@@ -47,6 +47,8 @@ class DiscoverArguments {
 /// A view which shows a list of movies based on [DiscoverArguments],
 /// which are constraints or filters passed to TheMovieDB. Calls
 /// [Navigator.pop] with a [Movie].
+///
+/// ![Discover](https://github.com/daem-on/movie_app/raw/master/doc_assets/discover.png)
 class Discover extends StatefulWidget {
   const Discover({Key? key}) : super(key: key);
 
