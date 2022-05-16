@@ -20,7 +20,7 @@ import 'model.dart';
 /// Local database manager.
 ///
 /// You must call [initDatabase] before using the database.
-class DatabaseManager extends ChangeNotifier {
+class DatabaseManager {
   late Database _database;
   final TMDB tmdb = TMDB();
 
@@ -57,7 +57,6 @@ class DatabaseManager extends ChangeNotifier {
       { "tmdbid": entry.id, "day": DateTime.now().millisecondsSinceEpoch },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    notifyListeners();
     return result;
   }
 
