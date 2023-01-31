@@ -40,6 +40,7 @@ class MovieApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'movie_app',
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         DefaultMaterialLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,
@@ -47,10 +48,9 @@ class MovieApp extends StatelessWidget {
       ],
       theme: CupertinoThemeData(
         primaryColor: const Color(0xFFC70D8E),
-        // primaryColor: CupertinoColors.systemBlue,
         primaryContrastingColor: CupertinoColors.white,
         scaffoldBackgroundColor: CupertinoColors.secondarySystemBackground,
-        brightness: WidgetsBinding.instance?.platformDispatcher.platformBrightness
+        brightness: WidgetsBinding.instance.platformDispatcher.platformBrightness
       ),
       home: const HomeView(),
     );

@@ -1,0 +1,4 @@
+Ez a dartdoc által generált dokumentáció megtekinthető egy böngészőben megnyitva az index.html fájlt.
+
+A projekthez tartozó forráskód a következő címen érhető el:
+https://github.com/daem-on/movie_app

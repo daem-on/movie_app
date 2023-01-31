@@ -74,4 +74,48 @@ const Map<String, LookPreset> lookPresets = {
     radius: BorderRadius.all(Radius.circular(20)),
     accentColor: Color(0xFFF8AD1A)
   ),
+
+  "Black and white film": LookPreset(
+    defaultTextStyle: TextStyle(
+        color: CupertinoColors.white,
+        fontFamilyFallback: ["Georgia", "serif"]
+    ),
+    gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFF000000),
+          Color(0xFF1C1C1C),
+          Color(0xFF000000),
+        ]
+    ),
+    radius: BorderRadius.all(Radius.circular(20)),
+    accentColor: Color(0xFFE6E6E6)
+  ),
+
+  "Blue plastic": LookPreset(
+    defaultTextStyle: TextStyle(
+      color: Color.fromARGB(255, 0, 46, 95),
+    ),
+    gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color.fromARGB(255, 167, 215, 255),
+          Color.fromARGB(255, 209, 234, 255),
+          Color.fromARGB(255, 25, 130, 216),
+        ]
+    ),
+    radius: BorderRadius.all(Radius.circular(20)),
+    accentColor: Color.fromARGB(255, 0, 112, 231),
+    borderGradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color.fromARGB(255, 25, 130, 216),
+          Color.fromARGB(255, 209, 234, 255),
+          Color.fromARGB(255, 167, 215, 255),
+        ]
+    ),
+  )
 };
