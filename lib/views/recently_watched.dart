@@ -101,6 +101,33 @@ class _RecentlyWatchedCarousel extends StatelessWidget {
         + snapshot.map((e) => _Displayed(false, e)).toList();
   }
 
+  Widget _buildFirstItem(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          color: CupertinoColors.systemFill,
+          borderRadius: BorderRadius.circular(30)
+      ),
+      child: CupertinoButton(
+        onPressed: addCallback,
+        padding: const EdgeInsets.all(20),
+        child: const Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(text: '\uf48a', style: TextStyle(fontSize: 23, fontFamily: 'CupertinoIcons', package: 'cupertino_icons')),
+              TextSpan(text: ' Log a movie', style: TextStyle(fontSize: 23)),
+              TextSpan(
+                text: '\nYou can come back and write a review for movies you log.',
+                style: TextStyle(color: CupertinoColors.secondaryLabel),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLandscape =
@@ -117,20 +144,7 @@ class _RecentlyWatchedCarousel extends StatelessWidget {
               enlargeCenterPage: true
           ),
           items: [for (final item in _list)
-            item.isFirst ? Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                  color: CupertinoColors.systemYellow,
-                  borderRadius: BorderRadius.circular(30)
-              ),
-              child: Center(
-                child: CupertinoButton(
-                  onPressed: addCallback,
-                  child: const Text("+", style: TextStyle(fontSize: 30)),
-                )
-              )
-            ) : Container(
+            item.isFirst ? _buildFirstItem(context) : Container(
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.all(5.0),
               child: Stack(

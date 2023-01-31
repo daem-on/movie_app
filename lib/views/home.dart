@@ -41,6 +41,8 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
+const double _borderWidth = 6;
+
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
@@ -59,6 +61,13 @@ class _HomeViewState extends State<HomeView> {
     "Review": ReviewSettingsView.route
   };
 
+  static Map<String, IconData> get _menuIcons => {
+    "Toplist": CupertinoIcons.list_number,
+    "Awards": CupertinoIcons.star_circle_fill,
+    "Filmography": CupertinoIcons.person_2_square_stack,
+    "Review": CupertinoIcons.text_alignleft
+  };
+
   /// Handle case where username is not set yet: shows [RegisterView].
   void handleNotRegistered() async {
     if ((await SharedPreferences.getInstance()).getString("username") == null) {
@@ -66,14 +75,48 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  void _openMenu() async {
-    final choice = await showCupertinoModalPopup<Route>(
-        context: context,
-        semanticsDismissible: true,
-        builder: (context) => OptionsModal(options: _menuContent, title: "Create new")
+  Widget _buildPostMenuButton(BuildContext context, String id) {
+    return CupertinoButton(
+      padding: const EdgeInsets.all(20),
+      color: CupertinoColors.systemGroupedBackground,
+      pressedOpacity: 0.7,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(_menuIcons[id]!, color: CupertinoTheme.of(context).primaryColor),
+          Text(id, style: TextStyle(color: CupertinoTheme.of(context).primaryColor))
+        ],
+      ),
+      onPressed: () {
+        Navigator.of(context).push(_menuContent[id]!);
+      },
     );
-    if (choice == null) return;
-    Navigator.of(context).push(choice);
+  }
+
+  Widget _buildNewPostMenu(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: CupertinoTheme.of(context).primaryColor,
+      ),
+      padding: const EdgeInsets.all(_borderWidth),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: _borderWidth),
+            child: Text("Create new", style: TextStyle(color: CupertinoColors.white, fontSize: 20)),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Wrap(
+              spacing: _borderWidth,
+              children: _menuContent.keys.map((e) => _buildPostMenuButton(context, e)).toList(),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -90,15 +133,7 @@ class _HomeViewState extends State<HomeView> {
               const Expanded(
                 child: RecentlyWatchedCarousel(),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: CupertinoButton.filled(
-                  padding: EdgeInsets.zero,
-                  borderRadius: const BorderRadius.all(Radius.circular(90)),
-                  child: const Icon(CupertinoIcons.add),
-                  onPressed: _openMenu
-                ),
-              ),
+              _buildNewPostMenu(context),
               CupertinoButton(
                 child: const Text("Delete username"),
                 onPressed: () async {

@@ -40,7 +40,6 @@ class MovieApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'movie_app',
-      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         DefaultMaterialLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,
