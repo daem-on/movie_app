@@ -142,20 +142,13 @@ class PresetDisplay extends StatelessWidget {
     return Column(
       children: [
         child,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text("Made with"),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              child: CircleAvatar(
-                child: Icon(CupertinoIcons.film),
-                foregroundColor: CupertinoColors.white,
-                backgroundColor: Color(0x88000000),
-              ),
-            ),
-            Text("movie_app"),
-          ],
+        Opacity(
+          opacity: 0.4,
+          child: RichText(text: const TextSpan(text: "Made with ", children: [
+            TextSpan(
+                text: "Supercritical",
+                style: TextStyle(fontWeight: FontWeight.bold))
+          ])),
         ),
       ],
     );

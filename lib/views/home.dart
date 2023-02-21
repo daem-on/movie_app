@@ -131,14 +131,19 @@ class _HomeViewState extends State<HomeView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text("Supercritical", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+              ),
               const Expanded(
                 child: RecentlyWatchedCarousel(),
               ),
               _buildNewPostMenu(context),
               CupertinoButton(
-                child: const Text("Delete username"),
+                child: const Text("Reset username"),
                 onPressed: () async {
                   (await SharedPreferences.getInstance()).remove("username");
+                  Navigator.of(context).pushAndRemoveUntil(RegisterView.route, (r) => false);
                 }
               ),
             ],

@@ -1,4 +1,4 @@
-# movie_app
+# Supercritical
 
 Share your reviews of movies with your friends
 

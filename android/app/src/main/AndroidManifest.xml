@@ -2,7 +2,7 @@
     package="com.daemonw.movie_app">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="movie_app"
+        android:label="Supercritical"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

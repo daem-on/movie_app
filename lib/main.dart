@@ -39,7 +39,7 @@ class MovieApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      title: 'movie_app',
+      title: "Supercritical",
       localizationsDelegates: const [
         DefaultMaterialLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,

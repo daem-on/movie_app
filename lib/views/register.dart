@@ -14,6 +14,8 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  final _controller = TextEditingController();
+  
   void _next(String v) async {
     await (await SharedPreferences.getInstance()).setString("username", v);
     Navigator.of(context).pushAndRemoveUntil(HomeView.route, (r) => false);
@@ -37,14 +39,26 @@ class _RegisterViewState extends State<RegisterView> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 20),
-                child: Text("This will only be stored on your phone, and will be used on all your posts."),
+                child: Text("This will only be stored on your device, and can be added to your posts."),
               ),
               CupertinoTextField(
                 textInputAction: TextInputAction.next,
                 onSubmitted: _next,
+                controller: _controller,
                 placeholder: "Username",
                 // autofillHints: const [AutofillHints.username],
               ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CupertinoButton.filled(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Text("Next"),
+                    onPressed: () => _next(_controller.text),
+                  ),
+                ],
+              )
             ],
           ),
         ),

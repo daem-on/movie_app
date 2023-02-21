@@ -28,7 +28,7 @@ class ToplistSettings {
   bool lightColors = false;
   bool dynamicColor = false;
   final List<Movie> list = List.empty(growable: true);
-  LookPreset preset = lookPresets["Purple gradient"]!;
+  LookPreset preset = lookPresets["Cinema seats"]!;
 
   loadTemplate(ToplistTemplate template) {
     title = template.title; arguments = template.arguments;
