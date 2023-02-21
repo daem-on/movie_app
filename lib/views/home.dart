@@ -6,15 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/database.dart';
+import '../data/model.dart';
+import '../data/tmdb.dart';
 import 'awards/awards.dart';
 import 'common.dart';
 import 'filmography/filmography.dart';
 import 'review/review.dart';
 import 'toplist/toplist.dart';
 import 'views.dart';
-
-import '../data/model.dart';
-import '../data/tmdb.dart';
 
 part 'recently_watched.dart';
 
@@ -75,16 +74,17 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  Widget _buildPostMenuButton(BuildContext context, String id) {
+  Widget _buildPostMenuButton(BuildContext context, String id, bool darkMode) {
+    Color textColor = darkMode ? CupertinoTheme.of(context).primaryContrastingColor : CupertinoTheme.of(context).primaryColor;
     return CupertinoButton(
       padding: const EdgeInsets.all(20),
-      color: CupertinoColors.systemGroupedBackground,
+      color: darkMode ? CupertinoTheme.of(context).primaryColor : CupertinoColors.systemBackground,
       pressedOpacity: 0.7,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(_menuIcons[id]!, color: CupertinoTheme.of(context).primaryColor),
-          Text(id, style: TextStyle(color: CupertinoTheme.of(context).primaryColor))
+          Icon(_menuIcons[id]!, color: textColor),
+          Text(id, style: TextStyle(color: textColor))
         ],
       ),
       onPressed: () {
@@ -94,10 +94,11 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildNewPostMenu(BuildContext context) {
+    bool isDark = CupertinoTheme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: CupertinoTheme.of(context).primaryColor,
+        color: isDark ? const Color.fromARGB(255, 23, 23, 26) : CupertinoTheme.of(context).primaryColor,
       ),
       padding: const EdgeInsets.all(_borderWidth),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -111,7 +112,7 @@ class _HomeViewState extends State<HomeView> {
             scrollDirection: Axis.horizontal,
             child: Wrap(
               spacing: _borderWidth,
-              children: _menuContent.keys.map((e) => _buildPostMenuButton(context, e)).toList(),
+              children: _menuContent.keys.map((e) => _buildPostMenuButton(context, e, isDark)).toList(),
             ),
           )
         ],

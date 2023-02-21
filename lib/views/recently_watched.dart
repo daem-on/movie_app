@@ -114,8 +114,7 @@ class _RecentlyWatchedCarousel extends StatelessWidget {
         child: const Text.rich(
           TextSpan(
             children: [
-              TextSpan(text: '\uf48a', style: TextStyle(fontSize: 23, fontFamily: 'CupertinoIcons', package: 'cupertino_icons')),
-              TextSpan(text: ' Log a movie', style: TextStyle(fontSize: 23)),
+              TextSpan(text: '+ Log a movie', style: TextStyle(fontSize: 23)),
               TextSpan(
                 text: '\nYou can come back and write a review for movies you log.',
                 style: TextStyle(color: CupertinoColors.secondaryLabel),
